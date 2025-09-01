@@ -1,3 +1,13 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Dependencies
 node_modules
+
+# Build/cache
 .vite
 .DS_Store
+dist
+build
