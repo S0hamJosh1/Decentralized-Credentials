@@ -1,6 +1,6 @@
 
 
-export const CONTRACT_ADDRESS = "0x9551dB124310CfAef94cfb4Dc71D06ceE9FA2b1b";
+export const CONTRACT_ADDRESS = "0xcontractadress";
 
 
 export const CONTRACT_ABI = [
@@ -238,3 +238,4 @@ export const CONTRACT_ABI = [
     "type": "function"
   }
 ]
+
