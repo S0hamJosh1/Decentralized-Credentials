@@ -1,11 +1,11 @@
-# 🪪 Decentralized Credential DApp
+#  Decentralized Credential DApp
 
 A full-stack decentralized app for **issuing, verifying, and revoking** digital credentials on the **Ethereum Sepolia** testnet.  
 Smart contracts with **Solidity + Hardhat** and a **React (Vite) + ethers.js** frontend.
 
 ---
 
-## 📦 Project Structure
+##  Project Structure
 
 ```text
 Decentralized-Credentials/
