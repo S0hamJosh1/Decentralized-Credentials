@@ -44,6 +44,8 @@ Decentralized-Credentials/
 git clone https://github.com/S0hamJosh1/Decentralized-Credentials.git
 cd Decentralized-Credentials
 
+---
+
 --> backend setup
 cd cd_var
 npm install
@@ -62,6 +64,8 @@ deply to sepolia:
 
 npx hardhat run scripts/deploy.ts --network sepolia
 
+---
+
 --> front-end setup
 
 cd Credential_FE
@@ -70,10 +74,13 @@ npm run dev
 
 This will start the frontend on http://localhost:5173
 
+---
+
 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
+---
 
 Acknowledgements
 
