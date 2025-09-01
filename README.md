@@ -92,14 +92,14 @@ npm run dev
 - Never commit .env, node_modules, artifacts, cache.
 - Contract ABI and addresses in the frontend are OK; keep private keys and RPC keys in .env.
 - Example .gitignore lines:
-  ```text
+```text
   .env
   node_modules/
   artifacts/
   cache/
   dist/
   build/
-  ```
+```
  ---
 
  ## License 
