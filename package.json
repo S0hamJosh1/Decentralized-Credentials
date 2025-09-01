@@ -1,0 +1,43 @@
+{
+  "name": "cd_var",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+  "compile": "hardhat compile --config hardhat.config.cjs",
+  "test": "hardhat test --config hardhat.config.cjs",
+  "clean": "hardhat clean --config hardhat.config.cjs",
+  "deploy:sepolia": "hardhat ignition deploy ./ignition/modules/Deploy.ts --network sepolia --config hardhat.config.cjs",
+  "ping": "node scripts/ping-sepolia-raw.js",
+  "read:registry": "hardhat run scripts/read-registry-ethers.js --network sepolia --config hardhat.config.cjs",
+  "write:registry": "hardhat run scripts/write-registry-ethers.js --network sepolia --config hardhat.config.cjs"
+},
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrElimation007/cd_var.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrElimation007/cd_var/issues"
+  },
+  "homepage": "https://github.com/MrElimation007/cd_var#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "@nomicfoundation/hardhat-ignition": "^3.0.1",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^3.0.0",
+    "@types/chai": "^4.3.16",
+    "@types/node": "^20.11.30",
+    "chai": "^4.4.1",
+    "dotenv": "^17.2.1",
+    "ethers": "^6.15.0",
+    "hardhat": "^3.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
