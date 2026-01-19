@@ -1,137 +1,191 @@
 // src/components/CredentialActions.jsx
-import React, { useState } from "react"
-import { ethers } from "ethers"
+import React, { useMemo, useState } from "react";
+import { ethers } from "ethers";
 
-export default function CredentialActions({ contractAddress, abi, provider, signer }) {
-  const [holder, setHolder] = useState("")
-  const [text, setText] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
-  const [txHash, setTxHash] = useState("")
+export default function CredentialActions({
+  contractAddress,
+  abi,
+  provider,
+  signer,
+  networkOk,
+  account,
+}) {
+  const [holder, setHolder] = useState("");
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [txHash, setTxHash] = useState("");
 
-  const hashFromText = () => {
+  const hashFromText = useMemo(() => {
     try {
-      if (!text.trim()) return ""
-      return ethers.keccak256(ethers.toUtf8Bytes(text.trim()))
+      if (!text.trim()) return "";
+      return ethers.keccak256(ethers.toUtf8Bytes(text.trim()));
     } catch {
-      return ""
+      return "";
     }
-  }
+  }, [text]);
 
   const isAddress = (addr) => {
-    try { return ethers.isAddress(addr) } catch { return false }
-  }
+    try {
+      return ethers.isAddress(addr);
+    } catch {
+      return false;
+    }
+  };
 
   const ensureReady = (needSigner = false) => {
-    if (!provider) { setMessage("Connect wallet first."); return false }
-    if (!isAddress(holder)) { setMessage("Enter a valid holder address."); return false }
-    if (!text.trim()) { setMessage("Enter credential text."); return false }
-    if (needSigner && !signer) { setMessage("No signer found. Reconnect wallet."); return false }
-    return true
-  }
+    if (!provider) {
+      setMessage("Connect your wallet first.");
+      return false;
+    }
+    if (!networkOk) {
+      setMessage("Switch to Sepolia to continue.");
+      return false;
+    }
+    if (!isAddress(holder)) {
+      setMessage("Enter a valid holder address (0x...).");
+      return false;
+    }
+    if (!text.trim()) {
+      setMessage("Enter a credential label (any short text).");
+      return false;
+    }
+    if (needSigner && !signer) {
+      setMessage("No signer found. Reconnect your wallet.");
+      return false;
+    }
+    return true;
+  };
 
   const issue = async () => {
-    if (!ensureReady(true)) return
-    setLoading(true); setMessage(""); setTxHash("")
+    if (!ensureReady(true)) return;
+    setLoading(true);
+    setMessage("");
+    setTxHash("");
     try {
-      const contract = new ethers.Contract(contractAddress, abi, signer)
-      const tx = await contract.issueCredential(holder.trim(), hashFromText())
-      setTxHash(tx.hash)
-      const rec = await tx.wait()
-      setMessage(`✅ Issued (block ${rec.blockNumber})`)
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const tx = await contract.issueCredential(holder.trim(), hashFromText);
+      setTxHash(tx.hash);
+      const rec = await tx.wait();
+      setMessage(`✅ Credential issued (block ${rec.blockNumber})`);
     } catch (e) {
-      setMessage(e?.reason || e?.message || String(e))
+      setMessage(e?.reason || e?.message || String(e));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const verify = async () => {
-    if (!ensureReady(false)) return
-    setLoading(true); setMessage(""); setTxHash("")
+    if (!ensureReady(false)) return;
+    setLoading(true);
+    setMessage("");
+    setTxHash("");
     try {
-      const contract = new ethers.Contract(contractAddress, abi, provider)
-      const ok = await contract.verifyCredential(holder.trim(), hashFromText())
-      setMessage(ok ? "✅ Valid credential" : "❌ Not found / revoked")
+      const contract = new ethers.Contract(contractAddress, abi, provider);
+      const ok = await contract.verifyCredential(holder.trim(), hashFromText);
+      setMessage(ok ? "✅ Credential is valid" : "❌ Not found (or revoked)");
     } catch (e) {
-      setMessage(e?.reason || e?.message || String(e))
+      setMessage(e?.reason || e?.message || String(e));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const revoke = async () => {
-    if (!ensureReady(true)) return
-    setLoading(true); setMessage(""); setTxHash("")
+    if (!ensureReady(true)) return;
+    setLoading(true);
+    setMessage("");
+    setTxHash("");
     try {
-      const contract = new ethers.Contract(contractAddress, abi, signer)
-      const tx = await contract.revokeCredential(holder.trim(), hashFromText())
-      setTxHash(tx.hash)
-      const rec = await tx.wait()
-      setMessage(`🛑 Revoked (block ${rec.blockNumber})`)
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const tx = await contract.revokeCredential(holder.trim(), hashFromText);
+      setTxHash(tx.hash);
+      const rec = await tx.wait();
+      setMessage(`🛑 Credential revoked (block ${rec.blockNumber})`);
     } catch (e) {
-      setMessage(e?.reason || e?.message || String(e))
+      setMessage(e?.reason || e?.message || String(e));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const disabledAll = !provider || !networkOk || loading;
 
   return (
-    <div style={card}>
-      <h2 style={{marginTop:0}}>🎯 Quick Actions</h2>
+    <div className="space-y-5">
+      {/* Inputs */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-5 lg:gap-x-10">
+        <div className="min-w-0">
+          <div className="neo-label">Holder address</div>
+          <div className="neo-help mt-1">The wallet address that owns the credential.</div>
+          <input
+            className="neo-input mt-3 min-w-0"
+            placeholder="0xabc...1234"
+            value={holder}
+            onChange={(e) => setHolder(e.target.value)}
+          />
+        </div>
 
-      <div style={row}>
-        <label style={label}>Holder Address</label>
-        <input
-          style={input}
-          placeholder="0x..."
-          value={holder}
-          onChange={e=>setHolder(e.target.value)}
-        />
+        <div className="min-w-0">
+          <div className="neo-label">Credential label</div>
+          <div className="neo-help mt-1">
+            Choose a label, to store the hash on-chain.
+          </div>
+          <input
+            className="neo-input mt-3 min-w-0"
+            placeholder="Example: CS101 - Completion"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+
+          <div className="mt-4 rounded-xl border border-white/10 bg-black/25 px-4 py-3">
+            <div className="text-xs font-semibold text-zinc-300">bytes32 hash</div>
+            <div className="mt-2 text-xs text-zinc-400 break-all">
+              {hashFromText || "—"}
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div style={row}>
-        <label style={label}>Credential Text</label>
-        <input
-          style={input}
-          placeholder='e.g., CS101:Soham'
-          value={text}
-          onChange={e=>setText(e.target.value)}
-        />
-      </div>
+      {/* Buttons + status */}
+      <div className="flex flex-wrap items-center gap-3">
+        <button className="neo-btn-success" onClick={issue} disabled={disabledAll}>
+          {loading ? "Issuing…" : "Issue"}
+        </button>
 
-      <div style={{fontSize:12, opacity:.8, marginTop:6}}>
-        bytes32 hash: <code>{hashFromText() || "—"}</code>
-      </div>
+        <button className="neo-btn" onClick={verify} disabled={disabledAll}>
+          {loading ? "Checking…" : "Verify"}
+        </button>
 
-      <div style={{display:'flex', gap:8, marginTop:12, flexWrap:'wrap'}}>
-        <button onClick={issue} disabled={loading} style={btn}>
-          {loading ? "Issuing…" : "Issue Credential"}
+        <button className="neo-btn-danger" onClick={revoke} disabled={disabledAll}>
+          {loading ? "Revoking…" : "Revoke"}
         </button>
-        <button onClick={verify} disabled={loading} style={btn}>
-          {loading ? "Checking…" : "Verify Credential"}
-        </button>
-        <button onClick={revoke} disabled={loading} style={{...btn, borderColor:'#b91c1c', color:'#b91c1c'}}>
-          {loading ? "Revoking…" : "Revoke Credential"}
-        </button>
+
+        <div className="ml-auto text-sm text-zinc-500">
+          {account ? "Wallet connected." : "Wallet not connected."}
+        </div>
       </div>
 
       {txHash && (
-        <p style={{marginTop:8}}>
-          Tx:{" "}
-          <a href={`https://sepolia.etherscan.io/tx/${txHash}`} target="_blank" rel="noreferrer">
-            {txHash}
+        <div className="text-sm text-zinc-300">
+          Transaction:{" "}
+          <a
+            className="text-cyan-200 hover:text-cyan-100 underline"
+            href={`https://sepolia.etherscan.io/tx/${txHash}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on Etherscan
           </a>
-        </p>
+        </div>
       )}
-      {message && <div style={note}>{message}</div>}
+
+      {message && (
+        <div className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-zinc-200">
+          {message}
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
-const card = { border:'1px solid #e5e7eb', borderRadius:14, padding:16, marginBottom:16, background:'#f9fafb' }
-const row  = { display:'grid', gap:6, marginTop:10 }
-const label= { fontWeight:600, fontSize:14 }
-const input= { border:'1px solid #d1d5db', padding:'8px 10px', borderRadius:10 }
-const btn  = { border:'1px solid #111827', background:'white', padding:'10px 14px', borderRadius:12, cursor:'pointer', fontWeight:600 }
-const note = { marginTop:10, padding:'8px 10px', background:'#eef2ff', border:'1px solid #c7d2fe', borderRadius:10 }
