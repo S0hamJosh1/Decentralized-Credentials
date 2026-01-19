@@ -1,0 +1,134 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@reference "tailwindcss";
+
+/* Google Font (Montserrat) */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: #09090b;
+    color: #f4f4f5;
+    font-family: "Montserrat", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+      Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* ===== Background: neon glows + flowing line pattern ===== */
+  .neo-bg {
+    background: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3CradialGradient id='fade' cx='50%25' cy='45%25' r='70%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff' stop-opacity='0.10'/%3E%3Cstop offset='55%25' stop-color='%23ffffff' stop-opacity='0.05'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='0.00'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='1600' height='900' fill='url(%23fade)'/%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1'%3E%3Cpath d='M-50 420 C 250 340, 420 520, 720 440 S 1180 360, 1680 460'/%3E%3Cpath d='M-50 460 C 260 380, 430 560, 740 480 S 1200 400, 1680 500'/%3E%3Cpath d='M-50 500 C 280 420, 450 600, 760 520 S 1210 440, 1680 540'/%3E%3Cpath d='M-50 540 C 300 460, 470 640, 780 560 S 1220 480, 1680 580'/%3E%3Cpath d='M-50 580 C 320 500, 490 680, 800 600 S 1230 520, 1680 620'/%3E%3Cpath d='M-50 620 C 340 540, 510 720, 820 640 S 1240 560, 1680 660'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(900px 500px at 15% 10%, rgba(34, 211, 238, 0.18), transparent 55%),
+      radial-gradient(800px 450px at 85% 15%, rgba(56, 189, 248, 0.12), transparent 60%),
+      radial-gradient(900px 600px at 50% 95%, rgba(16, 185, 129, 0.1), transparent 55%),
+      radial-gradient(900px 600px at 50% 50%, rgba(255, 255, 255, 0.03), transparent 70%);
+    background-repeat: no-repeat;
+    background-size: cover, auto, auto, auto, auto;
+    background-position: center, center, center, center, center;
+  }
+
+  /* ===== Cards ===== */
+  .neo-card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 25px 80px -50px rgba(0, 0, 0, 0.95);
+  }
+
+  .neo-card-header {
+    @apply border-b border-white/10 px-7 py-5;
+  }
+
+  .neo-card-body {
+    @apply px-7 py-6;
+  }
+
+  .neo-outline {
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.18),
+      0 0 40px -25px rgba(34, 211, 238, 0.55);
+  }
+
+  /* ===== Inputs ===== */
+  .neo-input {
+    @apply w-full min-w-0 rounded-xl border border-white/10 bg-black/30 px-3 py-2
+      text-sm text-zinc-100 placeholder:text-zinc-500
+      focus:outline-none focus:ring-2 focus:ring-cyan-400/30 focus:border-cyan-300/20;
+  }
+
+  .neo-select {
+    @apply w-full min-w-0 rounded-xl border border-white/10 bg-black/50 px-3 py-2
+      text-sm text-zinc-100
+      focus:outline-none focus:ring-2 focus:ring-cyan-400/30 focus:border-cyan-300/20;
+  }
+
+  /* Darker dropdown menu (native <select><option>) */
+  .neo-select option {
+    background-color: rgba(24, 24, 27, 1); /* zinc-900-ish */
+    color: #f4f4f5;
+  }
+
+  /* Custom dropdown panel (FunctionRunner) — fully opaque, no see-through */
+  .neo-dropdown {
+    background-color: #0b0d10; /* opaque */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 80px -50px rgba(0, 0, 0, 0.95);
+  }
+
+  /* ===== Buttons ===== */
+  .neo-btn {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold
+      border border-white/10 bg-white/[0.06] hover:bg-white/[0.10]
+      active:scale-[0.99] transition;
+  }
+
+  .neo-btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold
+      border border-white/10 bg-white/[0.08] hover:bg-white/[0.12]
+      active:scale-[0.99] transition;
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.2),
+      0 0 35px -25px rgba(34, 211, 238, 0.65);
+  }
+
+  /* Green Issue button */
+  .neo-btn-success {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold
+      border border-emerald-500/25 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/15
+      active:scale-[0.99] transition;
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2),
+      0 0 35px -25px rgba(16, 185, 129, 0.55);
+  }
+
+  .neo-btn-danger {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold
+      border border-rose-500/25 bg-rose-500/10 text-rose-200 hover:bg-rose-500/15
+      active:scale-[0.99] transition;
+  }
+
+  .neo-muted {
+    @apply text-zinc-400;
+  }
+
+  .neo-label {
+    @apply text-sm font-semibold text-zinc-200;
+  }
+
+  .neo-help {
+    @apply text-xs text-zinc-500;
+  }
+
+  .neo-badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-zinc-200;
+  }
+}
