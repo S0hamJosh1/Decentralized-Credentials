@@ -131,4 +131,21 @@
   .neo-badge {
     @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-zinc-200;
   }
+        /* Flowing line layer for neo background */
+.neo-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.neo-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.08' stroke-width='1'%3E%3Cpath d='M-50 420 C 250 340, 420 520, 720 440 S 1180 360, 1680 460'/%3E%3Cpath d='M-50 460 C 260 380, 430 560, 740 480 S 1200 400, 1680 500'/%3E%3Cpath d='M-50 500 C 280 420, 450 600, 760 520 S 1210 440, 1680 540'/%3E%3Cpath d='M-50 540 C 300 460, 470 640, 780 560 S 1220 480, 1680 580'/%3E%3Cpath d='M-50 580 C 320 500, 490 680, 800 600 S 1230 520, 1680 620'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: cover;
+  opacity: 0.35;
+}
+
 }
