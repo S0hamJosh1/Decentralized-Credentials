@@ -127,12 +127,12 @@ export function FunctionRunner({
               onClick={() => setOpen((v) => !v)}
               className="neo-select min-w-0 flex items-center justify-between gap-3"
             >
-              <span className="truncate">{selectedLabel}</span>
+              <span className="truncate max-w-full">{selectedLabel}</span>
               <span className="text-zinc-400">▾</span>
             </button>
 
             {open && (
-              <div className="absolute left-0 top-full mt-2 w-full z-50 rounded-xl overflow-hidden neo-dropdown">
+              <div className="absolute left-0 top-full mt-2 w-full max-w-full z-50 rounded-xl overflow-hidden neo-dropdown">
                 {/* Search bar */}
                 <div className="p-2 border-b border-white/10">
                   <input
@@ -168,7 +168,9 @@ export function FunctionRunner({
                         }`}
                         title={label}
                       >
-                        <span className="block truncate">{label}</span>
+                        <span className="block truncate max-w-full break-all">
+                          {label}
+                        </span>
                       </button>
                     );
                   })}
@@ -273,7 +275,7 @@ export function FunctionRunner({
             )}
 
             {result && (
-              <pre className="mt-4 rounded-xl border border-white/10 bg-black/40 p-4 text-xs text-zinc-200 overflow-auto">
+              <pre className="mt-4 max-w-full overflow-x-auto whitespace-pre-wrap break-all rounded-xl border border-white/10 bg-black/40 p-4 text-xs text-zinc-200">
                 {result}
               </pre>
             )}
@@ -285,7 +287,6 @@ export function FunctionRunner({
 }
 
 function prettySig(sig) {
-  // issueCredential(address,bytes32) -> issueCredential (address, bytes32)
   try {
     const open = sig.indexOf("(");
     if (open === -1) return sig;
@@ -340,4 +341,3 @@ function helpFor(type) {
   if (type === "bool") return "Type true or false.";
   return "Enter a value that matches the type.";
 }
-
