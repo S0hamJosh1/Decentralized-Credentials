@@ -148,20 +148,22 @@ export default function CredentialActions({
       </div>
 
       {/* Buttons + status */}
-      <div className="flex flex-wrap items-center gap-3">
-        <button className="neo-btn-success" onClick={issue} disabled={disabledAll}>
-          {loading ? "Issuing…" : "Issue"}
-        </button>
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <button className="neo-btn-success" onClick={issue} disabled={disabledAll}>
+            {loading ? "Issuing…" : "Issue"}
+          </button>
 
-        <button className="neo-btn" onClick={verify} disabled={disabledAll}>
-          {loading ? "Checking…" : "Verify"}
-        </button>
+          <button className="neo-btn" onClick={verify} disabled={disabledAll}>
+            {loading ? "Checking…" : "Verify"}
+          </button>
 
-        <button className="neo-btn-danger" onClick={revoke} disabled={disabledAll}>
-          {loading ? "Revoking…" : "Revoke"}
-        </button>
+          <button className="neo-btn-danger" onClick={revoke} disabled={disabledAll}>
+            {loading ? "Revoking…" : "Revoke"}
+          </button>
+        </div>
 
-        <div className="ml-auto text-sm text-zinc-500">
+        <div className="sm:ml-auto text-sm text-zinc-500">
           {account ? "Wallet connected." : "Wallet not connected."}
         </div>
       </div>

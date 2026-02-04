@@ -133,7 +133,7 @@ export function FunctionRunner({
       )}
 
       {/* Header Row */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
 
         {/* Dropdown */}
         <div className="w-full lg:w-[70%] min-w-0" ref={dropdownRef}>
@@ -188,11 +188,10 @@ export function FunctionRunner({
                         key={sig}
                         type="button"
                         onClick={() => onSelect(sig)}
-                        className={`w-full text-left px-3 py-2 text-sm hover:bg-white/[0.06] ${
-                          active
+                        className={`w-full text-left px-3 py-2 text-sm hover:bg-white/[0.06] ${active
                             ? "bg-white/[0.08] text-zinc-100"
                             : "text-zinc-200"
-                        }`}
+                          }`}
                         title={label}
                       >
                         <span className="block truncate">{label}</span>
@@ -207,13 +206,12 @@ export function FunctionRunner({
         </div>
 
         {/* Read/Write Badge */}
-        <div className="neo-badge mt-2 lg:mt-7 shrink-0">
+        <div className="neo-badge mt-1 lg:mt-7 shrink-0 w-fit">
           <span
-            className={`inline-block h-2.5 w-2.5 rounded-full ${
-              isView
+            className={`inline-block h-2.5 w-2.5 rounded-full ${isView
                 ? "bg-emerald-300/80"
                 : "bg-amber-300/80"
-            }`}
+              }`}
           />
           <span>{isView ? "Read" : "Write"}</span>
         </div>
@@ -222,17 +220,17 @@ export function FunctionRunner({
 
       {frag && (
 
-        <div className="rounded-2xl border border-white/10 bg-black/20 px-6 py-5">
+        <div className="rounded-2xl border border-white/10 bg-black/20 px-4 sm:px-6 py-5">
 
           {/* Selected Method */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
             <div className="min-w-0">
               <div className="text-xs font-semibold text-zinc-300">
                 Selected method
               </div>
 
-              <div className="mt-1 text-sm text-zinc-100 break-all">
+              <div className="mt-1 text-sm text-zinc-100 break-words">
                 {prettySig(frag.format())}
               </div>
             </div>
@@ -244,11 +242,10 @@ export function FunctionRunner({
               </span>
 
               <span
-                className={`neo-badge ${
-                  isView
+                className={`neo-badge ${isView
                     ? ""
                     : "border-amber-500/25 bg-amber-500/10 text-amber-100"
-                }`}
+                  }`}
               >
                 {isView ? "reads state" : "writes state"}
               </span>
@@ -319,8 +316,8 @@ export function FunctionRunner({
                     ? "Reading…"
                     : "Sending…"
                   : isView
-                  ? "Run (read)"
-                  : "Send (write)"}
+                    ? "Run (read)"
+                    : "Send (write)"}
               </button>
 
               <div className="text-sm text-zinc-500">
