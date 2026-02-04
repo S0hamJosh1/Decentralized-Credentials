@@ -33,95 +33,95 @@ export default function App() {
     <>
       <div className="cyber-grid-bg" />
       <div className="min-h-screen text-zinc-100">
-      {/* widened to use side space */}
-      <div className="mx-auto w-full max-w-7xl px-5 py-10">
-        {/* Header */}
-        <header className="mb-8">
-          <div className="flex flex-col md:flex-row items-start justify-between gap-6">
-            <div className="max-w-full">
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-zinc-50 leading-[1.05] break-words">
-                Credential Registry  
-              </h1>
+        {/* widened to use side space */}
+        <div className="mx-auto w-full max-w-7xl px-5 py-10">
+          {/* Header */}
+          <header className="mb-8">
+            <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+              <div className="max-w-full">
+                <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-zinc-50 leading-[1.05] break-words">
+                  Credential Registry
+                </h1>
 
-              {/* tighter spacing under title */}
-              <p className="mt-3 text-sm text-zinc-400 max-w-md">
-                Issue, verify, and revoke credentials on-chain • Sepolia (11155111)
-              </p>
-              <p className="mt-1 text-xs text-zinc-500">
-                Built with React + Vite + ethers v6
-              </p>
+                {/* tighter spacing under title */}
+                <p className="mt-3 text-sm text-zinc-400 max-w-md">
+                  Issue, verify, and revoke credentials on-chain • Sepolia (11155111)
+                </p>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Built with React + Vite + ethers v6
+                </p>
+              </div>
+
+              <div className="hidden md:flex items-center gap-2 shrink-0">
+                <span className="neo-badge">
+                  <span className="inline-block h-2 w-2 rounded-full bg-cyan-300/80" />
+                  Cyber Registry
+                </span>
+              </div>
             </div>
+          </header>
 
-            <div className="hidden md:flex items-center gap-2 shrink-0">
-              <span className="neo-badge">
-                <span className="inline-block h-2 w-2 rounded-full bg-cyan-300/80" />
-                Cyber Registry 
-              </span>
-            </div>
-          </div>
-        </header>
-
-        {/* Connect row */}
-        <section className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4">
-          <div className="flex flex-wrap items-center gap-4">
-            <ConnectButton onConnected={handleConnected} />
-            <span className="text-sm text-zinc-400">
-              {account ? "Wallet connected." : "Connect wallet to begin."}
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="neo-badge">
-              <span className="text-zinc-400">Contract</span>
-              <span className="text-zinc-200">
-                {CONTRACT_ADDRESS.slice(0, 6)}…{CONTRACT_ADDRESS.slice(-4)}
+          {/* Connect row */}
+          <section className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4">
+            <div className="flex flex-wrap items-center gap-4">
+              <ConnectButton onConnected={handleConnected} />
+              <span className="text-sm text-zinc-400">
+                {account ? "Wallet connected." : "Connect wallet to begin."}
               </span>
             </div>
 
-            <div
-              className={`neo-badge ${
-                networkOk
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="neo-badge">
+                <span className="text-zinc-400">Contract</span>
+                <span className="text-zinc-200">
+                  {CONTRACT_ADDRESS.slice(0, 6)}…{CONTRACT_ADDRESS.slice(-4)}
+                </span>
+              </div>
+
+              <div
+                className={`neo-badge ${networkOk
                   ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-200"
                   : "border-rose-500/25 bg-rose-500/10 text-rose-200"
-              }`}
-            >
-              <span className="text-zinc-300/80">Network</span>
-              <span>{networkOk ? "Sepolia" : "Not Sepolia"}</span>
+                  }`}
+              >
+                <span className="text-zinc-300/80">Network</span>
+                <span>{networkOk ? "Sepolia" : "Not Sepolia"}</span>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Cards */}
-        <main className="space-y-7">
-          <Card title="Quick Actions" subtitle="Use the forms below to manage credentials." version="V.0">
-            <CredentialActions
-              contractAddress={CONTRACT_ADDRESS}
-              abi={CONTRACT_ABI}
-              provider={provider}
-              signer={signer}
-              networkOk={networkOk}
-              account={account}
-            />
-          </Card>
+          {/* Cards */}
+          <main className="space-y-7">
+            <Card title="Quick Actions" subtitle="Use the forms below to manage credentials." version="V.0">
+              <CredentialActions
+                contractAddress={CONTRACT_ADDRESS}
+                abi={CONTRACT_ABI}
+                provider={provider}
+                signer={signer}
+                networkOk={networkOk}
+                account={account}
+              />
+            </Card>
 
-          <Card
-            title="Advanced Tools"
-            subtitle="For testing: call contract methods directly (recommended only if you know what you're doing)."
-            version="V.0"
-          >
-            <FunctionRunner
-              iface={iface}
-              contractAddress={CONTRACT_ADDRESS}
-              abi={CONTRACT_ABI}
-              provider={provider}
-              signer={signer}
-              networkOk={networkOk}
-              account={account}
-            />
-          </Card>
-        </main>
+            <Card
+              title="Advanced Tools"
+              subtitle="For testing: call contract methods directly (recommended only if you know what you're doing)."
+              version="V.0"
+            >
+              <FunctionRunner
+                iface={iface}
+                contractAddress={CONTRACT_ADDRESS}
+                abi={CONTRACT_ABI}
+                provider={provider}
+                signer={signer}
+                networkOk={networkOk}
+                account={account}
+              />
+            </Card>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
