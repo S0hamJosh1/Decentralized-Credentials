@@ -30,7 +30,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen neo-bg text-zinc-100">
+    <>
+      <div className="cyber-grid-bg" />
+      <div className="min-h-screen text-zinc-100">
       {/* widened to use side space */}
       <div className="mx-auto w-full max-w-7xl px-5 py-10">
         {/* Header */}
