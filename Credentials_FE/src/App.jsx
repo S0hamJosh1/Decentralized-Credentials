@@ -34,15 +34,15 @@ export default function App() {
       {/* widened to use side space */}
       <div className="mx-auto w-full max-w-7xl px-5 py-10">
         {/* Header */}
-        <header className="mb-5">
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-zinc-50 leading-[1.05]">
+        <header className="mb-8">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+            <div className="max-w-full">
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-zinc-50 leading-[1.05] break-words">
                 Credential Registry  
               </h1>
 
               {/* tighter spacing under title */}
-              <p className="mt-2 text-sm text-zinc-400">
+              <p className="mt-3 text-sm text-zinc-400 max-w-md">
                 Issue, verify, and revoke credentials on-chain • Sepolia (11155111)
               </p>
               <p className="mt-1 text-xs text-zinc-500">
@@ -50,7 +50,7 @@ export default function App() {
               </p>
             </div>
 
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2 shrink-0">
               <span className="neo-badge">
                 <span className="inline-block h-2 w-2 rounded-full bg-cyan-300/80" />
                 Cyber Registry 
@@ -60,7 +60,7 @@ export default function App() {
         </header>
 
         {/* Connect row */}
-        <section className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <section className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4">
           <div className="flex flex-wrap items-center gap-4">
             <ConnectButton onConnected={handleConnected} />
             <span className="text-sm text-zinc-400">
