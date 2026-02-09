@@ -16,7 +16,7 @@ Built with **Solidity**, **Hardhat Ignition**, and a **React (Vite) + Tailwind C
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Frontend**: React, Vite, Tailwind CSS, ethers.js
 - **Backend**: Solidity, Hardhat, Hardhat Ignition, TypeScript
@@ -130,7 +130,7 @@ Visit `http://localhost:5173` to view the application.
 
 ---
 
-## 🛡 Security & Hygiene
+##  Security & Hygiene
 
 - **Never commit `.env` files.**
 - Keep your private keys secure.
