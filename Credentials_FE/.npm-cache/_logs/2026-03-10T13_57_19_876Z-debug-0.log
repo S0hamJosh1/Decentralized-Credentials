@@ -1,0 +1,1735 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.20.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\.npmrc
+5 silly config load:file:C:\Users\soham\.npmrc
+6 silly config load:file:C:\Users\soham\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\.npm-cache\_logs\2026-03-10T13_57_19_876Z-
+10 verbose logfile C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\.npm-cache\_logs\2026-03-10T13_57_19_876Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+13 silly idealTree buildDeps
+14 silly reify mark retired [
+14 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\autoprefixer'
+14 silly reify ]
+15 silly reify mark retired [
+15 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\aes-js'
+15 silly reify ]
+16 silly reify mark retired [
+16 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\baseline-browser-mapping'
+16 silly reify ]
+17 silly reify mark retired [
+17 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\browserslist'
+17 silly reify ]
+18 silly reify mark retired [
+18 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\caniuse-lite'
+18 silly reify ]
+19 silly reify mark retired [
+19 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\convert-source-map'
+19 silly reify ]
+20 silly reify mark retired [
+20 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\debug'
+20 silly reify ]
+21 silly reify mark retired [
+21 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\detect-libc'
+21 silly reify ]
+22 silly reify mark retired [
+22 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\electron-to-chromium'
+22 silly reify ]
+23 silly reify mark retired [
+23 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\enhanced-resolve'
+23 silly reify ]
+24 silly reify mark retired [
+24 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\esbuild'
+24 silly reify ]
+25 silly reify mark retired [
+25 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\escalade'
+25 silly reify ]
+26 silly reify mark retired [
+26 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\ethers'
+26 silly reify ]
+27 silly reify mark retired [
+27 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\fraction.js'
+27 silly reify ]
+28 silly reify mark retired [
+28 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\fsevents'
+28 silly reify ]
+29 silly reify mark retired [
+29 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\gensync'
+29 silly reify ]
+30 silly reify mark retired [
+30 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\graceful-fs'
+30 silly reify ]
+31 silly reify mark retired [
+31 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\is-extglob'
+31 silly reify ]
+32 silly reify mark retired [
+32 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\is-glob'
+32 silly reify ]
+33 silly reify mark retired [
+33 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\jiti'
+33 silly reify ]
+34 silly reify mark retired [
+34 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\js-tokens'
+34 silly reify ]
+35 silly reify mark retired [
+35 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\jsesc'
+35 silly reify ]
+36 silly reify mark retired [
+36 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\json5'
+36 silly reify ]
+37 silly reify mark retired [
+37 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss'
+37 silly reify ]
+38 silly reify mark retired [
+38 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-android-arm64'
+38 silly reify ]
+39 silly reify mark retired [
+39 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-darwin-arm64'
+39 silly reify ]
+40 silly reify mark retired [
+40 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-darwin-x64'
+40 silly reify ]
+41 silly reify mark retired [
+41 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-freebsd-x64'
+41 silly reify ]
+42 silly reify mark retired [
+42 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm-gnueabihf'
+42 silly reify ]
+43 silly reify mark retired [
+43 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm64-gnu'
+43 silly reify ]
+44 silly reify mark retired [
+44 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm64-musl'
+44 silly reify ]
+45 silly reify mark retired [
+45 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-x64-gnu'
+45 silly reify ]
+46 silly reify mark retired [
+46 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-x64-musl'
+46 silly reify ]
+47 silly reify mark retired [
+47 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-win32-arm64-msvc'
+47 silly reify ]
+48 silly reify mark retired [
+48 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-win32-x64-msvc'
+48 silly reify ]
+49 silly reify mark retired [
+49 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\loose-envify'
+49 silly reify ]
+50 silly reify mark retired [
+50 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lru-cache'
+50 silly reify ]
+51 silly reify mark retired [
+51 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\magic-string'
+51 silly reify ]
+52 silly reify mark retired [
+52 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\mri'
+52 silly reify ]
+53 silly reify mark retired [
+53 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\ms'
+53 silly reify ]
+54 silly reify mark retired [
+54 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\nanoid'
+54 silly reify ]
+55 silly reify mark retired [
+55 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\node-addon-api'
+55 silly reify ]
+56 silly reify mark retired [
+56 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\node-releases'
+56 silly reify ]
+57 silly reify mark retired [
+57 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\picocolors'
+57 silly reify ]
+58 silly reify mark retired [
+58 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\picomatch'
+58 silly reify ]
+59 silly reify mark retired [
+59 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\postcss'
+59 silly reify ]
+60 silly reify mark retired [
+60 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\postcss-value-parser'
+60 silly reify ]
+61 silly reify mark retired [
+61 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\react'
+61 silly reify ]
+62 silly reify mark retired [
+62 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\react-dom'
+62 silly reify ]
+63 silly reify mark retired [
+63 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\react-refresh'
+63 silly reify ]
+64 silly reify mark retired [
+64 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\rollup'
+64 silly reify ]
+65 silly reify mark retired [
+65 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\scheduler'
+65 silly reify ]
+66 silly reify mark retired [
+66 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\semver'
+66 silly reify ]
+67 silly reify mark retired [
+67 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\source-map-js'
+67 silly reify ]
+68 silly reify mark retired [
+68 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\tailwindcss'
+68 silly reify ]
+69 silly reify mark retired [
+69 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\tapable'
+69 silly reify ]
+70 silly reify mark retired [
+70 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\tslib'
+70 silly reify ]
+71 silly reify mark retired [
+71 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\undici-types'
+71 silly reify ]
+72 silly reify mark retired [
+72 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\update-browserslist-db'
+72 silly reify ]
+73 silly reify mark retired [
+73 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\vite'
+73 silly reify ]
+74 silly reify mark retired [
+74 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\ws'
+74 silly reify ]
+75 silly reify mark retired [
+75 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\yallist'
+75 silly reify ]
+76 silly reify mark retired [
+76 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@alloc\\quick-lru'
+76 silly reify ]
+77 silly reify mark retired [
+77 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@adraffy\\ens-normalize'
+77 silly reify ]
+78 silly reify mark retired [
+78 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@ampproject\\remapping'
+78 silly reify ]
+79 silly reify mark retired [
+79 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\compat-data'
+79 silly reify ]
+80 silly reify mark retired [
+80 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\core'
+80 silly reify ]
+81 silly reify mark retired [
+81 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\code-frame'
+81 silly reify ]
+82 silly reify mark retired [
+82 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\generator'
+82 silly reify ]
+83 silly reify mark retired [
+83 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-compilation-targets'
+83 silly reify ]
+84 silly reify mark retired [
+84 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-module-imports'
+84 silly reify ]
+85 silly reify mark retired [
+85 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-globals'
+85 silly reify ]
+86 silly reify mark retired [
+86 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-module-transforms'
+86 silly reify ]
+87 silly reify mark retired [
+87 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-plugin-utils'
+87 silly reify ]
+88 silly reify mark retired [
+88 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-string-parser'
+88 silly reify ]
+89 silly reify mark retired [
+89 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-validator-identifier'
+89 silly reify ]
+90 silly reify mark retired [
+90 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-validator-option'
+90 silly reify ]
+91 silly reify mark retired [
+91 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helpers'
+91 silly reify ]
+92 silly reify mark retired [
+92 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\parser'
+92 silly reify ]
+93 silly reify mark retired [
+93 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\plugin-transform-react-jsx-self'
+93 silly reify ]
+94 silly reify mark retired [
+94 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\plugin-transform-react-jsx-source'
+94 silly reify ]
+95 silly reify mark retired [
+95 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\template'
+95 silly reify ]
+96 silly reify mark retired [
+96 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\traverse'
+96 silly reify ]
+97 silly reify mark retired [
+97 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\types'
+97 silly reify ]
+98 silly reify mark retired [
+98 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-arm64'
+98 silly reify ]
+99 silly reify mark retired [
+99 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\aix-ppc64'
+99 silly reify ]
+100 silly reify mark retired [
+100 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-arm'
+100 silly reify ]
+101 silly reify mark retired [
+101 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-x64'
+101 silly reify ]
+102 silly reify mark retired [
+102 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\darwin-x64'
+102 silly reify ]
+103 silly reify mark retired [
+103 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\freebsd-arm64'
+103 silly reify ]
+104 silly reify mark retired [
+104 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\freebsd-x64'
+104 silly reify ]
+105 silly reify mark retired [
+105 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-arm'
+105 silly reify ]
+106 silly reify mark retired [
+106 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-arm64'
+106 silly reify ]
+107 silly reify mark retired [
+107 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\darwin-arm64'
+107 silly reify ]
+108 silly reify mark retired [
+108 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-loong64'
+108 silly reify ]
+109 silly reify mark retired [
+109 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-ia32'
+109 silly reify ]
+110 silly reify mark retired [
+110 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-ppc64'
+110 silly reify ]
+111 silly reify mark retired [
+111 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-mips64el'
+111 silly reify ]
+112 silly reify mark retired [
+112 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-riscv64'
+112 silly reify ]
+113 silly reify mark retired [
+113 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-s390x'
+113 silly reify ]
+114 silly reify mark retired [
+114 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-x64'
+114 silly reify ]
+115 silly reify mark retired [
+115 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\openbsd-x64'
+115 silly reify ]
+116 silly reify mark retired [
+116 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\netbsd-x64'
+116 silly reify ]
+117 silly reify mark retired [
+117 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\sunos-x64'
+117 silly reify ]
+118 silly reify mark retired [
+118 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-arm64'
+118 silly reify ]
+119 silly reify mark retired [
+119 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-ia32'
+119 silly reify ]
+120 silly reify mark retired [
+120 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-x64'
+120 silly reify ]
+121 silly reify mark retired [
+121 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\gen-mapping'
+121 silly reify ]
+122 silly reify mark retired [
+122 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\remapping'
+122 silly reify ]
+123 silly reify mark retired [
+123 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\sourcemap-codec'
+123 silly reify ]
+124 silly reify mark retired [
+124 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\resolve-uri'
+124 silly reify ]
+125 silly reify mark retired [
+125 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\trace-mapping'
+125 silly reify ]
+126 silly reify mark retired [
+126 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@noble\\curves'
+126 silly reify ]
+127 silly reify mark retired [
+127 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@noble\\hashes'
+127 silly reify ]
+128 silly reify mark retired [
+128 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher'
+128 silly reify ]
+129 silly reify mark retired [
+129 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-android-arm64'
+129 silly reify ]
+130 silly reify mark retired [
+130 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-darwin-arm64'
+130 silly reify ]
+131 silly reify mark retired [
+131 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-darwin-x64'
+131 silly reify ]
+132 silly reify mark retired [
+132 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-freebsd-x64'
+132 silly reify ]
+133 silly reify mark retired [
+133 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm-glibc'
+133 silly reify ]
+134 silly reify mark retired [
+134 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm-musl'
+134 silly reify ]
+135 silly reify mark retired [
+135 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm64-glibc'
+135 silly reify ]
+136 silly reify mark retired [
+136 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm64-musl'
+136 silly reify ]
+137 silly reify mark retired [
+137 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-x64-glibc'
+137 silly reify ]
+138 silly reify mark retired [
+138 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-x64-musl'
+138 silly reify ]
+139 silly reify mark retired [
+139 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-arm64'
+139 silly reify ]
+140 silly reify mark retired [
+140 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-ia32'
+140 silly reify ]
+141 silly reify mark retired [
+141 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-x64'
+141 silly reify ]
+142 silly reify mark retired [
+142 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rolldown\\pluginutils'
+142 silly reify ]
+143 silly reify mark retired [
+143 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-android-arm-eabi'
+143 silly reify ]
+144 silly reify mark retired [
+144 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-android-arm64'
+144 silly reify ]
+145 silly reify mark retired [
+145 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-darwin-arm64'
+145 silly reify ]
+146 silly reify mark retired [
+146 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-darwin-x64'
+146 silly reify ]
+147 silly reify mark retired [
+147 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-freebsd-arm64'
+147 silly reify ]
+148 silly reify mark retired [
+148 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-freebsd-x64'
+148 silly reify ]
+149 silly reify mark retired [
+149 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm-gnueabihf'
+149 silly reify ]
+150 silly reify mark retired [
+150 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm-musleabihf'
+150 silly reify ]
+151 silly reify mark retired [
+151 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm64-gnu'
+151 silly reify ]
+152 silly reify mark retired [
+152 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm64-musl'
+152 silly reify ]
+153 silly reify mark retired [
+153 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-loongarch64-gnu'
+153 silly reify ]
+154 silly reify mark retired [
+154 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-ppc64-gnu'
+154 silly reify ]
+155 silly reify mark retired [
+155 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-riscv64-gnu'
+155 silly reify ]
+156 silly reify mark retired [
+156 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-riscv64-musl'
+156 silly reify ]
+157 silly reify mark retired [
+157 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-s390x-gnu'
+157 silly reify ]
+158 silly reify mark retired [
+158 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-x64-gnu'
+158 silly reify ]
+159 silly reify mark retired [
+159 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-x64-musl'
+159 silly reify ]
+160 silly reify mark retired [
+160 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-openharmony-arm64'
+160 silly reify ]
+161 silly reify mark retired [
+161 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-arm64-msvc'
+161 silly reify ]
+162 silly reify mark retired [
+162 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-ia32-msvc'
+162 silly reify ]
+163 silly reify mark retired [
+163 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-x64-msvc'
+163 silly reify ]
+164 silly reify mark retired [
+164 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\cli'
+164 silly reify ]
+165 silly reify mark retired [
+165 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\node'
+165 silly reify ]
+166 silly reify mark retired [
+166 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide'
+166 silly reify ]
+167 silly reify mark retired [
+167 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-android-arm64'
+167 silly reify ]
+168 silly reify mark retired [
+168 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-darwin-x64'
+168 silly reify ]
+169 silly reify mark retired [
+169 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-darwin-arm64'
+169 silly reify ]
+170 silly reify mark retired [
+170 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-freebsd-x64'
+170 silly reify ]
+171 silly reify mark retired [
+171 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm-gnueabihf'
+171 silly reify ]
+172 silly reify mark retired [
+172 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm64-gnu'
+172 silly reify ]
+173 silly reify mark retired [
+173 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-x64-gnu'
+173 silly reify ]
+174 silly reify mark retired [
+174 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm64-musl'
+174 silly reify ]
+175 silly reify mark retired [
+175 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-x64-musl'
+175 silly reify ]
+176 silly reify mark retired [
+176 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-wasm32-wasi'
+176 silly reify ]
+177 silly reify mark retired [
+177 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-win32-arm64-msvc'
+177 silly reify ]
+178 silly reify mark retired [
+178 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-win32-x64-msvc'
+178 silly reify ]
+179 silly reify mark retired [
+179 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\postcss'
+179 silly reify ]
+180 silly reify mark retired [
+180 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__core'
+180 silly reify ]
+181 silly reify mark retired [
+181 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__generator'
+181 silly reify ]
+182 silly reify mark retired [
+182 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__template'
+182 silly reify ]
+183 silly reify mark retired [
+183 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\estree'
+183 silly reify ]
+184 silly reify mark retired [
+184 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__traverse'
+184 silly reify ]
+185 silly reify mark retired [
+185 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\node'
+185 silly reify ]
+186 silly reify mark retired [
+186 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@vitejs\\plugin-react'
+186 silly reify ]
+187 silly reify moves {
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\autoprefixer': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.autoprefixer-5LSyt80G',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\aes-js': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.aes-js-TP3ztAzw',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\baseline-browser-mapping': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.baseline-browser-mapping-qQCHLbJ9',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\browserslist': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.browserslist-h5hNNNGr',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\caniuse-lite': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.caniuse-lite-2GXLLgIo',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\convert-source-map': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.convert-source-map-9p4kWB9L',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\debug': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.debug-mV6aYSBf',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\detect-libc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.detect-libc-ZJwypoVQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\electron-to-chromium': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.electron-to-chromium-ye2KKzuJ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\enhanced-resolve': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.enhanced-resolve-irrR1Ab8',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\esbuild': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.esbuild-ap7J4MG9',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\escalade': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.escalade-oEpX2WZo',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\ethers': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.ethers-oyOzG6ef',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\fraction.js': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.fraction.js-MOLAelcC',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\fsevents': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.fsevents-9hrZ8LFx',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\gensync': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.gensync-eESv70k6',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\graceful-fs': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.graceful-fs-WfIhN8uZ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\is-extglob': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.is-extglob-OWEtxc2g',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\is-glob': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.is-glob-RSyPrRcb',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\jiti': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.jiti-iEaXUxnW',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\js-tokens': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.js-tokens-xgDJDtwN',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\jsesc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.jsesc-TYR2x2JR',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\json5': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.json5-aeuje4Fq',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-0DOrgg6l',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-android-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-android-arm64-zBzTpdT3',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-darwin-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-darwin-arm64-8p6QHrEM',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-darwin-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-darwin-x64-0vI9iQVk',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-freebsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-freebsd-x64-0wRRrrSf',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm-gnueabihf': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-linux-arm-gnueabihf-1vXxxaRD',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-linux-arm64-gnu-7lkzCLRK',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-linux-arm64-musl-T9pa8qGY',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-x64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-linux-x64-gnu-rXf49WpS',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-x64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-linux-x64-musl-lHWOPK10',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-win32-arm64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-win32-arm64-msvc-dnBAyrBC',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-win32-x64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lightningcss-win32-x64-msvc-6LSIX7Ks',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\loose-envify': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.loose-envify-yQ5I1BMQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lru-cache': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.lru-cache-yPElGeOA',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\magic-string': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.magic-string-JrIQobtw',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\mri': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.mri-llRjzxNN',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\ms': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.ms-KicoDaKx',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\nanoid': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.nanoid-ivzGdTDh',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\node-addon-api': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.node-addon-api-KMPN7BKu',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\node-releases': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.node-releases-MK2zinRv',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\picocolors': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.picocolors-ZEMyViOg',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\picomatch': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.picomatch-1zUnnYcw',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\postcss': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.postcss-KkoRGYBz',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\postcss-value-parser': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.postcss-value-parser-m7wacVGm',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\react': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.react-qjRvbNHS',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\react-dom': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.react-dom-KsTSBeNV',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\react-refresh': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.react-refresh-9bsLjocU',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\rollup': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.rollup-mfwsNPiN',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\scheduler': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.scheduler-dWlABwz9',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\semver': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.semver-k4vhJgOz',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\source-map-js': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.source-map-js-232i0egl',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\tailwindcss': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.tailwindcss-Xsw5D6Cc',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\tapable': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.tapable-cs4yjHNh',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\tslib': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.tslib-zaVdTnd3',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\undici-types': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.undici-types-aj9TEUsH',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\update-browserslist-db': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.update-browserslist-db-LTS4cXh0',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\vite': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.vite-LUbxacjY',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\ws': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.ws-N1PZOvap',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\yallist': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\.yallist-55xsjYOs',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@alloc\\quick-lru': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@alloc\\.quick-lru-piYFGyYp',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@adraffy\\ens-normalize': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@adraffy\\.ens-normalize-IEh2BnaC',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@ampproject\\remapping': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@ampproject\\.remapping-UsYrIhxq',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\compat-data': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.compat-data-iRVVEPgE',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\core': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.core-tEzns77R',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\code-frame': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.code-frame-VMnMEm1R',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\generator': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.generator-UYliY7mq',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-compilation-targets': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-compilation-targets-1rE6PVIk',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-module-imports': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-module-imports-vo993KDV',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-globals': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-globals-R8RZzBgE',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-module-transforms': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-module-transforms-YPdeVPSQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-plugin-utils': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-plugin-utils-b9h2A3Sb',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-string-parser': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-string-parser-NGZIfV6I',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-validator-identifier': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-validator-identifier-PnGiaRfc',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helper-validator-option': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helper-validator-option-xi5fxvaD',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\helpers': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.helpers-LeDSwPEy',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\parser': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.parser-ugvdt2eR',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\plugin-transform-react-jsx-self': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.plugin-transform-react-jsx-self-zYFKLzRf',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\plugin-transform-react-jsx-source': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.plugin-transform-react-jsx-source-nRJy5ybU',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\template': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.template-otkGN7y2',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\traverse': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.traverse-XW1XcmfM',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\types': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@babel\\.types-6wcP5xZf',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.android-arm64-g3vvA4pN',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\aix-ppc64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.aix-ppc64-BSej3Cyx',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-arm': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.android-arm-yxIcuc9k',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.android-x64-t4WrxJ6h',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\darwin-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.darwin-x64-x2jcf7dC',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\freebsd-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.freebsd-arm64-aV9GmYaH',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\freebsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.freebsd-x64-7xVijtjD',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-arm': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-arm-XzYod8vD',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-arm64-nBJP21O8',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\darwin-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.darwin-arm64-e4S944x0',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-loong64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-loong64-fVCHhAbk',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-ia32': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-ia32-JrpzMiqQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-ppc64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-ppc64-mAdvijVD',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-mips64el': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-mips64el-Rsdqi9XK',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-riscv64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-riscv64-N8as2rqq',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-s390x': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-s390x-DfKvWHUp',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.linux-x64-DmxQwjqP',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\openbsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.openbsd-x64-kIhV7kdK',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\netbsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.netbsd-x64-aqruzpCS',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\sunos-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.sunos-x64-8TGUj6dU',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.win32-arm64-qhHyylH1',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-ia32': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.win32-ia32-vfnzZPp8',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\.win32-x64-JZzwf96s',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\gen-mapping': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\.gen-mapping-9BHUw9rC',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\remapping': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\.remapping-oiZKcNWd',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\sourcemap-codec': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\.sourcemap-codec-TQahvs34',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\resolve-uri': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\.resolve-uri-1mIVjfvG',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\trace-mapping': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@jridgewell\\.trace-mapping-q4zFl9oL',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@noble\\curves': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@noble\\.curves-Vpb60NCS',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@noble\\hashes': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@noble\\.hashes-oanOFX3u',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-WFihpAce',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-android-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-android-arm64-X7SvJE39',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-darwin-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-darwin-arm64-cjjFvqVU',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-darwin-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-darwin-x64-NsABSNxo',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-freebsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-freebsd-x64-iGT5fgBi',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm-glibc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-linux-arm-glibc-6IPCkyF3',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-linux-arm-musl-hfZnbJqx',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm64-glibc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-linux-arm64-glibc-gpz6vp5v',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-linux-arm64-musl-h3b8j7dK',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-x64-glibc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-linux-x64-glibc-SaJKzf0t',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-x64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-linux-x64-musl-uTdE2xoS',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-win32-arm64-aO3N7IrV',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-ia32': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-win32-ia32-4iWZq2uJ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\.watcher-win32-x64-mRXlNFHL',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rolldown\\pluginutils': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rolldown\\.pluginutils-Maq6r7lJ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-android-arm-eabi': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-android-arm-eabi-dv0uHp98',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-android-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-android-arm64-ftd3fb5t',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-darwin-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-darwin-arm64-yXuWIyFP',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-darwin-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-darwin-x64-cnYWDEj1',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-freebsd-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-freebsd-arm64-14bp86sQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-freebsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-freebsd-x64-Ufc0eV70',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm-gnueabihf': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-arm-gnueabihf-ScR8KrdR',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm-musleabihf': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-arm-musleabihf-DXi8E87y',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-arm64-gnu-2r7zamPf',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-arm64-musl-jvd4069W',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-loongarch64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-loongarch64-gnu-jcI3s8LW',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-ppc64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-ppc64-gnu-3XOBEekc',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-riscv64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-riscv64-gnu-S7xmiQs4',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-riscv64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-riscv64-musl-ewKO2Wj7',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-s390x-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-s390x-gnu-qhj1OC3O',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-x64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-x64-gnu-zqaBxz4e',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-x64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-linux-x64-musl-310aixTW',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-openharmony-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-openharmony-arm64-9ByZbLC7',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-arm64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-win32-arm64-msvc-RSF9FCwk',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-ia32-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-win32-ia32-msvc-7XpZPxSs',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-x64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\.rollup-win32-x64-msvc-34LFyS9B',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\cli': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.cli-hLgezxXd',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\node': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.node-tzTVgl9Q',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-7F9vDEBk',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-android-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-android-arm64-0AX7k9pC',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-darwin-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-darwin-x64-7j0LbQvU',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-darwin-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-darwin-arm64-P8tQNubd',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-freebsd-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-freebsd-x64-pKYJ3n3i',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm-gnueabihf': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-linux-arm-gnueabihf-AjTJMk3v',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-linux-arm64-gnu-SpDWiVqq',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-x64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-linux-x64-gnu-IjRgwiWQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-linux-arm64-musl-v2KJmtcI',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-x64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-linux-x64-musl-EelOs2rA',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-wasm32-wasi': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-wasm32-wasi-SF8j8Ly4',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-win32-arm64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-win32-arm64-msvc-oolhR4TZ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-win32-x64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.oxide-win32-x64-msvc-hYwAofjQ',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\postcss': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\.postcss-O5sIC19B',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__core': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\.babel__core-cPuRv0Nl',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__generator': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\.babel__generator-iH39IEwh',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__template': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\.babel__template-38eVatiw',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\estree': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\.estree-LFJ1yxgt',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\babel__traverse': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\.babel__traverse-N1mwpDYk',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\node': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@types\\.node-avx1AFPR',
+187 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@vitejs\\plugin-react': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@vitejs\\.plugin-react-F5UQYg47'
+187 silly reify }
+188 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-wasm32-wasi
+189 silly reify mark deleted [
+189 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-wasm32-wasi'
+189 silly reify ]
+190 silly audit bulk request {
+190 silly audit   '@adraffy/ens-normalize': [ '1.10.1' ],
+190 silly audit   '@alloc/quick-lru': [ '5.2.0' ],
+190 silly audit   '@ampproject/remapping': [ '2.3.0' ],
+190 silly audit   '@babel/code-frame': [ '7.27.1' ],
+190 silly audit   '@babel/compat-data': [ '7.28.0' ],
+190 silly audit   '@babel/core': [ '7.28.3' ],
+190 silly audit   '@babel/generator': [ '7.28.3' ],
+190 silly audit   '@babel/helper-compilation-targets': [ '7.27.2' ],
+190 silly audit   '@babel/helper-globals': [ '7.28.0' ],
+190 silly audit   '@babel/helper-module-imports': [ '7.27.1' ],
+190 silly audit   '@babel/helper-module-transforms': [ '7.28.3' ],
+190 silly audit   '@babel/helper-plugin-utils': [ '7.27.1' ],
+190 silly audit   '@babel/helper-string-parser': [ '7.27.1' ],
+190 silly audit   '@babel/helper-validator-identifier': [ '7.27.1' ],
+190 silly audit   '@babel/helper-validator-option': [ '7.27.1' ],
+190 silly audit   '@babel/helpers': [ '7.28.3' ],
+190 silly audit   '@babel/parser': [ '7.28.3' ],
+190 silly audit   '@babel/plugin-transform-react-jsx-self': [ '7.27.1' ],
+190 silly audit   '@babel/plugin-transform-react-jsx-source': [ '7.27.1' ],
+190 silly audit   '@babel/template': [ '7.27.2' ],
+190 silly audit   '@babel/traverse': [ '7.28.3' ],
+190 silly audit   '@babel/types': [ '7.28.2' ],
+190 silly audit   '@esbuild/aix-ppc64': [ '0.21.5' ],
+190 silly audit   '@esbuild/android-arm': [ '0.21.5' ],
+190 silly audit   '@esbuild/android-arm64': [ '0.21.5' ],
+190 silly audit   '@esbuild/android-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/darwin-arm64': [ '0.21.5' ],
+190 silly audit   '@esbuild/darwin-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/freebsd-arm64': [ '0.21.5' ],
+190 silly audit   '@esbuild/freebsd-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-arm': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-arm64': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-ia32': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-loong64': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-mips64el': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-ppc64': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-riscv64': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-s390x': [ '0.21.5' ],
+190 silly audit   '@esbuild/linux-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/netbsd-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/openbsd-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/sunos-x64': [ '0.21.5' ],
+190 silly audit   '@esbuild/win32-arm64': [ '0.21.5' ],
+190 silly audit   '@esbuild/win32-ia32': [ '0.21.5' ],
+190 silly audit   '@esbuild/win32-x64': [ '0.21.5' ],
+190 silly audit   '@jridgewell/gen-mapping': [ '0.3.13' ],
+190 silly audit   '@jridgewell/remapping': [ '2.3.5' ],
+190 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+190 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.5' ],
+190 silly audit   '@jridgewell/trace-mapping': [ '0.3.30' ],
+190 silly audit   '@noble/curves': [ '1.2.0' ],
+190 silly audit   '@noble/hashes': [ '1.3.2' ],
+190 silly audit   '@parcel/watcher': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-android-arm64': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-darwin-arm64': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-darwin-x64': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-freebsd-x64': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-linux-arm-glibc': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-linux-arm-musl': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-linux-arm64-glibc': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-linux-arm64-musl': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-linux-x64-glibc': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-linux-x64-musl': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-win32-arm64': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-win32-ia32': [ '2.5.6' ],
+190 silly audit   '@parcel/watcher-win32-x64': [ '2.5.6' ],
+190 silly audit   '@rolldown/pluginutils': [ '1.0.0-beta.27' ],
+190 silly audit   '@rollup/rollup-android-arm-eabi': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-android-arm64': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-darwin-arm64': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-darwin-x64': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-freebsd-arm64': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-freebsd-x64': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-arm-gnueabihf': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-arm-musleabihf': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-arm64-gnu': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-arm64-musl': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-loongarch64-gnu': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-ppc64-gnu': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-riscv64-gnu': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-riscv64-musl': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-s390x-gnu': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-x64-gnu': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-linux-x64-musl': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-openharmony-arm64': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-win32-arm64-msvc': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-win32-ia32-msvc': [ '4.50.0' ],
+190 silly audit   '@rollup/rollup-win32-x64-msvc': [ '4.50.0' ],
+190 silly audit   '@tailwindcss/cli': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/node': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-android-arm64': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-darwin-arm64': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-darwin-x64': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-freebsd-x64': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-linux-arm-gnueabihf': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-linux-arm64-gnu': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-linux-arm64-musl': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-linux-x64-gnu': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-linux-x64-musl': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-win32-arm64-msvc': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/oxide-win32-x64-msvc': [ '4.1.18' ],
+190 silly audit   '@tailwindcss/postcss': [ '4.1.18' ],
+190 silly audit   '@types/babel__core': [ '7.20.5' ],
+190 silly audit   '@types/babel__generator': [ '7.27.0' ],
+190 silly audit   '@types/babel__template': [ '7.4.4' ],
+190 silly audit   '@types/babel__traverse': [ '7.28.0' ],
+190 silly audit   '@types/estree': [ '1.0.8' ],
+190 silly audit   '@types/node': [ '20.19.11', '22.7.5' ],
+190 silly audit   '@vitejs/plugin-react': [ '4.7.0' ],
+190 silly audit   'aes-js': [ '4.0.0-beta.5' ],
+190 silly audit   autoprefixer: [ '10.4.24' ],
+190 silly audit   'baseline-browser-mapping': [ '2.9.19' ],
+190 silly audit   browserslist: [ '4.28.1' ],
+190 silly audit   'caniuse-lite': [ '1.0.30001767' ],
+190 silly audit   'convert-source-map': [ '2.0.0' ],
+190 silly audit   debug: [ '4.4.1' ],
+190 silly audit   'detect-libc': [ '2.1.2' ],
+190 silly audit   'electron-to-chromium': [ '1.5.286' ],
+190 silly audit   'enhanced-resolve': [ '5.19.0' ],
+190 silly audit   esbuild: [ '0.21.5' ],
+190 silly audit   escalade: [ '3.2.0' ],
+190 silly audit   ethers: [ '6.15.0' ],
+190 silly audit   'undici-types': [ '6.19.8', '6.21.0' ],
+190 silly audit   'fraction.js': [ '5.3.4' ],
+190 silly audit   fsevents: [ '2.3.3' ],
+190 silly audit   gensync: [ '1.0.0-beta.2' ],
+190 silly audit   'graceful-fs': [ '4.2.11' ],
+190 silly audit   'is-extglob': [ '2.1.1' ],
+190 silly audit   'is-glob': [ '4.0.3' ],
+190 silly audit   jiti: [ '2.6.1' ],
+190 silly audit   'js-tokens': [ '4.0.0' ],
+190 silly audit   jsesc: [ '3.1.0' ],
+190 silly audit   json5: [ '2.2.3' ],
+190 silly audit   lightningcss: [ '1.30.2' ],
+190 silly audit   'lightningcss-android-arm64': [ '1.30.2' ],
+190 silly audit   'lightningcss-darwin-arm64': [ '1.30.2' ],
+190 silly audit   'lightningcss-darwin-x64': [ '1.30.2' ],
+190 silly audit   'lightningcss-freebsd-x64': [ '1.30.2' ],
+190 silly audit   'lightningcss-linux-arm-gnueabihf': [ '1.30.2' ],
+190 silly audit   'lightningcss-linux-arm64-gnu': [ '1.30.2' ],
+190 silly audit   'lightningcss-linux-arm64-musl': [ '1.30.2' ],
+190 silly audit   'lightningcss-linux-x64-gnu': [ '1.30.2' ],
+190 silly audit   'lightningcss-linux-x64-musl': [ '1.30.2' ],
+190 silly audit   'lightningcss-win32-arm64-msvc': [ '1.30.2' ],
+190 silly audit   'lightningcss-win32-x64-msvc': [ '1.30.2' ],
+190 silly audit   'loose-envify': [ '1.4.0' ],
+190 silly audit   'lru-cache': [ '5.1.1' ],
+190 silly audit   'magic-string': [ '0.30.21' ],
+190 silly audit   mri: [ '1.2.0' ],
+190 silly audit   ms: [ '2.1.3' ],
+190 silly audit   nanoid: [ '3.3.11' ],
+190 silly audit   'node-addon-api': [ '7.1.1' ],
+190 silly audit   'node-releases': [ '2.0.27' ],
+190 silly audit   picocolors: [ '1.1.1' ],
+190 silly audit   picomatch: [ '4.0.3' ],
+190 silly audit   postcss: [ '8.5.6' ],
+190 silly audit   'postcss-value-parser': [ '4.2.0' ],
+190 silly audit   react: [ '18.3.1' ],
+190 silly audit   'react-dom': [ '18.3.1' ],
+190 silly audit   'react-refresh': [ '0.17.0' ],
+190 silly audit   rollup: [ '4.50.0' ],
+190 silly audit   scheduler: [ '0.23.2' ],
+190 silly audit   semver: [ '6.3.1' ],
+190 silly audit   'source-map-js': [ '1.2.1' ],
+190 silly audit   tailwindcss: [ '4.1.18' ],
+190 silly audit   tapable: [ '2.3.0' ],
+190 silly audit   tslib: [ '2.7.0' ],
+190 silly audit   'update-browserslist-db': [ '1.2.3' ],
+190 silly audit   vite: [ '5.4.19' ],
+190 silly audit   ws: [ '8.17.1' ],
+190 silly audit   yallist: [ '3.1.1' ],
+190 silly audit   '@tailwindcss/oxide-wasm32-wasi': [ '4.1.18' ]
+190 silly audit }
+191 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-win32-arm64-msvc
+192 silly reify mark deleted [
+192 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-win32-arm64-msvc'
+192 silly reify ]
+193 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-linux-x64-musl
+194 silly reify mark deleted [
+194 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-x64-musl'
+194 silly reify ]
+195 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-linux-arm64-musl
+196 silly reify mark deleted [
+196 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm64-musl'
+196 silly reify ]
+197 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-linux-x64-gnu
+198 silly reify mark deleted [
+198 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-x64-gnu'
+198 silly reify ]
+199 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-linux-arm64-gnu
+200 silly reify mark deleted [
+200 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm64-gnu'
+200 silly reify ]
+201 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-linux-arm-gnueabihf
+202 silly reify mark deleted [
+202 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-linux-arm-gnueabihf'
+202 silly reify ]
+203 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-freebsd-x64
+204 silly reify mark deleted [
+204 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-freebsd-x64'
+204 silly reify ]
+205 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-darwin-arm64
+206 silly reify mark deleted [
+206 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-darwin-arm64'
+206 silly reify ]
+207 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-darwin-x64
+208 silly reify mark deleted [
+208 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-darwin-x64'
+208 silly reify ]
+209 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@tailwindcss\oxide-android-arm64
+210 silly reify mark deleted [
+210 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@tailwindcss\\oxide-android-arm64'
+210 silly reify ]
+211 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-win32-ia32-msvc
+212 silly reify mark deleted [
+212 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-ia32-msvc'
+212 silly reify ]
+213 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-win32-arm64-msvc
+214 silly reify mark deleted [
+214 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-win32-arm64-msvc'
+214 silly reify ]
+215 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-openharmony-arm64
+216 silly reify mark deleted [
+216 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-openharmony-arm64'
+216 silly reify ]
+217 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-x64-musl
+218 silly reify mark deleted [
+218 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-x64-musl'
+218 silly reify ]
+219 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-x64-gnu
+220 silly reify mark deleted [
+220 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-x64-gnu'
+220 silly reify ]
+221 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-s390x-gnu
+222 silly reify mark deleted [
+222 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-s390x-gnu'
+222 silly reify ]
+223 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-riscv64-musl
+224 silly reify mark deleted [
+224 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-riscv64-musl'
+224 silly reify ]
+225 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-riscv64-gnu
+226 silly reify mark deleted [
+226 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-riscv64-gnu'
+226 silly reify ]
+227 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-ppc64-gnu
+228 silly reify mark deleted [
+228 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-ppc64-gnu'
+228 silly reify ]
+229 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-loongarch64-gnu
+230 silly reify mark deleted [
+230 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-loongarch64-gnu'
+230 silly reify ]
+231 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-arm64-musl
+232 silly reify mark deleted [
+232 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm64-musl'
+232 silly reify ]
+233 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-arm64-gnu
+234 silly reify mark deleted [
+234 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm64-gnu'
+234 silly reify ]
+235 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-arm-musleabihf
+236 silly reify mark deleted [
+236 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm-musleabihf'
+236 silly reify ]
+237 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-linux-arm-gnueabihf
+238 silly reify mark deleted [
+238 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-linux-arm-gnueabihf'
+238 silly reify ]
+239 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-freebsd-x64
+240 silly reify mark deleted [
+240 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-freebsd-x64'
+240 silly reify ]
+241 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-freebsd-arm64
+242 silly reify mark deleted [
+242 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-freebsd-arm64'
+242 silly reify ]
+243 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-darwin-x64
+244 silly reify mark deleted [
+244 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-darwin-x64'
+244 silly reify ]
+245 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-darwin-arm64
+246 silly reify mark deleted [
+246 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-darwin-arm64'
+246 silly reify ]
+247 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-android-arm64
+248 silly reify mark deleted [
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-android-arm64'
+248 silly reify ]
+249 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@rollup\rollup-android-arm-eabi
+250 silly reify mark deleted [
+250 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@rollup\\rollup-android-arm-eabi'
+250 silly reify ]
+251 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-win32-ia32
+252 silly reify mark deleted [
+252 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-ia32'
+252 silly reify ]
+253 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-win32-arm64
+254 silly reify mark deleted [
+254 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-win32-arm64'
+254 silly reify ]
+255 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-linux-x64-musl
+256 silly reify mark deleted [
+256 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-x64-musl'
+256 silly reify ]
+257 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-linux-x64-glibc
+258 silly reify mark deleted [
+258 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-x64-glibc'
+258 silly reify ]
+259 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-linux-arm64-musl
+260 silly reify mark deleted [
+260 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm64-musl'
+260 silly reify ]
+261 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-linux-arm64-glibc
+262 silly reify mark deleted [
+262 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm64-glibc'
+262 silly reify ]
+263 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-linux-arm-musl
+264 silly reify mark deleted [
+264 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm-musl'
+264 silly reify ]
+265 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-linux-arm-glibc
+266 silly reify mark deleted [
+266 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-linux-arm-glibc'
+266 silly reify ]
+267 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-freebsd-x64
+268 silly reify mark deleted [
+268 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-freebsd-x64'
+268 silly reify ]
+269 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-darwin-x64
+270 silly reify mark deleted [
+270 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-darwin-x64'
+270 silly reify ]
+271 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-darwin-arm64
+272 silly reify mark deleted [
+272 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-darwin-arm64'
+272 silly reify ]
+273 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@parcel\watcher-android-arm64
+274 silly reify mark deleted [
+274 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@parcel\\watcher-android-arm64'
+274 silly reify ]
+275 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\win32-ia32
+276 silly reify mark deleted [
+276 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-ia32'
+276 silly reify ]
+277 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\win32-arm64
+278 silly reify mark deleted [
+278 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\win32-arm64'
+278 silly reify ]
+279 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\sunos-x64
+280 silly reify mark deleted [
+280 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\sunos-x64'
+280 silly reify ]
+281 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\netbsd-x64
+282 silly reify mark deleted [
+282 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\netbsd-x64'
+282 silly reify ]
+283 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\openbsd-x64
+284 silly reify mark deleted [
+284 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\openbsd-x64'
+284 silly reify ]
+285 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-x64
+286 silly reify mark deleted [
+286 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-x64'
+286 silly reify ]
+287 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-s390x
+288 silly reify mark deleted [
+288 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-s390x'
+288 silly reify ]
+289 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-riscv64
+290 silly reify mark deleted [
+290 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-riscv64'
+290 silly reify ]
+291 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-mips64el
+292 silly reify mark deleted [
+292 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-mips64el'
+292 silly reify ]
+293 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-ppc64
+294 silly reify mark deleted [
+294 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-ppc64'
+294 silly reify ]
+295 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-ia32
+296 silly reify mark deleted [
+296 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-ia32'
+296 silly reify ]
+297 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-loong64
+298 silly reify mark deleted [
+298 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-loong64'
+298 silly reify ]
+299 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\darwin-arm64
+300 silly reify mark deleted [
+300 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\darwin-arm64'
+300 silly reify ]
+301 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-arm64
+302 silly reify mark deleted [
+302 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-arm64'
+302 silly reify ]
+303 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\linux-arm
+304 silly reify mark deleted [
+304 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\linux-arm'
+304 silly reify ]
+305 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\freebsd-x64
+306 silly reify mark deleted [
+306 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\freebsd-x64'
+306 silly reify ]
+307 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\freebsd-arm64
+308 silly reify mark deleted [
+308 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\freebsd-arm64'
+308 silly reify ]
+309 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\darwin-x64
+310 silly reify mark deleted [
+310 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\darwin-x64'
+310 silly reify ]
+311 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\android-x64
+312 silly reify mark deleted [
+312 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-x64'
+312 silly reify ]
+313 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\android-arm
+314 silly reify mark deleted [
+314 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-arm'
+314 silly reify ]
+315 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\aix-ppc64
+316 silly reify mark deleted [
+316 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\aix-ppc64'
+316 silly reify ]
+317 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\@esbuild\android-arm64
+318 silly reify mark deleted [
+318 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\@esbuild\\android-arm64'
+318 silly reify ]
+319 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-win32-arm64-msvc
+320 silly reify mark deleted [
+320 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-win32-arm64-msvc'
+320 silly reify ]
+321 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-linux-x64-musl
+322 silly reify mark deleted [
+322 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-x64-musl'
+322 silly reify ]
+323 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-linux-x64-gnu
+324 silly reify mark deleted [
+324 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-x64-gnu'
+324 silly reify ]
+325 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-linux-arm64-musl
+326 silly reify mark deleted [
+326 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm64-musl'
+326 silly reify ]
+327 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-linux-arm64-gnu
+328 silly reify mark deleted [
+328 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm64-gnu'
+328 silly reify ]
+329 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-linux-arm-gnueabihf
+330 silly reify mark deleted [
+330 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-linux-arm-gnueabihf'
+330 silly reify ]
+331 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-freebsd-x64
+332 silly reify mark deleted [
+332 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-freebsd-x64'
+332 silly reify ]
+333 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-darwin-x64
+334 silly reify mark deleted [
+334 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-darwin-x64'
+334 silly reify ]
+335 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-darwin-arm64
+336 silly reify mark deleted [
+336 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-darwin-arm64'
+336 silly reify ]
+337 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\lightningcss-android-arm64
+338 silly reify mark deleted [
+338 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\lightningcss-android-arm64'
+338 silly reify ]
+339 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE\node_modules\fsevents
+340 silly reify mark deleted [
+340 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\Credentials_FE\\node_modules\\fsevents'
+340 silly reify ]
+341 http cache @vitejs/plugin-react@https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-4.7.0.tgz 0ms (cache hit)
+342 http cache @types/node@https://registry.npmjs.org/@types/node/-/node-20.19.11.tgz 0ms (cache hit)
+343 http cache @types/estree@https://registry.npmjs.org/@types/estree/-/estree-1.0.8.tgz 0ms (cache hit)
+344 http cache @types/babel__generator@https://registry.npmjs.org/@types/babel__generator/-/babel__generator-7.27.0.tgz 1ms (cache hit)
+345 http cache @types/babel__traverse@https://registry.npmjs.org/@types/babel__traverse/-/babel__traverse-7.28.0.tgz 0ms (cache hit)
+346 http cache @types/babel__template@https://registry.npmjs.org/@types/babel__template/-/babel__template-7.4.4.tgz 0ms (cache hit)
+347 http cache @types/babel__core@https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz 0ms (cache hit)
+348 http cache @tailwindcss/postcss@https://registry.npmjs.org/@tailwindcss/postcss/-/postcss-4.1.18.tgz 0ms (cache hit)
+349 http cache @tailwindcss/node@https://registry.npmjs.org/@tailwindcss/node/-/node-4.1.18.tgz 0ms (cache hit)
+350 http cache @tailwindcss/oxide@https://registry.npmjs.org/@tailwindcss/oxide/-/oxide-4.1.18.tgz 0ms (cache hit)
+351 http cache @rolldown/pluginutils@https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.27.tgz 0ms (cache hit)
+352 http cache @tailwindcss/cli@https://registry.npmjs.org/@tailwindcss/cli/-/cli-4.1.18.tgz 0ms (cache hit)
+353 http cache @tailwindcss/oxide-win32-x64-msvc@https://registry.npmjs.org/@tailwindcss/oxide-win32-x64-msvc/-/oxide-win32-x64-msvc-4.1.18.tgz 0ms (cache hit)
+354 http cache @rollup/rollup-win32-x64-msvc@https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.50.0.tgz 0ms (cache hit)
+355 http cache @noble/hashes@https://registry.npmjs.org/@noble/hashes/-/hashes-1.3.2.tgz 0ms (cache hit)
+356 http cache @parcel/watcher-win32-x64@https://registry.npmjs.org/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.5.6.tgz 0ms (cache hit)
+357 http cache @parcel/watcher@https://registry.npmjs.org/@parcel/watcher/-/watcher-2.5.6.tgz 0ms (cache hit)
+358 http cache @jridgewell/trace-mapping@https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.30.tgz 0ms (cache hit)
+359 http cache @noble/curves@https://registry.npmjs.org/@noble/curves/-/curves-1.2.0.tgz 0ms (cache hit)
+360 http cache @jridgewell/resolve-uri@https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz 0ms (cache hit)
+361 http cache @jridgewell/sourcemap-codec@https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 0ms (cache hit)
+362 http cache @jridgewell/remapping@https://registry.npmjs.org/@jridgewell/remapping/-/remapping-2.3.5.tgz 0ms (cache hit)
+363 http cache @jridgewell/gen-mapping@https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz 0ms (cache hit)
+364 http cache @esbuild/win32-x64@https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz 0ms (cache hit)
+365 http cache @babel/types@https://registry.npmjs.org/@babel/types/-/types-7.28.2.tgz 0ms (cache hit)
+366 http cache @babel/traverse@https://registry.npmjs.org/@babel/traverse/-/traverse-7.28.3.tgz 0ms (cache hit)
+367 http cache @babel/template@https://registry.npmjs.org/@babel/template/-/template-7.27.2.tgz 0ms (cache hit)
+368 http cache @babel/plugin-transform-react-jsx-source@https://registry.npmjs.org/@babel/plugin-transform-react-jsx-source/-/plugin-transform-react-jsx-source-7.27.1.tgz 0ms (cache hit)
+369 http cache @babel/parser@https://registry.npmjs.org/@babel/parser/-/parser-7.28.3.tgz 0ms (cache hit)
+370 http cache @babel/helpers@https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.3.tgz 0ms (cache hit)
+371 http cache @babel/plugin-transform-react-jsx-self@https://registry.npmjs.org/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.27.1.tgz 0ms (cache hit)
+372 http cache @babel/helper-validator-option@https://registry.npmjs.org/@babel/helper-validator-option/-/helper-validator-option-7.27.1.tgz 0ms (cache hit)
+373 http cache @babel/helper-string-parser@https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz 0ms (cache hit)
+374 http cache @babel/helper-module-transforms@https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.3.tgz 0ms (cache hit)
+375 http cache @babel/helper-validator-identifier@https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.27.1.tgz 0ms (cache hit)
+376 http cache @babel/helper-globals@https://registry.npmjs.org/@babel/helper-globals/-/helper-globals-7.28.0.tgz 0ms (cache hit)
+377 http cache @babel/helper-plugin-utils@https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.27.1.tgz 0ms (cache hit)
+378 http cache @babel/helper-module-imports@https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.27.1.tgz 0ms (cache hit)
+379 http cache @babel/generator@https://registry.npmjs.org/@babel/generator/-/generator-7.28.3.tgz 0ms (cache hit)
+380 http cache @babel/code-frame@https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz 0ms (cache hit)
+381 http cache @babel/helper-compilation-targets@https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.27.2.tgz 0ms (cache hit)
+382 http cache @babel/core@https://registry.npmjs.org/@babel/core/-/core-7.28.3.tgz 0ms (cache hit)
+383 http cache @ampproject/remapping@https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz 0ms (cache hit)
+384 http cache @babel/compat-data@https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.28.0.tgz 0ms (cache hit)
+385 http cache @alloc/quick-lru@https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz 0ms (cache hit)
+386 http cache @adraffy/ens-normalize@https://registry.npmjs.org/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz 0ms (cache hit)
+387 http cache yallist@https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz 0ms (cache hit)
+388 http cache ws@https://registry.npmjs.org/ws/-/ws-8.17.1.tgz 0ms (cache hit)
+389 http cache undici-types@https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz 0ms (cache hit)
+390 http cache vite@https://registry.npmjs.org/vite/-/vite-5.4.19.tgz 0ms (cache hit)
+391 http cache update-browserslist-db@https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz 0ms (cache hit)
+392 http cache tslib@https://registry.npmjs.org/tslib/-/tslib-2.7.0.tgz 0ms (cache hit)
+393 http cache tapable@https://registry.npmjs.org/tapable/-/tapable-2.3.0.tgz 0ms (cache hit)
+394 http cache tailwindcss@https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.18.tgz 0ms (cache hit)
+395 http cache source-map-js@https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz 0ms (cache hit)
+396 http cache semver@https://registry.npmjs.org/semver/-/semver-6.3.1.tgz 0ms (cache hit)
+397 http cache scheduler@https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz 0ms (cache hit)
+398 http cache rollup@https://registry.npmjs.org/rollup/-/rollup-4.50.0.tgz 0ms (cache hit)
+399 http cache react@https://registry.npmjs.org/react/-/react-18.3.1.tgz 0ms (cache hit)
+400 http cache react-refresh@https://registry.npmjs.org/react-refresh/-/react-refresh-0.17.0.tgz 1ms (cache hit)
+401 http cache picomatch@https://registry.npmjs.org/picomatch/-/picomatch-4.0.3.tgz 0ms (cache hit)
+402 http cache react-dom@https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz 0ms (cache hit)
+403 http cache postcss-value-parser@https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz 0ms (cache hit)
+404 http cache node-releases@https://registry.npmjs.org/node-releases/-/node-releases-2.0.27.tgz 0ms (cache hit)
+405 http cache postcss@https://registry.npmjs.org/postcss/-/postcss-8.5.6.tgz 0ms (cache hit)
+406 http cache node-addon-api@https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz 0ms (cache hit)
+407 http cache picocolors@https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz 0ms (cache hit)
+408 http cache nanoid@https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz 0ms (cache hit)
+409 http cache mri@https://registry.npmjs.org/mri/-/mri-1.2.0.tgz 0ms (cache hit)
+410 http cache ms@https://registry.npmjs.org/ms/-/ms-2.1.3.tgz 0ms (cache hit)
+411 http cache lru-cache@https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz 0ms (cache hit)
+412 http cache magic-string@https://registry.npmjs.org/magic-string/-/magic-string-0.30.21.tgz 0ms (cache hit)
+413 http cache loose-envify@https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz 0ms (cache hit)
+414 http cache json5@https://registry.npmjs.org/json5/-/json5-2.2.3.tgz 0ms (cache hit)
+415 http cache lightningcss@https://registry.npmjs.org/lightningcss/-/lightningcss-1.30.2.tgz 0ms (cache hit)
+416 http cache lightningcss-win32-x64-msvc@https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.30.2.tgz 0ms (cache hit)
+417 http cache jsesc@https://registry.npmjs.org/jsesc/-/jsesc-3.1.0.tgz 0ms (cache hit)
+418 http cache jiti@https://registry.npmjs.org/jiti/-/jiti-2.6.1.tgz 0ms (cache hit)
+419 http cache is-glob@https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz 0ms (cache hit)
+420 http cache graceful-fs@https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz 0ms (cache hit)
+421 http cache gensync@https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz 0ms (cache hit)
+422 http cache fraction.js@https://registry.npmjs.org/fraction.js/-/fraction.js-5.3.4.tgz 0ms (cache hit)
+423 http cache escalade@https://registry.npmjs.org/escalade/-/escalade-3.2.0.tgz 0ms (cache hit)
+424 http cache esbuild@https://registry.npmjs.org/esbuild/-/esbuild-0.21.5.tgz 0ms (cache hit)
+425 http cache ethers@https://registry.npmjs.org/ethers/-/ethers-6.15.0.tgz 0ms (cache hit)
+426 http cache is-extglob@https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz 0ms (cache hit)
+427 http cache electron-to-chromium@https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.286.tgz 0ms (cache hit)
+428 http cache detect-libc@https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz 0ms (cache hit)
+429 http cache enhanced-resolve@https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.19.0.tgz 0ms (cache hit)
+430 http cache debug@https://registry.npmjs.org/debug/-/debug-4.4.1.tgz 0ms (cache hit)
+431 http cache js-tokens@https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz 0ms (cache hit)
+432 http cache convert-source-map@https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz 0ms (cache hit)
+433 http cache caniuse-lite@https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001767.tgz 0ms (cache hit)
+434 http cache browserslist@https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz 0ms (cache hit)
+435 http cache baseline-browser-mapping@https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.9.19.tgz 0ms (cache hit)
+436 http cache @types/node@https://registry.npmjs.org/@types/node/-/node-22.7.5.tgz 0ms (cache hit)
+437 http cache aes-js@https://registry.npmjs.org/aes-js/-/aes-js-4.0.0-beta.5.tgz 0ms (cache hit)
+438 silly tarball no local data for @vitejs/plugin-react@https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-4.7.0.tgz. Extracting by manifest.
+439 http cache autoprefixer@https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.24.tgz 0ms (cache hit)
+440 silly tarball no local data for @types/node@https://registry.npmjs.org/@types/node/-/node-20.19.11.tgz. Extracting by manifest.
+441 silly tarball no local data for @types/estree@https://registry.npmjs.org/@types/estree/-/estree-1.0.8.tgz. Extracting by manifest.
+442 silly tarball no local data for @types/babel__generator@https://registry.npmjs.org/@types/babel__generator/-/babel__generator-7.27.0.tgz. Extracting by manifest.
+443 silly tarball no local data for @types/babel__traverse@https://registry.npmjs.org/@types/babel__traverse/-/babel__traverse-7.28.0.tgz. Extracting by manifest.
+444 silly tarball no local data for @types/babel__template@https://registry.npmjs.org/@types/babel__template/-/babel__template-7.4.4.tgz. Extracting by manifest.
+445 silly tarball no local data for @types/babel__core@https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz. Extracting by manifest.
+446 silly tarball no local data for @tailwindcss/postcss@https://registry.npmjs.org/@tailwindcss/postcss/-/postcss-4.1.18.tgz. Extracting by manifest.
+447 silly tarball no local data for @tailwindcss/node@https://registry.npmjs.org/@tailwindcss/node/-/node-4.1.18.tgz. Extracting by manifest.
+448 silly tarball no local data for @tailwindcss/oxide@https://registry.npmjs.org/@tailwindcss/oxide/-/oxide-4.1.18.tgz. Extracting by manifest.
+449 silly tarball no local data for @rolldown/pluginutils@https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.27.tgz. Extracting by manifest.
+450 silly tarball no local data for @tailwindcss/cli@https://registry.npmjs.org/@tailwindcss/cli/-/cli-4.1.18.tgz. Extracting by manifest.
+451 http cache undici-types@https://registry.npmjs.org/undici-types/-/undici-types-6.19.8.tgz 0ms (cache hit)
+452 silly tarball no local data for @tailwindcss/oxide-win32-x64-msvc@https://registry.npmjs.org/@tailwindcss/oxide-win32-x64-msvc/-/oxide-win32-x64-msvc-4.1.18.tgz. Extracting by manifest.
+453 silly tarball no local data for @rollup/rollup-win32-x64-msvc@https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.50.0.tgz. Extracting by manifest.
+454 silly tarball no local data for @noble/hashes@https://registry.npmjs.org/@noble/hashes/-/hashes-1.3.2.tgz. Extracting by manifest.
+455 silly tarball no local data for @parcel/watcher-win32-x64@https://registry.npmjs.org/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.5.6.tgz. Extracting by manifest.
+456 silly tarball no local data for @parcel/watcher@https://registry.npmjs.org/@parcel/watcher/-/watcher-2.5.6.tgz. Extracting by manifest.
+457 silly tarball no local data for @jridgewell/trace-mapping@https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.30.tgz. Extracting by manifest.
+458 silly tarball no local data for @noble/curves@https://registry.npmjs.org/@noble/curves/-/curves-1.2.0.tgz. Extracting by manifest.
+459 silly tarball no local data for @jridgewell/resolve-uri@https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz. Extracting by manifest.
+460 silly tarball no local data for @jridgewell/sourcemap-codec@https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz. Extracting by manifest.
+461 silly tarball no local data for @jridgewell/remapping@https://registry.npmjs.org/@jridgewell/remapping/-/remapping-2.3.5.tgz. Extracting by manifest.
+462 silly tarball no local data for @jridgewell/gen-mapping@https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz. Extracting by manifest.
+463 silly tarball no local data for @esbuild/win32-x64@https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz. Extracting by manifest.
+464 silly tarball no local data for @babel/types@https://registry.npmjs.org/@babel/types/-/types-7.28.2.tgz. Extracting by manifest.
+465 silly tarball no local data for @babel/traverse@https://registry.npmjs.org/@babel/traverse/-/traverse-7.28.3.tgz. Extracting by manifest.
+466 silly tarball no local data for @babel/template@https://registry.npmjs.org/@babel/template/-/template-7.27.2.tgz. Extracting by manifest.
+467 silly tarball no local data for @babel/plugin-transform-react-jsx-source@https://registry.npmjs.org/@babel/plugin-transform-react-jsx-source/-/plugin-transform-react-jsx-source-7.27.1.tgz. Extracting by manifest.
+468 silly tarball no local data for @babel/parser@https://registry.npmjs.org/@babel/parser/-/parser-7.28.3.tgz. Extracting by manifest.
+469 silly tarball no local data for @babel/helpers@https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.3.tgz. Extracting by manifest.
+470 silly tarball no local data for @babel/plugin-transform-react-jsx-self@https://registry.npmjs.org/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.27.1.tgz. Extracting by manifest.
+471 silly tarball no local data for @babel/helper-validator-option@https://registry.npmjs.org/@babel/helper-validator-option/-/helper-validator-option-7.27.1.tgz. Extracting by manifest.
+472 silly tarball no local data for @babel/helper-string-parser@https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz. Extracting by manifest.
+473 silly tarball no local data for @babel/helper-module-transforms@https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.3.tgz. Extracting by manifest.
+474 silly tarball no local data for @babel/helper-validator-identifier@https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.27.1.tgz. Extracting by manifest.
+475 silly tarball no local data for @babel/helper-globals@https://registry.npmjs.org/@babel/helper-globals/-/helper-globals-7.28.0.tgz. Extracting by manifest.
+476 silly tarball no local data for @babel/helper-plugin-utils@https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.27.1.tgz. Extracting by manifest.
+477 silly tarball no local data for @babel/helper-module-imports@https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.27.1.tgz. Extracting by manifest.
+478 silly tarball no local data for @babel/generator@https://registry.npmjs.org/@babel/generator/-/generator-7.28.3.tgz. Extracting by manifest.
+479 silly tarball no local data for @babel/code-frame@https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz. Extracting by manifest.
+480 silly tarball no local data for @babel/helper-compilation-targets@https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.27.2.tgz. Extracting by manifest.
+481 silly tarball no local data for @babel/core@https://registry.npmjs.org/@babel/core/-/core-7.28.3.tgz. Extracting by manifest.
+482 silly tarball no local data for @ampproject/remapping@https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz. Extracting by manifest.
+483 silly tarball no local data for @babel/compat-data@https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.28.0.tgz. Extracting by manifest.
+484 silly tarball no local data for @alloc/quick-lru@https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz. Extracting by manifest.
+485 silly tarball no local data for @adraffy/ens-normalize@https://registry.npmjs.org/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz. Extracting by manifest.
+486 silly tarball no local data for yallist@https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz. Extracting by manifest.
+487 silly tarball no local data for ws@https://registry.npmjs.org/ws/-/ws-8.17.1.tgz. Extracting by manifest.
+488 silly tarball no local data for undici-types@https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz. Extracting by manifest.
+489 silly tarball no local data for vite@https://registry.npmjs.org/vite/-/vite-5.4.19.tgz. Extracting by manifest.
+490 silly tarball no local data for update-browserslist-db@https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz. Extracting by manifest.
+491 silly tarball no local data for tslib@https://registry.npmjs.org/tslib/-/tslib-2.7.0.tgz. Extracting by manifest.
+492 silly tarball no local data for tapable@https://registry.npmjs.org/tapable/-/tapable-2.3.0.tgz. Extracting by manifest.
+493 silly tarball no local data for tailwindcss@https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.18.tgz. Extracting by manifest.
+494 silly tarball no local data for source-map-js@https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz. Extracting by manifest.
+495 silly tarball no local data for semver@https://registry.npmjs.org/semver/-/semver-6.3.1.tgz. Extracting by manifest.
+496 silly tarball no local data for scheduler@https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz. Extracting by manifest.
+497 silly tarball no local data for rollup@https://registry.npmjs.org/rollup/-/rollup-4.50.0.tgz. Extracting by manifest.
+498 silly tarball no local data for react@https://registry.npmjs.org/react/-/react-18.3.1.tgz. Extracting by manifest.
+499 silly tarball no local data for react-refresh@https://registry.npmjs.org/react-refresh/-/react-refresh-0.17.0.tgz. Extracting by manifest.
+500 silly tarball no local data for picomatch@https://registry.npmjs.org/picomatch/-/picomatch-4.0.3.tgz. Extracting by manifest.
+501 silly tarball no local data for react-dom@https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz. Extracting by manifest.
+502 silly tarball no local data for postcss-value-parser@https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz. Extracting by manifest.
+503 silly tarball no local data for node-releases@https://registry.npmjs.org/node-releases/-/node-releases-2.0.27.tgz. Extracting by manifest.
+504 silly tarball no local data for postcss@https://registry.npmjs.org/postcss/-/postcss-8.5.6.tgz. Extracting by manifest.
+505 silly tarball no local data for node-addon-api@https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz. Extracting by manifest.
+506 silly tarball no local data for picocolors@https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz. Extracting by manifest.
+507 silly tarball no local data for nanoid@https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz. Extracting by manifest.
+508 silly tarball no local data for mri@https://registry.npmjs.org/mri/-/mri-1.2.0.tgz. Extracting by manifest.
+509 silly tarball no local data for ms@https://registry.npmjs.org/ms/-/ms-2.1.3.tgz. Extracting by manifest.
+510 silly tarball no local data for lru-cache@https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz. Extracting by manifest.
+511 silly tarball no local data for magic-string@https://registry.npmjs.org/magic-string/-/magic-string-0.30.21.tgz. Extracting by manifest.
+512 silly tarball no local data for loose-envify@https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz. Extracting by manifest.
+513 silly tarball no local data for json5@https://registry.npmjs.org/json5/-/json5-2.2.3.tgz. Extracting by manifest.
+514 silly tarball no local data for lightningcss@https://registry.npmjs.org/lightningcss/-/lightningcss-1.30.2.tgz. Extracting by manifest.
+515 silly tarball no local data for lightningcss-win32-x64-msvc@https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.30.2.tgz. Extracting by manifest.
+516 silly tarball no local data for jsesc@https://registry.npmjs.org/jsesc/-/jsesc-3.1.0.tgz. Extracting by manifest.
+517 silly tarball no local data for jiti@https://registry.npmjs.org/jiti/-/jiti-2.6.1.tgz. Extracting by manifest.
+518 silly tarball no local data for is-glob@https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz. Extracting by manifest.
+519 silly tarball no local data for graceful-fs@https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz. Extracting by manifest.
+520 silly tarball no local data for gensync@https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz. Extracting by manifest.
+521 silly tarball no local data for fraction.js@https://registry.npmjs.org/fraction.js/-/fraction.js-5.3.4.tgz. Extracting by manifest.
+522 silly tarball no local data for escalade@https://registry.npmjs.org/escalade/-/escalade-3.2.0.tgz. Extracting by manifest.
+523 silly tarball no local data for esbuild@https://registry.npmjs.org/esbuild/-/esbuild-0.21.5.tgz. Extracting by manifest.
+524 silly tarball no local data for ethers@https://registry.npmjs.org/ethers/-/ethers-6.15.0.tgz. Extracting by manifest.
+525 silly tarball no local data for is-extglob@https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz. Extracting by manifest.
+526 silly tarball no local data for electron-to-chromium@https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.286.tgz. Extracting by manifest.
+527 silly tarball no local data for detect-libc@https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz. Extracting by manifest.
+528 silly tarball no local data for enhanced-resolve@https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.19.0.tgz. Extracting by manifest.
+529 silly tarball no local data for debug@https://registry.npmjs.org/debug/-/debug-4.4.1.tgz. Extracting by manifest.
+530 silly tarball no local data for js-tokens@https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz. Extracting by manifest.
+531 silly tarball no local data for convert-source-map@https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz. Extracting by manifest.
+532 silly tarball no local data for caniuse-lite@https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001767.tgz. Extracting by manifest.
+533 silly tarball no local data for browserslist@https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz. Extracting by manifest.
+534 silly tarball no local data for baseline-browser-mapping@https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.9.19.tgz. Extracting by manifest.
+535 silly tarball no local data for @types/node@https://registry.npmjs.org/@types/node/-/node-22.7.5.tgz. Extracting by manifest.
+536 silly tarball no local data for aes-js@https://registry.npmjs.org/aes-js/-/aes-js-4.0.0-beta.5.tgz. Extracting by manifest.
+537 silly tarball no local data for autoprefixer@https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.24.tgz. Extracting by manifest.
+538 silly tarball no local data for undici-types@https://registry.npmjs.org/undici-types/-/undici-types-6.19.8.tgz. Extracting by manifest.
+539 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 404ms
+540 silly audit report {
+540 silly audit report   esbuild: [
+540 silly audit report     {
+540 silly audit report       id: 1102341,
+540 silly audit report       url: 'https://github.com/advisories/GHSA-67mh-4wv8-2f99',
+540 silly audit report       title: 'esbuild enables any website to send any requests to the development server and read the response',
+540 silly audit report       severity: 'moderate',
+540 silly audit report       vulnerable_versions: '<=0.24.2',
+540 silly audit report       cwe: [Array],
+540 silly audit report       cvss: [Object]
+540 silly audit report     }
+540 silly audit report   ],
+540 silly audit report   rollup: [
+540 silly audit report     {
+540 silly audit report       id: 1113515,
+540 silly audit report       url: 'https://github.com/advisories/GHSA-mw96-cpmx-2vgc',
+540 silly audit report       title: 'Rollup 4 has Arbitrary File Write via Path Traversal',
+540 silly audit report       severity: 'high',
+540 silly audit report       vulnerable_versions: '>=4.0.0 <4.59.0',
+540 silly audit report       cwe: [Array],
+540 silly audit report       cvss: [Object]
+540 silly audit report     }
+540 silly audit report   ],
+540 silly audit report   vite: [
+540 silly audit report     {
+540 silly audit report       id: 1107323,
+540 silly audit report       url: 'https://github.com/advisories/GHSA-g4jq-h2w9-997c',
+540 silly audit report       title: 'Vite middleware may serve files starting with the same name with the public directory',
+540 silly audit report       severity: 'low',
+540 silly audit report       vulnerable_versions: '<=5.4.19',
+540 silly audit report       cwe: [Array],
+540 silly audit report       cvss: [Object]
+540 silly audit report     },
+540 silly audit report     {
+540 silly audit report       id: 1107327,
+540 silly audit report       url: 'https://github.com/advisories/GHSA-jqfw-vq24-v9c3',
+540 silly audit report       title: "Vite's `server.fs` settings were not applied to HTML files",
+540 silly audit report       severity: 'low',
+540 silly audit report       vulnerable_versions: '<=5.4.19',
+540 silly audit report       cwe: [Array],
+540 silly audit report       cvss: [Object]
+540 silly audit report     },
+540 silly audit report     {
+540 silly audit report       id: 1109131,
+540 silly audit report       url: 'https://github.com/advisories/GHSA-93m4-6634-74q7',
+540 silly audit report       title: 'vite allows server.fs.deny bypass via backslash on Windows',
+540 silly audit report       severity: 'moderate',
+540 silly audit report       vulnerable_versions: '>=5.2.6 <=5.4.20',
+540 silly audit report       cwe: [Array],
+540 silly audit report       cvss: [Object]
+540 silly audit report     }
+540 silly audit report   ]
+540 silly audit report }
+541 silly packumentCache corgi:https://registry.npmjs.org/esbuild cache-miss
+542 silly packumentCache corgi:https://registry.npmjs.org/rollup cache-miss
+543 silly packumentCache corgi:https://registry.npmjs.org/vite cache-miss
+544 http fetch GET 200 https://registry.npmjs.org/@types/babel__template/-/babel__template-7.4.4.tgz 622ms (cache miss)
+545 http fetch GET 200 https://registry.npmjs.org/@types/babel__generator/-/babel__generator-7.27.0.tgz 637ms (cache miss)
+546 http fetch GET 200 https://registry.npmjs.org/@babel/plugin-transform-react-jsx-source/-/plugin-transform-react-jsx-source-7.27.1.tgz 626ms (cache miss)
+547 http fetch GET 200 https://registry.npmjs.org/@tailwindcss/oxide/-/oxide-4.1.18.tgz 670ms (cache miss)
+548 http fetch GET 200 https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.27.tgz 726ms (cache miss)
+549 http fetch GET 200 https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz 719ms (cache miss)
+550 http fetch GET 200 https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.27.1.tgz 733ms (cache miss)
+551 http fetch GET 200 https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz 775ms (cache miss)
+552 http fetch GET 200 https://registry.npmjs.org/@types/estree/-/estree-1.0.8.tgz 813ms (cache miss)
+553 http fetch GET 200 https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz 811ms (cache miss)
+554 http fetch GET 200 https://registry.npmjs.org/@tailwindcss/cli/-/cli-4.1.18.tgz 807ms (cache miss)
+555 http fetch GET 200 https://registry.npmjs.org/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.27.1.tgz 801ms (cache miss)
+556 http fetch GET 200 https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz 841ms (cache miss)
+557 http fetch GET 200 https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.27.2.tgz 845ms (cache miss)
+558 http fetch GET 200 https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.27.1.tgz 866ms (cache miss)
+559 http fetch GET 200 https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz 863ms (cache miss)
+560 http fetch GET 200 https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.28.0.tgz 867ms (cache miss)
+561 http fetch GET 200 https://registry.npmjs.org/@types/babel__traverse/-/babel__traverse-7.28.0.tgz 913ms (cache miss)
+562 http fetch GET 200 https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz 902ms (cache miss)
+563 http fetch GET 200 https://registry.npmjs.org/node-releases/-/node-releases-2.0.27.tgz 916ms (cache miss)
+564 http fetch GET 200 https://registry.npmjs.org/@babel/helper-globals/-/helper-globals-7.28.0.tgz 933ms (cache miss)
+565 http fetch GET 200 https://registry.npmjs.org/react-refresh/-/react-refresh-0.17.0.tgz 926ms (cache miss)
+566 http fetch GET 200 https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz 932ms (cache miss)
+567 http fetch GET 200 https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz 930ms (cache miss)
+568 http fetch GET 200 https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz 948ms (cache miss)
+569 http fetch GET 200 https://registry.npmjs.org/ms/-/ms-2.1.3.tgz 954ms (cache miss)
+570 http fetch GET 200 https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz 1036ms (cache miss)
+571 http fetch GET 200 https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz 1046ms (cache miss)
+572 http fetch GET 200 https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz 1069ms (cache miss)
+573 http fetch GET 200 https://registry.npmjs.org/@babel/helper-validator-option/-/helper-validator-option-7.27.1.tgz 1067ms (cache miss)
+574 http fetch GET 200 https://registry.npmjs.org/escalade/-/escalade-3.2.0.tgz 1051ms (cache miss)
+575 http fetch GET 200 https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz 1058ms (cache miss)
+576 http fetch GET 200 https://registry.npmjs.org/semver/-/semver-6.3.1.tgz 1062ms (cache miss)
+577 http fetch GET 200 https://registry.npmjs.org/mri/-/mri-1.2.0.tgz 1066ms (cache miss)
+578 http fetch GET 200 https://registry.npmjs.org/debug/-/debug-4.4.1.tgz 1068ms (cache miss)
+579 http fetch GET 200 https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz 1072ms (cache miss)
+580 http fetch GET 200 https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz 1071ms (cache miss)
+581 http fetch GET 200 https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz 1081ms (cache miss)
+582 http fetch GET 200 https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.27.1.tgz 1105ms (cache miss)
+583 http fetch GET 200 https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz 1098ms (cache miss)
+584 http fetch GET 200 https://registry.npmjs.org/jsesc/-/jsesc-3.1.0.tgz 1106ms (cache miss)
+585 http fetch GET 200 https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz 1114ms (cache miss)
+586 http fetch GET 200 https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-4.7.0.tgz 1160ms (cache miss)
+587 http fetch GET 200 https://registry.npmjs.org/@tailwindcss/postcss/-/postcss-4.1.18.tgz 1163ms (cache miss)
+588 http fetch GET 200 https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz 1234ms (cache miss)
+589 http fetch GET 200 https://registry.npmjs.org/esbuild/-/esbuild-0.21.5.tgz 1225ms (cache miss)
+590 http fetch GET 200 https://registry.npmjs.org/@tailwindcss/node/-/node-4.1.18.tgz 1286ms (cache miss)
+591 http fetch GET 200 https://registry.npmjs.org/tslib/-/tslib-2.7.0.tgz 1298ms (cache miss)
+592 http fetch GET 200 https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz 1284ms (cache miss)
+593 http fetch GET 200 https://registry.npmjs.org/picomatch/-/picomatch-4.0.3.tgz 1337ms (cache miss)
+594 http fetch GET 200 https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.9.19.tgz 1344ms (cache miss)
+595 http fetch GET 200 https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.286.tgz 1348ms (cache miss)
+596 http fetch GET 200 https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.28.3.tgz 1374ms (cache miss)
+597 http fetch GET 200 https://registry.npmjs.org/@babel/template/-/template-7.27.2.tgz 1395ms (cache miss)
+598 http fetch GET 200 https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz 1394ms (cache miss)
+599 http fetch GET 200 https://registry.npmjs.org/magic-string/-/magic-string-0.30.21.tgz 1403ms (cache miss)
+600 http fetch GET 200 https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz 1425ms (cache miss)
+601 http fetch GET 200 https://registry.npmjs.org/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.5.6.tgz 1473ms (cache miss)
+602 http fetch GET 200 https://registry.npmjs.org/tapable/-/tapable-2.3.0.tgz 1476ms (cache miss)
+603 http fetch GET 200 https://registry.npmjs.org/lightningcss/-/lightningcss-1.30.2.tgz 1483ms (cache miss)
+604 http fetch GET 200 https://registry.npmjs.org/esbuild 1205ms (cache miss)
+605 silly packumentCache corgi:https://registry.npmjs.org/esbuild set size:undefined disposed:false
+606 http fetch GET 200 https://registry.npmjs.org/ws/-/ws-8.17.1.tgz 1514ms (cache miss)
+607 http fetch GET 200 https://registry.npmjs.org/react/-/react-18.3.1.tgz 1527ms (cache miss)
+608 http fetch GET 200 https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz 1540ms (cache miss)
+609 http fetch GET 200 https://registry.npmjs.org/json5/-/json5-2.2.3.tgz 1541ms (cache miss)
+610 http fetch GET 200 https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz 1559ms (cache miss)
+611 http fetch GET 200 https://registry.npmjs.org/fraction.js/-/fraction.js-5.3.4.tgz 1555ms (cache miss)
+612 http fetch GET 200 https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 1583ms (cache miss)
+613 http fetch GET 200 https://registry.npmjs.org/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz 1585ms (cache miss)
+614 http fetch GET 200 https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz 1617ms (cache miss)
+615 http fetch GET 200 https://registry.npmjs.org/@jridgewell/remapping/-/remapping-2.3.5.tgz 1632ms (cache miss)
+616 http fetch GET 200 https://registry.npmjs.org/@babel/parser/-/parser-7.28.3.tgz 1749ms (cache miss)
+617 http fetch GET 200 https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz 1781ms (cache miss)
+618 http fetch GET 200 https://registry.npmjs.org/vite 1518ms (cache miss)
+619 silly packumentCache corgi:https://registry.npmjs.org/vite set size:undefined disposed:false
+620 http fetch GET 200 https://registry.npmjs.org/jiti/-/jiti-2.6.1.tgz 1930ms (cache miss)
+621 http fetch GET 200 https://registry.npmjs.org/undici-types/-/undici-types-6.19.8.tgz 1909ms (cache miss)
+622 http fetch GET 200 https://registry.npmjs.org/tailwindcss/-/tailwindcss-4.1.18.tgz 1959ms (cache miss)
+623 http fetch GET 200 https://registry.npmjs.org/@parcel/watcher/-/watcher-2.5.6.tgz 2029ms (cache miss)
+624 http fetch GET 200 https://registry.npmjs.org/rollup 1728ms (cache miss)
+625 silly packumentCache corgi:https://registry.npmjs.org/rollup set size:undefined disposed:false
+626 http fetch GET 200 https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.30.tgz 2302ms (cache miss)
+627 http fetch GET 200 https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.50.0.tgz 2309ms (cache miss)
+628 http fetch GET 200 https://registry.npmjs.org/@babel/generator/-/generator-7.28.3.tgz 2326ms (cache miss)
+629 http fetch GET 200 https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.19.0.tgz 2472ms (cache miss)
+630 http fetch GET 200 https://registry.npmjs.org/postcss/-/postcss-8.5.6.tgz 2483ms (cache miss)
+631 silly packumentCache corgi:https://registry.npmjs.org/@vitejs%2fplugin-react cache-miss
+632 http fetch GET 200 https://registry.npmjs.org/@tailwindcss/oxide-win32-x64-msvc/-/oxide-win32-x64-msvc-4.1.18.tgz 2552ms (cache miss)
+633 http fetch GET 200 https://registry.npmjs.org/rollup/-/rollup-4.50.0.tgz 2611ms (cache miss)
+634 http fetch GET 200 https://registry.npmjs.org/@vitejs%2fplugin-react 159ms (cache miss)
+635 silly packumentCache corgi:https://registry.npmjs.org/@vitejs%2fplugin-react set size:undefined disposed:false
+636 http fetch GET 200 https://registry.npmjs.org/@babel/traverse/-/traverse-7.28.3.tgz 2774ms (cache miss)
+637 http fetch GET 200 https://registry.npmjs.org/vite/-/vite-5.4.19.tgz 2813ms (cache miss)
+638 http fetch GET 200 https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.24.tgz 2799ms (cache miss)
+639 http fetch GET 200 https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz 2936ms (cache miss)
+640 http fetch GET 200 https://registry.npmjs.org/@types/node/-/node-22.7.5.tgz 2937ms (cache miss)
+641 http fetch GET 200 https://registry.npmjs.org/@types/node/-/node-20.19.11.tgz 2996ms (cache miss)
+642 http fetch GET 200 https://registry.npmjs.org/aes-js/-/aes-js-4.0.0-beta.5.tgz 3020ms (cache miss)
+643 http fetch GET 200 https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.30.2.tgz 3131ms (cache miss)
+644 http fetch GET 200 https://registry.npmjs.org/@babel/core/-/core-7.28.3.tgz 3153ms (cache miss)
+645 http fetch GET 200 https://registry.npmjs.org/@noble/hashes/-/hashes-1.3.2.tgz 3200ms (cache miss)
+646 http fetch GET 200 https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz 3227ms (cache miss)
+647 http fetch GET 200 https://registry.npmjs.org/@noble/curves/-/curves-1.2.0.tgz 3293ms (cache miss)
+648 http fetch GET 200 https://registry.npmjs.org/@babel/types/-/types-7.28.2.tgz 3423ms (cache miss)
+649 http fetch GET 200 https://registry.npmjs.org/@babel/helpers/-/helpers-7.28.3.tgz 3487ms (cache miss)
+650 http fetch GET 200 https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001767.tgz 4953ms (cache miss)
+651 http fetch GET 200 https://registry.npmjs.org/ethers/-/ethers-6.15.0.tgz 6137ms (cache miss)
+652 info run @parcel/watcher@2.5.6 install node_modules/@parcel/watcher node scripts/build-from-source.js
+653 info run @parcel/watcher@2.5.6 install { code: 0, signal: null }
+654 info run esbuild@0.21.5 postinstall node_modules/esbuild node install.js
+655 info run esbuild@0.21.5 postinstall { code: 0, signal: null }
+656 silly CHANGE node_modules/@vitejs/plugin-react
+657 silly CHANGE node_modules/@types/node
+658 silly CHANGE node_modules/@types/babel__traverse
+659 silly CHANGE node_modules/@types/estree
+660 silly CHANGE node_modules/@types/babel__template
+661 silly CHANGE node_modules/@types/babel__generator
+662 silly CHANGE node_modules/@types/babel__core
+663 silly CHANGE node_modules/@tailwindcss/postcss
+664 silly CHANGE node_modules/@tailwindcss/oxide-win32-x64-msvc
+665 silly CHANGE node_modules/@tailwindcss/oxide-win32-arm64-msvc
+666 silly CHANGE node_modules/@tailwindcss/oxide-wasm32-wasi
+667 silly CHANGE node_modules/@tailwindcss/oxide-linux-x64-musl
+668 silly CHANGE node_modules/@tailwindcss/oxide-linux-arm64-musl
+669 silly CHANGE node_modules/@tailwindcss/oxide-linux-x64-gnu
+670 silly CHANGE node_modules/@tailwindcss/oxide-linux-arm64-gnu
+671 silly CHANGE node_modules/@tailwindcss/oxide-linux-arm-gnueabihf
+672 silly CHANGE node_modules/@tailwindcss/oxide-freebsd-x64
+673 silly CHANGE node_modules/@tailwindcss/oxide-darwin-arm64
+674 silly CHANGE node_modules/@tailwindcss/oxide-darwin-x64
+675 silly CHANGE node_modules/@tailwindcss/oxide-android-arm64
+676 silly CHANGE node_modules/@tailwindcss/oxide
+677 silly CHANGE node_modules/@tailwindcss/node
+678 silly CHANGE node_modules/@tailwindcss/cli
+679 silly CHANGE node_modules/@rollup/rollup-win32-x64-msvc
+680 silly CHANGE node_modules/@rollup/rollup-win32-ia32-msvc
+681 silly CHANGE node_modules/@rollup/rollup-win32-arm64-msvc
+682 silly CHANGE node_modules/@rollup/rollup-openharmony-arm64
+683 silly CHANGE node_modules/@rollup/rollup-linux-x64-musl
+684 silly CHANGE node_modules/@rollup/rollup-linux-x64-gnu
+685 silly CHANGE node_modules/@rollup/rollup-linux-s390x-gnu
+686 silly CHANGE node_modules/@rollup/rollup-linux-riscv64-musl
+687 silly CHANGE node_modules/@rollup/rollup-linux-riscv64-gnu
+688 silly CHANGE node_modules/@rollup/rollup-linux-ppc64-gnu
+689 silly CHANGE node_modules/@rollup/rollup-linux-loongarch64-gnu
+690 silly CHANGE node_modules/@rollup/rollup-linux-arm64-musl
+691 silly CHANGE node_modules/@rollup/rollup-linux-arm64-gnu
+692 silly CHANGE node_modules/@rollup/rollup-linux-arm-musleabihf
+693 silly CHANGE node_modules/@rollup/rollup-linux-arm-gnueabihf
+694 silly CHANGE node_modules/@rollup/rollup-freebsd-x64
+695 silly CHANGE node_modules/@rollup/rollup-freebsd-arm64
+696 silly CHANGE node_modules/@rollup/rollup-darwin-x64
+697 silly CHANGE node_modules/@rollup/rollup-darwin-arm64
+698 silly CHANGE node_modules/@rollup/rollup-android-arm64
+699 silly CHANGE node_modules/@rollup/rollup-android-arm-eabi
+700 silly CHANGE node_modules/@rolldown/pluginutils
+701 silly CHANGE node_modules/@parcel/watcher-win32-x64
+702 silly CHANGE node_modules/@parcel/watcher-win32-ia32
+703 silly CHANGE node_modules/@parcel/watcher-win32-arm64
+704 silly CHANGE node_modules/@parcel/watcher-linux-x64-musl
+705 silly CHANGE node_modules/@parcel/watcher-linux-x64-glibc
+706 silly CHANGE node_modules/@parcel/watcher-linux-arm64-musl
+707 silly CHANGE node_modules/@parcel/watcher-linux-arm64-glibc
+708 silly CHANGE node_modules/@parcel/watcher-linux-arm-musl
+709 silly CHANGE node_modules/@parcel/watcher-linux-arm-glibc
+710 silly CHANGE node_modules/@parcel/watcher-freebsd-x64
+711 silly CHANGE node_modules/@parcel/watcher-darwin-x64
+712 silly CHANGE node_modules/@parcel/watcher-darwin-arm64
+713 silly CHANGE node_modules/@parcel/watcher-android-arm64
+714 silly CHANGE node_modules/@parcel/watcher
+715 silly CHANGE node_modules/@noble/hashes
+716 silly CHANGE node_modules/@noble/curves
+717 silly CHANGE node_modules/@jridgewell/trace-mapping
+718 silly CHANGE node_modules/@jridgewell/resolve-uri
+719 silly CHANGE node_modules/@jridgewell/sourcemap-codec
+720 silly CHANGE node_modules/@jridgewell/remapping
+721 silly CHANGE node_modules/@jridgewell/gen-mapping
+722 silly CHANGE node_modules/@esbuild/win32-x64
+723 silly CHANGE node_modules/@esbuild/win32-ia32
+724 silly CHANGE node_modules/@esbuild/win32-arm64
+725 silly CHANGE node_modules/@esbuild/sunos-x64
+726 silly CHANGE node_modules/@esbuild/netbsd-x64
+727 silly CHANGE node_modules/@esbuild/openbsd-x64
+728 silly CHANGE node_modules/@esbuild/linux-x64
+729 silly CHANGE node_modules/@esbuild/linux-s390x
+730 silly CHANGE node_modules/@esbuild/linux-riscv64
+731 silly CHANGE node_modules/@esbuild/linux-mips64el
+732 silly CHANGE node_modules/@esbuild/linux-ppc64
+733 silly CHANGE node_modules/@esbuild/linux-ia32
+734 silly CHANGE node_modules/@esbuild/linux-loong64
+735 silly CHANGE node_modules/@esbuild/darwin-arm64
+736 silly CHANGE node_modules/@esbuild/linux-arm64
+737 silly CHANGE node_modules/@esbuild/linux-arm
+738 silly CHANGE node_modules/@esbuild/freebsd-x64
+739 silly CHANGE node_modules/@esbuild/freebsd-arm64
+740 silly CHANGE node_modules/@esbuild/darwin-x64
+741 silly CHANGE node_modules/@esbuild/android-x64
+742 silly CHANGE node_modules/@esbuild/android-arm
+743 silly CHANGE node_modules/@esbuild/aix-ppc64
+744 silly CHANGE node_modules/@esbuild/android-arm64
+745 silly CHANGE node_modules/@babel/types
+746 silly CHANGE node_modules/@babel/traverse
+747 silly CHANGE node_modules/@babel/template
+748 silly CHANGE node_modules/@babel/plugin-transform-react-jsx-source
+749 silly CHANGE node_modules/@babel/plugin-transform-react-jsx-self
+750 silly CHANGE node_modules/@babel/parser
+751 silly CHANGE node_modules/@babel/helpers
+752 silly CHANGE node_modules/@babel/helper-validator-option
+753 silly CHANGE node_modules/@babel/helper-validator-identifier
+754 silly CHANGE node_modules/@babel/helper-string-parser
+755 silly CHANGE node_modules/@babel/helper-plugin-utils
+756 silly CHANGE node_modules/@babel/helper-module-transforms
+757 silly CHANGE node_modules/@babel/helper-globals
+758 silly CHANGE node_modules/@babel/helper-module-imports
+759 silly CHANGE node_modules/@babel/helper-compilation-targets
+760 silly CHANGE node_modules/@babel/generator
+761 silly CHANGE node_modules/@babel/code-frame
+762 silly CHANGE node_modules/@babel/core
+763 silly CHANGE node_modules/@babel/compat-data
+764 silly CHANGE node_modules/@ampproject/remapping
+765 silly CHANGE node_modules/@adraffy/ens-normalize
+766 silly CHANGE node_modules/@alloc/quick-lru
+767 silly CHANGE node_modules/yallist
+768 silly CHANGE node_modules/ws
+769 silly CHANGE node_modules/vite
+770 silly CHANGE node_modules/update-browserslist-db
+771 silly CHANGE node_modules/undici-types
+772 silly CHANGE node_modules/tslib
+773 silly CHANGE node_modules/tapable
+774 silly CHANGE node_modules/tailwindcss
+775 silly CHANGE node_modules/source-map-js
+776 silly CHANGE node_modules/semver
+777 silly CHANGE node_modules/scheduler
+778 silly CHANGE node_modules/rollup
+779 silly CHANGE node_modules/react-refresh
+780 silly CHANGE node_modules/react-dom
+781 silly CHANGE node_modules/react
+782 silly CHANGE node_modules/postcss-value-parser
+783 silly CHANGE node_modules/postcss
+784 silly CHANGE node_modules/picomatch
+785 silly CHANGE node_modules/picocolors
+786 silly CHANGE node_modules/node-releases
+787 silly CHANGE node_modules/node-addon-api
+788 silly CHANGE node_modules/nanoid
+789 silly CHANGE node_modules/ms
+790 silly CHANGE node_modules/mri
+791 silly CHANGE node_modules/magic-string
+792 silly CHANGE node_modules/lru-cache
+793 silly CHANGE node_modules/loose-envify
+794 silly CHANGE node_modules/lightningcss-win32-x64-msvc
+795 silly CHANGE node_modules/lightningcss-win32-arm64-msvc
+796 silly CHANGE node_modules/lightningcss-linux-x64-musl
+797 silly CHANGE node_modules/lightningcss-linux-x64-gnu
+798 silly CHANGE node_modules/lightningcss-linux-arm64-musl
+799 silly CHANGE node_modules/lightningcss-linux-arm64-gnu
+800 silly CHANGE node_modules/lightningcss-linux-arm-gnueabihf
+801 silly CHANGE node_modules/lightningcss-freebsd-x64
+802 silly CHANGE node_modules/lightningcss-darwin-x64
+803 silly CHANGE node_modules/lightningcss-darwin-arm64
+804 silly CHANGE node_modules/lightningcss-android-arm64
+805 silly CHANGE node_modules/lightningcss
+806 silly CHANGE node_modules/json5
+807 silly CHANGE node_modules/jsesc
+808 silly CHANGE node_modules/js-tokens
+809 silly CHANGE node_modules/jiti
+810 silly CHANGE node_modules/is-glob
+811 silly CHANGE node_modules/is-extglob
+812 silly CHANGE node_modules/graceful-fs
+813 silly CHANGE node_modules/gensync
+814 silly CHANGE node_modules/fsevents
+815 silly CHANGE node_modules/fraction.js
+816 silly CHANGE node_modules/ethers
+817 silly CHANGE node_modules/ethers/node_modules/@types/node
+818 silly CHANGE node_modules/ethers/node_modules/undici-types
+819 silly CHANGE node_modules/escalade
+820 silly CHANGE node_modules/esbuild
+821 silly CHANGE node_modules/enhanced-resolve
+822 silly CHANGE node_modules/electron-to-chromium
+823 silly CHANGE node_modules/detect-libc
+824 silly CHANGE node_modules/debug
+825 silly CHANGE node_modules/convert-source-map
+826 silly CHANGE node_modules/caniuse-lite
+827 silly CHANGE node_modules/browserslist
+828 silly CHANGE node_modules/baseline-browser-mapping
+829 silly CHANGE node_modules/aes-js
+830 silly CHANGE node_modules/autoprefixer
+831 verbose cwd C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\Credentials_FE
+832 verbose os Windows_NT 10.0.26100
+833 verbose node v22.20.0
+834 verbose npm  v10.9.3
+835 verbose exit 0
+836 info ok

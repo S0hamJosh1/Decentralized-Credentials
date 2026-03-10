@@ -9,6 +9,7 @@ export function ConnectButton({ onConnected }) {
       alert("MetaMask not detected. Install the extension and refresh.");
       return;
     }
+
     try {
       setConnecting(true);
       await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -24,7 +25,7 @@ export function ConnectButton({ onConnected }) {
 
   return (
     <button onClick={connect} disabled={connecting} className="neo-btn-primary">
-      {connecting ? "Connecting…" : "🔗 Connect Wallet"}
+      {connecting ? "Connecting..." : "Connect wallet"}
     </button>
   );
 }

@@ -1,0 +1,104 @@
+export const initialOrganization = {
+  name: "Northstar Skills Institute",
+  slug: "northstar-skills",
+  sector: "Workforce training",
+  website: "northstarskills.example",
+  verificationDomain: "verify.northstarskills.example",
+  status: "Active",
+  headquarters: "New York, NY",
+  description:
+    "Northstar Skills Institute issues workforce certificates for internships, compliance training, and employer-sponsored learning cohorts.",
+};
+
+export const initialTemplates = [
+  {
+    id: "TPL-101",
+    name: "Internship Completion",
+    category: "Career programs",
+    validity: "Permanent",
+    summary: "Confirms successful completion of a structured internship program.",
+  },
+  {
+    id: "TPL-202",
+    name: "Compliance Training",
+    category: "Workforce readiness",
+    validity: "12 months",
+    summary: "Used for internal policy, workplace safety, and onboarding requirements.",
+  },
+  {
+    id: "TPL-303",
+    name: "Bootcamp Certificate",
+    category: "Education",
+    validity: "Permanent",
+    summary: "Recognizes completion of a short-form training cohort with measurable outcomes.",
+  },
+];
+
+export const initialIssuers = [
+  {
+    id: "ISS-1",
+    name: "Soham Joshua",
+    role: "Platform owner",
+    wallet: "0xA91C7E2f57D6B2dC3F43A700dA0D53f4814bA901",
+    status: "Approved",
+  },
+  {
+    id: "ISS-2",
+    name: "Mina Patel",
+    role: "Program manager",
+    wallet: "0x8fC920dA902D642F0D21871E9a085BBAFe132410",
+    status: "Approved",
+  },
+  {
+    id: "ISS-3",
+    name: "Aaron Brooks",
+    role: "Operations",
+    wallet: "0x4B4Ff3E6d4Ca51c5179cD4c4471A12d3357B9810",
+    status: "Pending",
+  },
+];
+
+export const initialCredentials = [
+  {
+    id: "CRD-1001",
+    verificationCode: "NST-INT-1001",
+    recipientName: "Jade Carter",
+    recipientEmail: "jade.carter@example.com",
+    recipientWallet: "0x19a9A706d8dF67e7030AEf7A6e5Da5c4b4D79F10",
+    templateId: "TPL-101",
+    templateName: "Internship Completion",
+    issuedBy: "Mina Patel",
+    issuedAt: "2026-03-02",
+    status: "Valid",
+    cohort: "Winter 2026",
+    summary: "Completed the Business Operations Internship Program.",
+  },
+  {
+    id: "CRD-1002",
+    verificationCode: "NST-CMP-1002",
+    recipientName: "Daniel Kim",
+    recipientEmail: "daniel.kim@example.com",
+    recipientWallet: "0x2B8b2666a441F064e65E31a19A739dF21A4E1E62",
+    templateId: "TPL-202",
+    templateName: "Compliance Training",
+    issuedBy: "Soham Joshua",
+    issuedAt: "2026-02-20",
+    status: "Valid",
+    cohort: "Spring onboarding",
+    summary: "Met annual compliance training requirements.",
+  },
+  {
+    id: "CRD-1003",
+    verificationCode: "NST-BC-1003",
+    recipientName: "Lena Ortiz",
+    recipientEmail: "lena.ortiz@example.com",
+    recipientWallet: "0x0fD8637Aa9F9E76Cffdb1A1739Ad1f111ce9D3a3",
+    templateId: "TPL-303",
+    templateName: "Bootcamp Certificate",
+    issuedBy: "Mina Patel",
+    issuedAt: "2026-01-14",
+    status: "Revoked",
+    cohort: "Product Foundations",
+    summary: "Bootcamp certificate revoked after duplicate issuance was corrected.",
+  },
+];

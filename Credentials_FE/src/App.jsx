@@ -1,150 +1,185 @@
-// src/App.jsx
-import React, { useMemo, useState } from "react";
-import { ethers } from "ethers";
-import { ConnectButton } from "./components/ConnectButton";
-import { FunctionRunner } from "./components/FunctionRunner";
-import { getProvider, getSigner } from "./lib/eth";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "./config/contract";
-import CredentialActions from "./components/CredentialActions";
+import React, { useEffect, useMemo, useState } from "react";
+import DashboardApp from "./components/DashboardApp";
+import MarketingSite from "./components/MarketingSite";
+import VerifyPortal from "./components/VerifyPortal";
+import {
+  initialCredentials,
+  initialIssuers,
+  initialOrganization,
+  initialTemplates,
+} from "./data/productData";
+
+const SITE_VIEW = "site";
+const APP_VIEW = "app";
+const VERIFY_VIEW = "verify";
+
+function parseHash() {
+  const hash = window.location.hash.replace("#", "");
+
+  if (hash === APP_VIEW) {
+    return { view: APP_VIEW, verificationCode: "" };
+  }
+
+  if (hash.startsWith(`${VERIFY_VIEW}/`)) {
+    return {
+      view: VERIFY_VIEW,
+      verificationCode: decodeURIComponent(hash.replace(`${VERIFY_VIEW}/`, "")),
+    };
+  }
+
+  if (hash === VERIFY_VIEW) {
+    return { view: VERIFY_VIEW, verificationCode: "" };
+  }
+
+  return { view: SITE_VIEW, verificationCode: "" };
+}
+
+function createCredentialRecord(payload, templateName, issuerName, index) {
+  const suffix = String(index).padStart(4, "0");
+  const today = new Date().toISOString().slice(0, 10);
+
+  return {
+    id: `CRD-${suffix}`,
+    verificationCode: `NST-${payload.templateId.split("-")[1]}-${suffix}`,
+    recipientName: payload.recipientName,
+    recipientEmail: payload.recipientEmail,
+    recipientWallet: payload.recipientWallet,
+    templateId: payload.templateId,
+    templateName,
+    issuedBy: issuerName,
+    issuedAt: today,
+    status: "Valid",
+    cohort: payload.cohort,
+    summary: payload.summary,
+  };
+}
 
 export default function App() {
-  const [provider, setProvider] = useState(null);
-  const [signer, setSigner] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [networkOk, setNetworkOk] = useState(false);
+  const initialRoute = parseHash();
+  const [view, setView] = useState(initialRoute.view);
+  const [organization, setOrganization] = useState(initialOrganization);
+  const [templates, setTemplates] = useState(initialTemplates);
+  const [issuers, setIssuers] = useState(initialIssuers);
+  const [credentials, setCredentials] = useState(initialCredentials);
+  const [selectedVerificationCode, setSelectedVerificationCode] = useState(
+    initialRoute.verificationCode || initialCredentials[0]?.verificationCode || ""
+  );
 
-  const iface = useMemo(() => new ethers.Interface(CONTRACT_ABI), []);
+  useEffect(() => {
+    const handleHashChange = () => {
+      const nextRoute = parseHash();
+      setView(nextRoute.view);
+      if (nextRoute.view === VERIFY_VIEW) {
+        setSelectedVerificationCode(nextRoute.verificationCode || initialCredentials[0]?.verificationCode || "");
+      }
+    };
 
-  const handleConnected = async () => {
-    const p = await getProvider();
-    setProvider(p);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
-    const s = await getSigner(p);
-    setSigner(s);
+  const dashboardStats = useMemo(() => {
+    const validCount = credentials.filter((credential) => credential.status === "Valid").length;
+    const revokedCount = credentials.filter((credential) => credential.status === "Revoked").length;
 
-    const addr = await s.getAddress();
-    setAccount(addr);
+    return {
+      credentialCount: credentials.length,
+      templateCount: templates.length,
+      issuerCount: issuers.filter((issuer) => issuer.status === "Approved").length,
+      validCount,
+      revokedCount,
+    };
+  }, [credentials, issuers, templates]);
 
-    const net = await p.getNetwork();
-    setNetworkOk(net.chainId === 11155111n); // Sepolia
+  const syncView = (nextView, options = {}) => {
+    if (nextView === APP_VIEW) {
+      window.location.hash = "app";
+      return;
+    }
+
+    if (nextView === VERIFY_VIEW) {
+      const nextCode = options.verificationCode || selectedVerificationCode;
+      window.location.hash = nextCode ? `verify/${encodeURIComponent(nextCode)}` : "verify";
+      return;
+    }
+
+    window.location.hash = "";
   };
 
+  const issueCredential = (payload) => {
+    const template = templates.find((item) => item.id === payload.templateId);
+    const issuer = issuers.find((item) => item.id === payload.issuerId) || issuers[0];
+    const nextRecord = createCredentialRecord(
+      payload,
+      template?.name || "Custom Certificate",
+      issuer?.name || "Authorized Issuer",
+      credentials.length + 1001
+    );
+
+    setCredentials((current) => [nextRecord, ...current]);
+    setSelectedVerificationCode(nextRecord.verificationCode);
+    return nextRecord;
+  };
+
+  const revokeCredential = (credentialId) => {
+    setCredentials((current) =>
+      current.map((credential) =>
+        credential.id === credentialId ? { ...credential, status: "Revoked" } : credential
+      )
+    );
+  };
+
+  const addTemplate = (template) => {
+    setTemplates((current) => [template, ...current]);
+  };
+
+  const addIssuer = (issuer) => {
+    setIssuers((current) => [issuer, ...current]);
+  };
+
+  const updateOrganization = (nextOrganization) => {
+    setOrganization(nextOrganization);
+  };
+
+  if (view === APP_VIEW) {
+    return (
+      <DashboardApp
+        organization={organization}
+        templates={templates}
+        issuers={issuers}
+        credentials={credentials}
+        stats={dashboardStats}
+        onIssueCredential={issueCredential}
+        onRevokeCredential={revokeCredential}
+        onAddTemplate={addTemplate}
+        onAddIssuer={addIssuer}
+        onUpdateOrganization={updateOrganization}
+        onBackToSite={() => syncView(SITE_VIEW)}
+        onOpenVerifier={(verificationCode) => syncView(VERIFY_VIEW, { verificationCode })}
+      />
+    );
+  }
+
+  if (view === VERIFY_VIEW) {
+    return (
+      <VerifyPortal
+        organization={organization}
+        credentials={credentials}
+        selectedVerificationCode={selectedVerificationCode}
+        onSelectVerificationCode={setSelectedVerificationCode}
+        onBackToSite={() => syncView(SITE_VIEW)}
+        onLaunchApp={() => syncView(APP_VIEW)}
+      />
+    );
+  }
+
   return (
-    <>
-      <div className="cyber-grid-bg" />
-      <div className="min-h-screen text-zinc-100">
-        {/* widened to use side space */}
-        <div className="mx-auto w-full max-w-7xl px-5 py-10">
-          {/* Header */}
-          <header className="mb-8">
-            <div className="flex flex-col md:flex-row items-start justify-between gap-6">
-              <div className="max-w-full">
-                <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-zinc-50 leading-[1.05] break-words">
-                  Credential Registry
-                </h1>
-
-                {/* tighter spacing under title */}
-                <p className="mt-3 text-sm text-zinc-400 max-w-md">
-                  Issue, verify, and revoke credentials on-chain • Sepolia (11155111)
-                </p>
-                <p className="mt-1 text-xs text-zinc-500">
-                  Built with React + Vite + ethers v6
-                </p>
-              </div>
-
-              <div className="hidden md:flex items-center gap-2 shrink-0">
-                <span className="neo-badge">
-                  <span className="inline-block h-2 w-2 rounded-full bg-cyan-300/80" />
-                  Cyber Registry
-                </span>
-              </div>
-            </div>
-          </header>
-
-          {/* Connect row */}
-          <section className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4">
-            <div className="flex flex-wrap items-center gap-4">
-              <ConnectButton onConnected={handleConnected} />
-              <span className="text-sm text-zinc-400">
-                {account ? "Wallet connected." : "Connect wallet to begin."}
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="neo-badge">
-                <span className="text-zinc-400">Contract</span>
-                <span className="text-zinc-200">
-                  {CONTRACT_ADDRESS.slice(0, 6)}…{CONTRACT_ADDRESS.slice(-4)}
-                </span>
-              </div>
-
-              <div
-                className={`neo-badge ${networkOk
-                  ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-200"
-                  : "border-rose-500/25 bg-rose-500/10 text-rose-200"
-                  }`}
-              >
-                <span className="text-zinc-300/80">Network</span>
-                <span>{networkOk ? "Sepolia" : "Not Sepolia"}</span>
-              </div>
-            </div>
-          </section>
-
-          {/* Cards */}
-          <main className="space-y-7">
-            <Card title="Quick Actions" subtitle="Use the forms below to manage credentials." version="V.0">
-              <CredentialActions
-                contractAddress={CONTRACT_ADDRESS}
-                abi={CONTRACT_ABI}
-                provider={provider}
-                signer={signer}
-                networkOk={networkOk}
-                account={account}
-              />
-            </Card>
-
-            <Card
-              title="Advanced Tools"
-              subtitle="For testing: call contract methods directly (recommended only if you know what you're doing)."
-              version="V.0"
-            >
-              <FunctionRunner
-                iface={iface}
-                contractAddress={CONTRACT_ADDRESS}
-                abi={CONTRACT_ABI}
-                provider={provider}
-                signer={signer}
-                networkOk={networkOk}
-                account={account}
-              />
-            </Card>
-          </main>
-        </div>
-      </div>
-    </>
+    <MarketingSite
+      organization={organization}
+      stats={dashboardStats}
+      sampleCredential={credentials[0]}
+      onLaunchApp={() => syncView(APP_VIEW)}
+      onOpenVerifier={(verificationCode) => syncView(VERIFY_VIEW, { verificationCode })}
+    />
   );
 }
-
-function Card({ title, subtitle, version, children }) {
-  return (
-    <section className="neo-card neo-outline">
-      <div className="neo-card-header flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-zinc-50">{title}</h2>
-          {subtitle ? <p className="mt-2 text-sm text-zinc-400">{subtitle}</p> : null}
-        </div>
-
-        {version ? (
-          <span className="neo-badge">
-            <span className="inline-block h-2 w-2 rounded-full bg-cyan-300/70" />
-            {version}
-          </span>
-        ) : null}
-      </div>
-
-      <div className="neo-card-body">{children}</div>
-    </section>
-  );
-}
-
-
