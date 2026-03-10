@@ -1,0 +1,914 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.20.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npmrc
+5 silly config load:file:C:\Users\soham\.npmrc
+6 silly config load:file:C:\Users\soham\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npm-cache\_logs\2026-03-10T16_48_58_178Z-
+10 verbose logfile C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npm-cache\_logs\2026-03-10T16_48_58_178Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+13 silly idealTree buildDeps
+14 silly fetch manifest @nomicfoundation/hardhat-node-test-runner@^3.0.0
+15 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-node-test-runner cache-miss
+16 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-node-test-runner 224ms (cache miss)
+17 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-node-test-runner set size:undefined disposed:false
+18 silly fetch manifest hardhat@^3.0.3
+19 silly packumentCache full:https://registry.npmjs.org/hardhat cache-miss
+20 http cache https://registry.npmjs.org/hardhat 15ms (cache hit)
+21 silly packumentCache full:https://registry.npmjs.org/hardhat set size:1450034 disposed:false
+22 silly placeDep ROOT @nomicfoundation/hardhat-node-test-runner@3.0.10 OK for: cd_var@1.0.0 want: ^3.0.0
+23 silly placeDep ROOT hardhat@3.1.11 REPLACE for: @nomicfoundation/hardhat-node-test-runner@3.0.10 want: ^3.1.11
+24 silly fetch manifest @nomicfoundation/hardhat-errors@^3.0.7
+25 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-errors cache-miss
+26 silly fetch manifest @nomicfoundation/hardhat-node-test-reporter@^3.0.2
+27 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-node-test-reporter cache-miss
+28 silly fetch manifest @nomicfoundation/hardhat-utils@^4.0.0
+29 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils cache-miss
+30 silly fetch manifest @nomicfoundation/hardhat-zod-utils@^3.0.3
+31 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-zod-utils cache-miss
+32 silly fetch manifest @nomicfoundation/edr@0.12.0-next.27
+33 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr cache-miss
+34 silly fetch manifest @nomicfoundation/hardhat-errors@^3.0.7
+35 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-errors cache-miss
+36 silly fetch manifest @nomicfoundation/hardhat-utils@^4.0.0
+37 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils cache-miss
+38 silly fetch manifest @nomicfoundation/hardhat-vendored@^3.0.1
+39 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-vendored cache-miss
+40 silly fetch manifest @nomicfoundation/hardhat-zod-utils@^3.0.3
+41 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-zod-utils cache-miss
+42 silly fetch manifest chokidar@^4.0.3
+43 silly packumentCache full:https://registry.npmjs.org/chokidar cache-miss
+44 http fetch GET 200 https://registry.npmjs.org/chokidar 108ms (cache miss)
+45 silly packumentCache full:https://registry.npmjs.org/chokidar set size:undefined disposed:false
+46 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-errors 119ms (cache miss)
+47 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-errors set size:undefined disposed:false
+48 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-zod-utils 122ms (cache miss)
+49 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-zod-utils set size:undefined disposed:false
+50 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils 134ms (cache miss)
+51 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils set size:undefined disposed:false
+52 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-errors 146ms (cache miss)
+53 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-errors set size:undefined disposed:false
+54 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-zod-utils 148ms (cache miss)
+55 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-zod-utils set size:undefined disposed:false
+56 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils 153ms (cache miss)
+57 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils set size:undefined disposed:false
+58 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr 166ms (cache miss)
+59 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr set size:undefined disposed:false
+60 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-node-test-reporter 192ms (cache miss)
+61 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-node-test-reporter set size:undefined disposed:false
+62 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-vendored 202ms (cache miss)
+63 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-vendored set size:undefined disposed:false
+64 silly fetch manifest zod@^3.23.8
+65 silly packumentCache full:https://registry.npmjs.org/zod cache-miss
+66 http fetch GET 200 https://registry.npmjs.org/zod 104ms (cache miss)
+67 silly packumentCache full:https://registry.npmjs.org/zod set size:undefined disposed:false
+68 silly placeDep ROOT @nomicfoundation/hardhat-errors@3.0.7 REPLACE for: @nomicfoundation/hardhat-node-test-runner@3.0.10 want: ^3.0.7
+69 silly placeDep ROOT @nomicfoundation/hardhat-node-test-reporter@3.0.2 OK for: @nomicfoundation/hardhat-node-test-runner@3.0.10 want: ^3.0.2
+70 silly placeDep node_modules/@nomicfoundation/hardhat-node-test-runner @nomicfoundation/hardhat-utils@4.0.0 OK for: @nomicfoundation/hardhat-node-test-runner@3.0.10 want: ^4.0.0
+71 silly placeDep ROOT @nomicfoundation/hardhat-zod-utils@3.0.3 REPLACE for: @nomicfoundation/hardhat-node-test-runner@3.0.10 want: ^3.0.3
+72 silly fetch manifest jest-diff@^29.7.0
+73 silly packumentCache full:https://registry.npmjs.org/jest-diff cache-miss
+74 silly fetch manifest @actions/core@^1.10.1
+75 silly packumentCache full:https://registry.npmjs.org/@actions%2fcore cache-miss
+76 silly fetch manifest fast-equals@^5.4.0
+77 silly packumentCache full:https://registry.npmjs.org/fast-equals cache-miss
+78 silly fetch manifest undici@^6.16.1
+79 silly packumentCache full:https://registry.npmjs.org/undici cache-miss
+80 http fetch GET 200 https://registry.npmjs.org/jest-diff 59ms (cache miss)
+81 silly packumentCache full:https://registry.npmjs.org/jest-diff set size:undefined disposed:false
+82 http fetch GET 200 https://registry.npmjs.org/@actions%2fcore 78ms (cache miss)
+83 silly packumentCache full:https://registry.npmjs.org/@actions%2fcore set size:undefined disposed:false
+84 http fetch GET 200 https://registry.npmjs.org/undici 82ms (cache miss)
+85 silly packumentCache full:https://registry.npmjs.org/undici set size:undefined disposed:false
+86 http fetch GET 200 https://registry.npmjs.org/fast-equals 98ms (cache miss)
+87 silly packumentCache full:https://registry.npmjs.org/fast-equals set size:undefined disposed:false
+88 silly placeDep node_modules/@nomicfoundation/hardhat-errors @nomicfoundation/hardhat-utils@4.0.0 OK for: @nomicfoundation/hardhat-errors@3.0.7 want: ^4.0.0
+89 silly placeDep ROOT @actions/core@1.11.1 OK for: @nomicfoundation/hardhat-node-test-reporter@3.0.2 want: ^1.10.1
+90 silly placeDep ROOT jest-diff@29.7.0 OK for: @nomicfoundation/hardhat-node-test-reporter@3.0.2 want: ^29.7.0
+91 silly fetch manifest @actions/exec@^1.1.1
+92 silly packumentCache full:https://registry.npmjs.org/@actions%2fexec cache-miss
+93 silly fetch manifest @actions/http-client@^2.0.1
+94 silly packumentCache full:https://registry.npmjs.org/@actions%2fhttp-client cache-miss
+95 silly fetch manifest chalk@^4.0.0
+96 silly packumentCache full:https://registry.npmjs.org/chalk cache-miss
+97 silly fetch manifest jest-get-type@^29.6.3
+98 silly packumentCache full:https://registry.npmjs.org/jest-get-type cache-miss
+99 silly fetch manifest pretty-format@^29.7.0
+100 silly packumentCache full:https://registry.npmjs.org/pretty-format cache-miss
+101 silly fetch manifest diff-sequences@^29.6.3
+102 silly packumentCache full:https://registry.npmjs.org/diff-sequences cache-miss
+103 http fetch GET 200 https://registry.npmjs.org/jest-get-type 47ms (cache miss)
+104 silly packumentCache full:https://registry.npmjs.org/jest-get-type set size:undefined disposed:false
+105 http fetch GET 200 https://registry.npmjs.org/diff-sequences 50ms (cache miss)
+106 silly packumentCache full:https://registry.npmjs.org/diff-sequences set size:undefined disposed:false
+107 http fetch GET 200 https://registry.npmjs.org/chalk 56ms (cache miss)
+108 silly packumentCache full:https://registry.npmjs.org/chalk set size:undefined disposed:false
+109 http fetch GET 200 https://registry.npmjs.org/@actions%2fhttp-client 62ms (cache miss)
+110 silly packumentCache full:https://registry.npmjs.org/@actions%2fhttp-client set size:undefined disposed:false
+111 http fetch GET 200 https://registry.npmjs.org/@actions%2fexec 79ms (cache miss)
+112 silly packumentCache full:https://registry.npmjs.org/@actions%2fexec set size:undefined disposed:false
+113 http fetch GET 200 https://registry.npmjs.org/pretty-format 88ms (cache miss)
+114 silly packumentCache full:https://registry.npmjs.org/pretty-format set size:undefined disposed:false
+115 silly placeDep ROOT @actions/exec@1.1.1 OK for: @actions/core@1.11.1 want: ^1.1.1
+116 silly placeDep ROOT @actions/http-client@2.2.3 OK for: @actions/core@1.11.1 want: ^2.0.1
+117 silly fetch manifest @actions/io@^1.0.1
+118 silly packumentCache full:https://registry.npmjs.org/@actions%2fio cache-miss
+119 silly fetch manifest tunnel@^0.0.6
+120 silly packumentCache full:https://registry.npmjs.org/tunnel cache-miss
+121 silly fetch manifest undici@^5.25.4
+122 silly packumentCache full:https://registry.npmjs.org/undici cache-miss
+123 http cache https://registry.npmjs.org/undici 7ms (cache hit)
+124 silly packumentCache full:https://registry.npmjs.org/undici set size:1271191 disposed:false
+125 http fetch GET 200 https://registry.npmjs.org/@actions%2fio 62ms (cache miss)
+126 silly packumentCache full:https://registry.npmjs.org/@actions%2fio set size:undefined disposed:false
+127 http fetch GET 200 https://registry.npmjs.org/tunnel 63ms (cache miss)
+128 silly packumentCache full:https://registry.npmjs.org/tunnel set size:undefined disposed:false
+129 silly placeDep ROOT @actions/io@1.1.3 OK for: @actions/exec@1.1.1 want: ^1.0.1
+130 silly placeDep ROOT tunnel@0.0.6 OK for: @actions/http-client@2.2.3 want: ^0.0.6
+131 silly placeDep ROOT undici@5.29.0 OK for: @actions/http-client@2.2.3 want: ^5.25.4
+132 silly fetch manifest @fastify/busboy@^2.0.0
+133 silly packumentCache full:https://registry.npmjs.org/@fastify%2fbusboy cache-miss
+134 http fetch GET 200 https://registry.npmjs.org/@fastify%2fbusboy 92ms (cache miss)
+135 silly packumentCache full:https://registry.npmjs.org/@fastify%2fbusboy set size:undefined disposed:false
+136 silly placeDep node_modules/@nomicfoundation/hardhat-zod-utils @nomicfoundation/hardhat-utils@4.0.0 OK for: @nomicfoundation/hardhat-zod-utils@3.0.3 want: ^4.0.0
+137 silly placeDep ROOT @nomicfoundation/edr@0.12.0-next.27 OK for: hardhat@3.1.11 want: 0.12.0-next.27
+138 silly placeDep node_modules/hardhat @nomicfoundation/hardhat-utils@4.0.0 OK for: hardhat@3.1.11 want: ^4.0.0
+139 silly placeDep ROOT @nomicfoundation/hardhat-vendored@3.0.1 OK for: hardhat@3.1.11 want: ^3.0.1
+140 silly placeDep ROOT chokidar@4.0.3 OK for: hardhat@3.1.11 want: ^4.0.3
+141 silly fetch manifest @nomicfoundation/edr-darwin-x64@0.12.0-next.27
+142 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-darwin-x64 cache-miss
+143 silly fetch manifest @nomicfoundation/edr-darwin-arm64@0.12.0-next.27
+144 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-darwin-arm64 cache-miss
+145 silly fetch manifest @nomicfoundation/edr-linux-x64-gnu@0.12.0-next.27
+146 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-x64-gnu cache-miss
+147 silly fetch manifest @nomicfoundation/edr-linux-x64-musl@0.12.0-next.27
+148 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-x64-musl cache-miss
+149 silly fetch manifest @nomicfoundation/edr-win32-x64-msvc@0.12.0-next.27
+150 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-win32-x64-msvc cache-miss
+151 silly fetch manifest @nomicfoundation/edr-linux-arm64-gnu@0.12.0-next.27
+152 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-arm64-gnu cache-miss
+153 silly fetch manifest @nomicfoundation/edr-linux-arm64-musl@0.12.0-next.27
+154 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-arm64-musl cache-miss
+155 silly fetch manifest readdirp@^4.0.1
+156 silly packumentCache full:https://registry.npmjs.org/readdirp cache-miss
+157 http fetch GET 200 https://registry.npmjs.org/readdirp 40ms (cache miss)
+158 silly packumentCache full:https://registry.npmjs.org/readdirp set size:undefined disposed:false
+159 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-darwin-arm64 69ms (cache miss)
+160 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-darwin-arm64 set size:undefined disposed:false
+161 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-darwin-x64 79ms (cache miss)
+162 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-darwin-x64 set size:undefined disposed:false
+163 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-linux-x64-gnu 80ms (cache miss)
+164 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-x64-gnu set size:undefined disposed:false
+165 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-linux-x64-musl 83ms (cache miss)
+166 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-x64-musl set size:undefined disposed:false
+167 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-win32-x64-msvc 84ms (cache miss)
+168 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-win32-x64-msvc set size:undefined disposed:false
+169 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-linux-arm64-gnu 91ms (cache miss)
+170 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-arm64-gnu set size:undefined disposed:false
+171 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fedr-linux-arm64-musl 95ms (cache miss)
+172 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fedr-linux-arm64-musl set size:undefined disposed:false
+173 silly placeDep ROOT @nomicfoundation/edr-darwin-arm64@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+174 silly placeDep ROOT @nomicfoundation/edr-darwin-x64@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+175 silly placeDep ROOT @nomicfoundation/edr-linux-arm64-gnu@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+176 silly placeDep ROOT @nomicfoundation/edr-linux-arm64-musl@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+177 silly placeDep ROOT @nomicfoundation/edr-linux-x64-gnu@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+178 silly placeDep ROOT @nomicfoundation/edr-linux-x64-musl@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+179 silly placeDep ROOT @nomicfoundation/edr-win32-x64-msvc@0.12.0-next.27 OK for: @nomicfoundation/edr@0.12.0-next.27 want: 0.12.0-next.27
+180 silly placeDep ROOT readdirp@4.1.2 OK for: chokidar@4.0.3 want: ^4.0.1
+181 silly placeDep node_modules/jest-diff chalk@4.1.2 OK for: jest-diff@29.7.0 want: ^4.0.0
+182 silly placeDep ROOT diff-sequences@29.6.3 OK for: jest-diff@29.7.0 want: ^29.6.3
+183 silly placeDep ROOT jest-get-type@29.6.3 OK for: jest-diff@29.7.0 want: ^29.6.3
+184 silly placeDep ROOT pretty-format@29.7.0 OK for: jest-diff@29.7.0 want: ^29.7.0
+185 silly fetch manifest ansi-styles@^4.1.0
+186 silly packumentCache full:https://registry.npmjs.org/ansi-styles cache-miss
+187 silly fetch manifest supports-color@^7.1.0
+188 silly packumentCache full:https://registry.npmjs.org/supports-color cache-miss
+189 silly fetch manifest react-is@^18.0.0
+190 silly packumentCache full:https://registry.npmjs.org/react-is cache-miss
+191 silly fetch manifest ansi-styles@^5.0.0
+192 silly packumentCache full:https://registry.npmjs.org/ansi-styles cache-miss
+193 silly fetch manifest @jest/schemas@^29.6.3
+194 silly packumentCache full:https://registry.npmjs.org/@jest%2fschemas cache-miss
+195 http fetch GET 200 https://registry.npmjs.org/ansi-styles 51ms (cache miss)
+196 silly packumentCache full:https://registry.npmjs.org/ansi-styles set size:undefined disposed:false
+197 http fetch GET 200 https://registry.npmjs.org/ansi-styles 53ms (cache miss)
+198 silly packumentCache full:https://registry.npmjs.org/ansi-styles set size:undefined disposed:false
+199 http fetch GET 200 https://registry.npmjs.org/@jest%2fschemas 69ms (cache miss)
+200 silly packumentCache full:https://registry.npmjs.org/@jest%2fschemas set size:undefined disposed:false
+201 http fetch GET 200 https://registry.npmjs.org/supports-color 81ms (cache miss)
+202 silly packumentCache full:https://registry.npmjs.org/supports-color set size:undefined disposed:false
+203 http fetch GET 200 https://registry.npmjs.org/react-is 186ms (cache miss)
+204 silly packumentCache full:https://registry.npmjs.org/react-is set size:undefined disposed:false
+205 silly placeDep ROOT @jest/schemas@29.6.3 OK for: pretty-format@29.7.0 want: ^29.6.3
+206 silly placeDep ROOT ansi-styles@5.2.0 OK for: pretty-format@29.7.0 want: ^5.0.0
+207 silly placeDep ROOT react-is@18.3.1 OK for: pretty-format@29.7.0 want: ^18.0.0
+208 silly fetch manifest @sinclair/typebox@^0.27.8
+209 silly packumentCache full:https://registry.npmjs.org/@sinclair%2ftypebox cache-miss
+210 http fetch GET 200 https://registry.npmjs.org/@sinclair%2ftypebox 98ms (cache miss)
+211 silly packumentCache full:https://registry.npmjs.org/@sinclair%2ftypebox set size:undefined disposed:false
+212 silly placeDep ROOT @sinclair/typebox@0.27.10 OK for: @jest/schemas@29.6.3 want: ^0.27.8
+213 silly placeDep ROOT @fastify/busboy@2.1.1 OK for: undici@5.29.0 want: ^2.0.0
+214 silly placeDep ROOT fast-equals@5.4.0 REPLACE for: @nomicfoundation/hardhat-utils@4.0.0 want: ^5.4.0
+215 silly placeDep node_modules/@nomicfoundation/hardhat-errors undici@6.23.0 OK for: @nomicfoundation/hardhat-utils@4.0.0 want: ^6.16.1
+216 silly placeDep node_modules/@nomicfoundation/hardhat-node-test-runner undici@6.23.0 OK for: @nomicfoundation/hardhat-utils@4.0.0 want: ^6.16.1
+217 silly placeDep node_modules/@nomicfoundation/hardhat-zod-utils undici@6.23.0 OK for: @nomicfoundation/hardhat-utils@4.0.0 want: ^6.16.1
+218 silly placeDep node_modules/hardhat undici@6.23.0 OK for: @nomicfoundation/hardhat-utils@4.0.0 want: ^6.16.1
+219 silly placeDep node_modules/jest-diff ansi-styles@4.3.0 OK for: chalk@4.1.2 want: ^4.1.0
+220 silly placeDep ROOT supports-color@7.2.0 OK for: chalk@4.1.2 want: ^7.1.0
+221 silly fetch manifest color-convert@^2.0.1
+222 silly packumentCache full:https://registry.npmjs.org/color-convert cache-miss
+223 silly fetch manifest has-flag@^4.0.0
+224 silly packumentCache full:https://registry.npmjs.org/has-flag cache-miss
+225 http fetch GET 200 https://registry.npmjs.org/has-flag 48ms (cache miss)
+226 silly packumentCache full:https://registry.npmjs.org/has-flag set size:undefined disposed:false
+227 http fetch GET 200 https://registry.npmjs.org/color-convert 62ms (cache miss)
+228 silly packumentCache full:https://registry.npmjs.org/color-convert set size:undefined disposed:false
+229 silly placeDep ROOT has-flag@4.0.0 OK for: supports-color@7.2.0 want: ^4.0.0
+230 silly placeDep ROOT color-convert@2.0.1 OK for: ansi-styles@4.3.0 want: ^2.0.1
+231 silly fetch manifest color-name@~1.1.4
+232 silly packumentCache full:https://registry.npmjs.org/color-name cache-miss
+233 http fetch GET 200 https://registry.npmjs.org/color-name 77ms (cache miss)
+234 silly packumentCache full:https://registry.npmjs.org/color-name set size:undefined disposed:false
+235 silly placeDep ROOT color-name@1.1.4 OK for: color-convert@2.0.1 want: ~1.1.4
+236 silly reify mark retired [
+236 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr'
+236 silly reify ]
+237 silly reify mark retired [
+237 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-darwin-arm64'
+237 silly reify ]
+238 silly reify mark retired [
+238 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-darwin-x64'
+238 silly reify ]
+239 silly reify mark retired [
+239 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-arm64-gnu'
+239 silly reify ]
+240 silly reify mark retired [
+240 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-arm64-musl'
+240 silly reify ]
+241 silly reify mark retired [
+241 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-x64-gnu'
+241 silly reify ]
+242 silly reify mark retired [
+242 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-x64-musl'
+242 silly reify ]
+243 silly reify mark retired [
+243 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-win32-x64-msvc'
+243 silly reify ]
+244 silly reify mark retired [
+244 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\hardhat-errors'
+244 silly reify ]
+245 silly reify mark retired [
+245 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\hardhat-zod-utils'
+245 silly reify ]
+246 silly reify mark retired [
+246 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\fast-equals'
+246 silly reify ]
+247 silly reify mark retired [
+247 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\hardhat',
+247 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\hardhat',
+247 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\hardhat.cmd',
+247 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\hardhat.ps1'
+247 silly reify ]
+248 silly reify moves {
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-sE373DFZ',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-darwin-arm64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-darwin-arm64-CMUxupZC',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-darwin-x64': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-darwin-x64-xgZ3nzcG',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-arm64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-linux-arm64-gnu-KlIA79Ze',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-arm64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-linux-arm64-musl-c6LpTBcj',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-x64-gnu': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-linux-x64-gnu-qES6kuuF',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-linux-x64-musl': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-linux-x64-musl-2c7AIMIu',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\edr-win32-x64-msvc': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.edr-win32-x64-msvc-GYSg2Nqu',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\hardhat-errors': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.hardhat-errors-FluoEI4Q',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\hardhat-zod-utils': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@nomicfoundation\\.hardhat-zod-utils-Z5lhPf6w',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\fast-equals': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.fast-equals-w56FpErX',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\hardhat': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.hardhat-XQaO56Jj',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\hardhat': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\.hardhat-j1zxhdn3',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\hardhat.cmd': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\.hardhat.cmd-gs9wmu1k',
+248 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\hardhat.ps1': 'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\.bin\\.hardhat.ps1-ohFNEpgL'
+248 silly reify }
+249 silly audit bulk request {
+249 silly audit   '@adraffy/ens-normalize': [ '1.10.1' ],
+249 silly audit   '@cspotcode/source-map-support': [ '0.8.1' ],
+249 silly audit   '@esbuild/aix-ppc64': [ '0.25.9' ],
+249 silly audit   '@esbuild/android-arm': [ '0.25.9' ],
+249 silly audit   '@esbuild/android-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/android-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/darwin-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/darwin-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/freebsd-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/freebsd-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-arm': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-ia32': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-loong64': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-mips64el': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-ppc64': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-riscv64': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-s390x': [ '0.25.9' ],
+249 silly audit   '@esbuild/linux-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/netbsd-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/netbsd-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/openbsd-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/openbsd-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/openharmony-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/sunos-x64': [ '0.25.9' ],
+249 silly audit   '@esbuild/win32-arm64': [ '0.25.9' ],
+249 silly audit   '@esbuild/win32-ia32': [ '0.25.9' ],
+249 silly audit   '@esbuild/win32-x64': [ '0.25.9' ],
+249 silly audit   '@ethersproject/abi': [ '5.8.0' ],
+249 silly audit   '@ethersproject/abstract-provider': [ '5.8.0' ],
+249 silly audit   '@ethersproject/abstract-signer': [ '5.8.0' ],
+249 silly audit   '@ethersproject/address': [ '5.8.0', '5.6.1' ],
+249 silly audit   '@ethersproject/base64': [ '5.8.0' ],
+249 silly audit   '@ethersproject/bignumber': [ '5.8.0' ],
+249 silly audit   '@ethersproject/bytes': [ '5.8.0' ],
+249 silly audit   '@ethersproject/constants': [ '5.8.0' ],
+249 silly audit   '@ethersproject/hash': [ '5.8.0' ],
+249 silly audit   '@ethersproject/keccak256': [ '5.8.0' ],
+249 silly audit   '@ethersproject/logger': [ '5.8.0' ],
+249 silly audit   '@ethersproject/networks': [ '5.8.0' ],
+249 silly audit   '@ethersproject/properties': [ '5.8.0' ],
+249 silly audit   '@ethersproject/rlp': [ '5.8.0' ],
+249 silly audit   '@ethersproject/signing-key': [ '5.8.0' ],
+249 silly audit   '@ethersproject/strings': [ '5.8.0' ],
+249 silly audit   '@ethersproject/transactions': [ '5.8.0' ],
+249 silly audit   '@ethersproject/web': [ '5.8.0' ],
+249 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+249 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.5' ],
+249 silly audit   '@jridgewell/trace-mapping': [ '0.3.9' ],
+249 silly audit   '@noble/curves': [ '1.8.2', '1.4.2', '1.2.0' ],
+249 silly audit   '@noble/hashes': [ '1.7.2', '1.4.0', '1.3.2' ],
+249 silly audit   '@nomicfoundation/hardhat-ethers': [ '4.0.0' ],
+249 silly audit   '@nomicfoundation/hardhat-ignition': [ '3.0.1' ],
+249 silly audit   '@nomicfoundation/hardhat-utils': [ '3.0.0', '4.0.0' ],
+249 silly audit   undici: [ '6.21.3', '5.29.0', '6.23.0' ],
+249 silly audit   '@nomicfoundation/hardhat-verify': [ '3.0.0' ],
+249 silly audit   '@nomicfoundation/ignition-core': [ '3.0.1' ],
+249 silly audit   '@nomicfoundation/ignition-ui': [ '3.0.1' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-darwin-arm64': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-darwin-x64': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-linux-arm64-gnu': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-linux-arm64-musl': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-linux-x64-gnu': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-linux-x64-musl': [ '0.1.2' ],
+249 silly audit   '@nomicfoundation/solidity-analyzer-win32-x64-msvc': [ '0.1.2' ],
+249 silly audit   '@scure/base': [ '1.1.9', '1.2.6' ],
+249 silly audit   '@scure/bip32': [ '1.4.0' ],
+249 silly audit   '@scure/bip39': [ '1.3.0' ],
+249 silly audit   '@sentry/core': [ '9.46.0' ],
+249 silly audit   '@streamparser/json': [ '0.0.22' ],
+249 silly audit   '@streamparser/json-node': [ '0.0.22' ],
+249 silly audit   '@tsconfig/node10': [ '1.0.11' ],
+249 silly audit   '@tsconfig/node12': [ '1.0.11' ],
+249 silly audit   '@tsconfig/node14': [ '1.0.3' ],
+249 silly audit   '@tsconfig/node16': [ '1.0.4' ],
+249 silly audit   '@types/node': [ '20.19.11', '22.7.5' ],
+249 silly audit   acorn: [ '8.15.0' ],
+249 silly audit   'acorn-walk': [ '8.3.4' ],
+249 silly audit   'adm-zip': [ '0.4.16' ],
+249 silly audit   'aes-js': [ '4.0.0-beta.5' ],
+249 silly audit   'ansi-colors': [ '4.1.3' ],
+249 silly audit   'ansi-regex': [ '5.0.1' ],
+249 silly audit   arg: [ '4.1.3' ],
+249 silly audit   'bn.js': [ '5.2.2', '4.12.2' ],
+249 silly audit   brorand: [ '1.1.0' ],
+249 silly audit   cbor2: [ '1.12.0' ],
+249 silly audit   chalk: [ '5.6.0', '4.1.2' ],
+249 silly audit   'create-require': [ '1.1.1' ],
+249 silly audit   debug: [ '4.4.1' ],
+249 silly audit   dotenv: [ '17.2.1' ],
+249 silly audit   elliptic: [ '6.6.1' ],
+249 silly audit   enquirer: [ '2.4.1' ],
+249 silly audit   'env-paths': [ '2.2.1' ],
+249 silly audit   esbuild: [ '0.25.9' ],
+249 silly audit   'ethereum-cryptography': [ '2.2.1' ],
+249 silly audit   ethers: [ '6.15.0' ],
+249 silly audit   tslib: [ '2.7.0' ],
+249 silly audit   'undici-types': [ '6.19.8', '6.21.0' ],
+249 silly audit   ws: [ '8.17.1', '8.18.3' ],
+249 silly audit   fsevents: [ '2.3.3' ],
+249 silly audit   'get-tsconfig': [ '4.10.1' ],
+249 silly audit   'hash.js': [ '1.1.7' ],
+249 silly audit   'hmac-drbg': [ '1.0.1' ],
+249 silly audit   immer: [ '10.0.2' ],
+249 silly audit   inherits: [ '2.0.4' ],
+249 silly audit   'js-sha3': [ '0.8.0' ],
+249 silly audit   'json-stream-stringify': [ '3.1.6' ],
+249 silly audit   'json-stringify-safe': [ '5.0.1' ],
+249 silly audit   json5: [ '2.2.3' ],
+249 silly audit   kleur: [ '3.0.3' ],
+249 silly audit   'lodash-es': [ '4.17.21' ],
+249 silly audit   'make-error': [ '1.3.6' ],
+249 silly audit   'micro-eth-signer': [ '0.14.0' ],
+249 silly audit   'micro-packed': [ '0.7.3' ],
+249 silly audit   'minimalistic-assert': [ '1.0.1' ],
+249 silly audit   'minimalistic-crypto-utils': [ '1.0.1' ],
+249 silly audit   minimist: [ '1.2.8' ],
+249 silly audit   ms: [ '2.1.3' ],
+249 silly audit   ndjson: [ '2.0.0' ],
+249 silly audit   'p-map': [ '7.0.3' ],
+249 silly audit   prompts: [ '2.4.2' ],
+249 silly audit   'readable-stream': [ '3.6.2' ],
+249 silly audit   'resolve-pkg-maps': [ '1.0.0' ],
+249 silly audit   'resolve.exports': [ '2.0.3' ],
+249 silly audit   rfdc: [ '1.4.1' ],
+249 silly audit   'safe-buffer': [ '5.2.1' ],
+249 silly audit   semver: [ '7.7.2' ],
+249 silly audit   sisteransi: [ '1.0.5' ],
+249 silly audit   split2: [ '3.2.2' ],
+249 silly audit   string_decoder: [ '1.3.0' ],
+249 silly audit   'strip-ansi': [ '6.0.1' ],
+249 silly audit   through2: [ '4.0.2' ],
+249 silly audit   'ts-node': [ '10.9.2' ],
+249 silly audit   diff: [ '4.0.2' ],
+249 silly audit   tsx: [ '4.20.5' ],
+249 silly audit   typescript: [ '5.9.2' ],
+249 silly audit   'util-deprecate': [ '1.0.2' ],
+249 silly audit   'v8-compile-cache-lib': [ '3.0.1' ],
+249 silly audit   yn: [ '3.1.1' ],
+249 silly audit   zod: [ '3.25.76' ],
+249 silly audit   '@nomicfoundation/hardhat-node-test-runner': [ '3.0.10' ],
+249 silly audit   hardhat: [ '3.1.11' ],
+249 silly audit   '@nomicfoundation/hardhat-errors': [ '3.0.7' ],
+249 silly audit   '@nomicfoundation/hardhat-node-test-reporter': [ '3.0.2' ],
+249 silly audit   '@nomicfoundation/hardhat-zod-utils': [ '3.0.3' ],
+249 silly audit   '@actions/core': [ '1.11.1' ],
+249 silly audit   'jest-diff': [ '29.7.0' ],
+249 silly audit   '@actions/exec': [ '1.1.1' ],
+249 silly audit   '@actions/http-client': [ '2.2.3' ],
+249 silly audit   '@actions/io': [ '1.1.3' ],
+249 silly audit   tunnel: [ '0.0.6' ],
+249 silly audit   '@nomicfoundation/edr': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/hardhat-vendored': [ '3.0.1' ],
+249 silly audit   chokidar: [ '4.0.3' ],
+249 silly audit   '@nomicfoundation/edr-darwin-arm64': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/edr-darwin-x64': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/edr-linux-arm64-gnu': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/edr-linux-arm64-musl': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/edr-linux-x64-gnu': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/edr-linux-x64-musl': [ '0.12.0-next.27' ],
+249 silly audit   '@nomicfoundation/edr-win32-x64-msvc': [ '0.12.0-next.27' ],
+249 silly audit   readdirp: [ '4.1.2' ],
+249 silly audit   'diff-sequences': [ '29.6.3' ],
+249 silly audit   'jest-get-type': [ '29.6.3' ],
+249 silly audit   'pretty-format': [ '29.7.0' ],
+249 silly audit   '@jest/schemas': [ '29.6.3' ],
+249 silly audit   'ansi-styles': [ '5.2.0', '4.3.0' ],
+249 silly audit   'react-is': [ '18.3.1' ],
+249 silly audit   '@sinclair/typebox': [ '0.27.10' ],
+249 silly audit   '@fastify/busboy': [ '2.1.1' ],
+249 silly audit   'fast-equals': [ '5.4.0' ],
+249 silly audit   'supports-color': [ '7.2.0' ],
+249 silly audit   'has-flag': [ '4.0.0' ],
+249 silly audit   'color-convert': [ '2.0.1' ],
+249 silly audit   'color-name': [ '1.1.4' ]
+249 silly audit }
+250 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\fsevents
+251 silly reify mark deleted [
+251 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\fsevents'
+251 silly reify ]
+252 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\win32-ia32
+253 silly reify mark deleted [
+253 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\win32-ia32'
+253 silly reify ]
+254 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\win32-arm64
+255 silly reify mark deleted [
+255 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\win32-arm64'
+255 silly reify ]
+256 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\sunos-x64
+257 silly reify mark deleted [
+257 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\sunos-x64'
+257 silly reify ]
+258 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\openharmony-arm64
+259 silly reify mark deleted [
+259 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\openharmony-arm64'
+259 silly reify ]
+260 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\openbsd-x64
+261 silly reify mark deleted [
+261 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\openbsd-x64'
+261 silly reify ]
+262 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\openbsd-arm64
+263 silly reify mark deleted [
+263 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\openbsd-arm64'
+263 silly reify ]
+264 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\netbsd-x64
+265 silly reify mark deleted [
+265 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\netbsd-x64'
+265 silly reify ]
+266 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\netbsd-arm64
+267 silly reify mark deleted [
+267 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\netbsd-arm64'
+267 silly reify ]
+268 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-x64
+269 silly reify mark deleted [
+269 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-x64'
+269 silly reify ]
+270 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-s390x
+271 silly reify mark deleted [
+271 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-s390x'
+271 silly reify ]
+272 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-riscv64
+273 silly reify mark deleted [
+273 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-riscv64'
+273 silly reify ]
+274 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-ppc64
+275 silly reify mark deleted [
+275 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-ppc64'
+275 silly reify ]
+276 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-mips64el
+277 silly reify mark deleted [
+277 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-mips64el'
+277 silly reify ]
+278 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-loong64
+279 silly reify mark deleted [
+279 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-loong64'
+279 silly reify ]
+280 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-ia32
+281 silly reify mark deleted [
+281 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-ia32'
+281 silly reify ]
+282 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-arm64
+283 silly reify mark deleted [
+283 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-arm64'
+283 silly reify ]
+284 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\linux-arm
+285 silly reify mark deleted [
+285 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\linux-arm'
+285 silly reify ]
+286 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\freebsd-x64
+287 silly reify mark deleted [
+287 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\freebsd-x64'
+287 silly reify ]
+288 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\freebsd-arm64
+289 silly reify mark deleted [
+289 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\freebsd-arm64'
+289 silly reify ]
+290 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\darwin-x64
+291 silly reify mark deleted [
+291 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\darwin-x64'
+291 silly reify ]
+292 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\darwin-arm64
+293 silly reify mark deleted [
+293 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\darwin-arm64'
+293 silly reify ]
+294 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\android-x64
+295 silly reify mark deleted [
+295 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\android-x64'
+295 silly reify ]
+296 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\android-arm64
+297 silly reify mark deleted [
+297 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\android-arm64'
+297 silly reify ]
+298 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\android-arm
+299 silly reify mark deleted [
+299 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\android-arm'
+299 silly reify ]
+300 verbose reify failed optional dependency C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\node_modules\@esbuild\aix-ppc64
+301 silly reify mark deleted [
+301 silly reify   'C:\\Users\\soham\\OneDrive\\Desktop\\Decentralized-Credentials\\cd_var\\node_modules\\@esbuild\\aix-ppc64'
+301 silly reify ]
+302 http cache color-name@https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz 0ms (cache hit)
+303 http cache @fastify/busboy@https://registry.npmjs.org/@fastify/busboy/-/busboy-2.1.1.tgz 0ms (cache hit)
+304 http cache color-convert@https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz 0ms (cache hit)
+305 http cache supports-color@https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz 0ms (cache hit)
+306 http cache has-flag@https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz 0ms (cache hit)
+307 http cache @sinclair/typebox@https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.10.tgz 0ms (cache hit)
+308 http cache react-is@https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz 0ms (cache hit)
+309 http cache @nomicfoundation/hardhat-vendored@https://registry.npmjs.org/@nomicfoundation/hardhat-vendored/-/hardhat-vendored-3.0.1.tgz 0ms (cache hit)
+310 http cache jest-get-type@https://registry.npmjs.org/jest-get-type/-/jest-get-type-29.6.3.tgz 0ms (cache hit)
+311 http cache @jest/schemas@https://registry.npmjs.org/@jest/schemas/-/schemas-29.6.3.tgz 0ms (cache hit)
+312 http cache readdirp@https://registry.npmjs.org/readdirp/-/readdirp-4.1.2.tgz 0ms (cache hit)
+313 http cache diff-sequences@https://registry.npmjs.org/diff-sequences/-/diff-sequences-29.6.3.tgz 0ms (cache hit)
+314 http cache chokidar@https://registry.npmjs.org/chokidar/-/chokidar-4.0.3.tgz 0ms (cache hit)
+315 http cache undici@https://registry.npmjs.org/undici/-/undici-5.29.0.tgz 0ms (cache hit)
+316 http cache @actions/io@https://registry.npmjs.org/@actions/io/-/io-1.1.3.tgz 0ms (cache hit)
+317 http cache @nomicfoundation/hardhat-node-test-runner@https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-runner/-/hardhat-node-test-runner-3.0.10.tgz 0ms (cache hit)
+318 http cache @nomicfoundation/hardhat-node-test-reporter@https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-reporter/-/hardhat-node-test-reporter-3.0.2.tgz 0ms (cache hit)
+319 http cache ansi-styles@https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz 0ms (cache hit)
+320 http cache @nomicfoundation/hardhat-zod-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-zod-utils/-/hardhat-zod-utils-3.0.3.tgz 0ms (cache hit)
+321 http cache jest-diff@https://registry.npmjs.org/jest-diff/-/jest-diff-29.7.0.tgz 0ms (cache hit)
+322 http cache hardhat@https://registry.npmjs.org/hardhat/-/hardhat-3.1.11.tgz 0ms (cache hit)
+323 http cache pretty-format@https://registry.npmjs.org/pretty-format/-/pretty-format-29.7.0.tgz 0ms (cache hit)
+324 http cache tunnel@https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz 0ms (cache hit)
+325 http cache fast-equals@https://registry.npmjs.org/fast-equals/-/fast-equals-5.4.0.tgz 0ms (cache hit)
+326 http cache @nomicfoundation/hardhat-errors@https://registry.npmjs.org/@nomicfoundation/hardhat-errors/-/hardhat-errors-3.0.7.tgz 0ms (cache hit)
+327 http cache @nomicfoundation/edr-win32-x64-msvc@https://registry.npmjs.org/@nomicfoundation/edr-win32-x64-msvc/-/edr-win32-x64-msvc-0.12.0-next.27.tgz 0ms (cache hit)
+328 http cache @nomicfoundation/edr-linux-x64-gnu@https://registry.npmjs.org/@nomicfoundation/edr-linux-x64-gnu/-/edr-linux-x64-gnu-0.12.0-next.27.tgz 0ms (cache hit)
+329 http cache @nomicfoundation/edr-linux-x64-musl@https://registry.npmjs.org/@nomicfoundation/edr-linux-x64-musl/-/edr-linux-x64-musl-0.12.0-next.27.tgz 0ms (cache hit)
+330 http cache @nomicfoundation/edr-darwin-x64@https://registry.npmjs.org/@nomicfoundation/edr-darwin-x64/-/edr-darwin-x64-0.12.0-next.27.tgz 0ms (cache hit)
+331 http cache @actions/http-client@https://registry.npmjs.org/@actions/http-client/-/http-client-2.2.3.tgz 0ms (cache hit)
+332 http cache @nomicfoundation/edr-linux-arm64-gnu@https://registry.npmjs.org/@nomicfoundation/edr-linux-arm64-gnu/-/edr-linux-arm64-gnu-0.12.0-next.27.tgz 0ms (cache hit)
+333 http cache @actions/exec@https://registry.npmjs.org/@actions/exec/-/exec-1.1.1.tgz 0ms (cache hit)
+334 http cache @actions/core@https://registry.npmjs.org/@actions/core/-/core-1.11.1.tgz 0ms (cache hit)
+335 http cache @nomicfoundation/edr-linux-arm64-musl@https://registry.npmjs.org/@nomicfoundation/edr-linux-arm64-musl/-/edr-linux-arm64-musl-0.12.0-next.27.tgz 0ms (cache hit)
+336 http cache @nomicfoundation/edr@https://registry.npmjs.org/@nomicfoundation/edr/-/edr-0.12.0-next.27.tgz 0ms (cache hit)
+337 http cache @nomicfoundation/edr-darwin-arm64@https://registry.npmjs.org/@nomicfoundation/edr-darwin-arm64/-/edr-darwin-arm64-0.12.0-next.27.tgz 0ms (cache hit)
+338 http cache chalk@https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz 0ms (cache hit)
+339 http cache undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 0ms (cache hit)
+340 http cache undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 0ms (cache hit)
+341 http cache ansi-styles@https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz 0ms (cache hit)
+342 http cache @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 0ms (cache hit)
+343 http cache undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 0ms (cache hit)
+344 http cache @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 0ms (cache hit)
+345 http cache undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 0ms (cache hit)
+346 http cache @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 0ms (cache hit)
+347 silly tarball no local data for color-name@https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz. Extracting by manifest.
+348 silly tarball no local data for @fastify/busboy@https://registry.npmjs.org/@fastify/busboy/-/busboy-2.1.1.tgz. Extracting by manifest.
+349 silly tarball no local data for color-convert@https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz. Extracting by manifest.
+350 silly tarball no local data for supports-color@https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz. Extracting by manifest.
+351 silly tarball no local data for has-flag@https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz. Extracting by manifest.
+352 silly tarball no local data for @sinclair/typebox@https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.10.tgz. Extracting by manifest.
+353 silly tarball no local data for react-is@https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz. Extracting by manifest.
+354 silly tarball no local data for @nomicfoundation/hardhat-vendored@https://registry.npmjs.org/@nomicfoundation/hardhat-vendored/-/hardhat-vendored-3.0.1.tgz. Extracting by manifest.
+355 silly tarball no local data for jest-get-type@https://registry.npmjs.org/jest-get-type/-/jest-get-type-29.6.3.tgz. Extracting by manifest.
+356 silly tarball no local data for @jest/schemas@https://registry.npmjs.org/@jest/schemas/-/schemas-29.6.3.tgz. Extracting by manifest.
+357 silly tarball no local data for readdirp@https://registry.npmjs.org/readdirp/-/readdirp-4.1.2.tgz. Extracting by manifest.
+358 silly tarball no local data for diff-sequences@https://registry.npmjs.org/diff-sequences/-/diff-sequences-29.6.3.tgz. Extracting by manifest.
+359 silly tarball no local data for chokidar@https://registry.npmjs.org/chokidar/-/chokidar-4.0.3.tgz. Extracting by manifest.
+360 silly tarball no local data for undici@https://registry.npmjs.org/undici/-/undici-5.29.0.tgz. Extracting by manifest.
+361 http cache @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 0ms (cache hit)
+362 silly tarball no local data for @actions/io@https://registry.npmjs.org/@actions/io/-/io-1.1.3.tgz. Extracting by manifest.
+363 silly tarball no local data for @nomicfoundation/hardhat-node-test-runner@https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-runner/-/hardhat-node-test-runner-3.0.10.tgz. Extracting by manifest.
+364 silly tarball no local data for @nomicfoundation/hardhat-node-test-reporter@https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-reporter/-/hardhat-node-test-reporter-3.0.2.tgz. Extracting by manifest.
+365 silly tarball no local data for ansi-styles@https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz. Extracting by manifest.
+366 silly tarball no local data for @nomicfoundation/hardhat-zod-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-zod-utils/-/hardhat-zod-utils-3.0.3.tgz. Extracting by manifest.
+367 silly tarball no local data for jest-diff@https://registry.npmjs.org/jest-diff/-/jest-diff-29.7.0.tgz. Extracting by manifest.
+368 silly tarball no local data for hardhat@https://registry.npmjs.org/hardhat/-/hardhat-3.1.11.tgz. Extracting by manifest.
+369 silly tarball no local data for pretty-format@https://registry.npmjs.org/pretty-format/-/pretty-format-29.7.0.tgz. Extracting by manifest.
+370 silly tarball no local data for tunnel@https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz. Extracting by manifest.
+371 silly tarball no local data for fast-equals@https://registry.npmjs.org/fast-equals/-/fast-equals-5.4.0.tgz. Extracting by manifest.
+372 silly tarball no local data for @nomicfoundation/hardhat-errors@https://registry.npmjs.org/@nomicfoundation/hardhat-errors/-/hardhat-errors-3.0.7.tgz. Extracting by manifest.
+373 silly tarball no local data for @nomicfoundation/edr-win32-x64-msvc@https://registry.npmjs.org/@nomicfoundation/edr-win32-x64-msvc/-/edr-win32-x64-msvc-0.12.0-next.27.tgz. Extracting by manifest.
+374 silly tarball no local data for @nomicfoundation/edr-linux-x64-gnu@https://registry.npmjs.org/@nomicfoundation/edr-linux-x64-gnu/-/edr-linux-x64-gnu-0.12.0-next.27.tgz. Extracting by manifest.
+375 silly tarball no local data for @nomicfoundation/edr-linux-x64-musl@https://registry.npmjs.org/@nomicfoundation/edr-linux-x64-musl/-/edr-linux-x64-musl-0.12.0-next.27.tgz. Extracting by manifest.
+376 silly tarball no local data for @nomicfoundation/edr-darwin-x64@https://registry.npmjs.org/@nomicfoundation/edr-darwin-x64/-/edr-darwin-x64-0.12.0-next.27.tgz. Extracting by manifest.
+377 silly tarball no local data for @actions/http-client@https://registry.npmjs.org/@actions/http-client/-/http-client-2.2.3.tgz. Extracting by manifest.
+378 silly tarball no local data for @nomicfoundation/edr-linux-arm64-gnu@https://registry.npmjs.org/@nomicfoundation/edr-linux-arm64-gnu/-/edr-linux-arm64-gnu-0.12.0-next.27.tgz. Extracting by manifest.
+379 silly tarball no local data for @actions/exec@https://registry.npmjs.org/@actions/exec/-/exec-1.1.1.tgz. Extracting by manifest.
+380 silly tarball no local data for @actions/core@https://registry.npmjs.org/@actions/core/-/core-1.11.1.tgz. Extracting by manifest.
+381 silly tarball no local data for @nomicfoundation/edr-linux-arm64-musl@https://registry.npmjs.org/@nomicfoundation/edr-linux-arm64-musl/-/edr-linux-arm64-musl-0.12.0-next.27.tgz. Extracting by manifest.
+382 silly tarball no local data for @nomicfoundation/edr@https://registry.npmjs.org/@nomicfoundation/edr/-/edr-0.12.0-next.27.tgz. Extracting by manifest.
+383 silly tarball no local data for @nomicfoundation/edr-darwin-arm64@https://registry.npmjs.org/@nomicfoundation/edr-darwin-arm64/-/edr-darwin-arm64-0.12.0-next.27.tgz. Extracting by manifest.
+384 silly tarball no local data for chalk@https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz. Extracting by manifest.
+385 silly tarball no local data for undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz. Extracting by manifest.
+386 silly tarball no local data for undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz. Extracting by manifest.
+387 silly tarball no local data for ansi-styles@https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz. Extracting by manifest.
+388 silly tarball no local data for @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz. Extracting by manifest.
+389 silly tarball no local data for undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz. Extracting by manifest.
+390 silly tarball no local data for @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz. Extracting by manifest.
+391 silly tarball no local data for undici@https://registry.npmjs.org/undici/-/undici-6.23.0.tgz. Extracting by manifest.
+392 silly tarball no local data for @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz. Extracting by manifest.
+393 silly tarball no local data for @nomicfoundation/hardhat-utils@https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz. Extracting by manifest.
+394 http fetch GET 200 https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz 64ms (cache miss)
+395 http fetch GET 200 https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz 64ms (cache miss)
+396 http fetch GET 200 https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz 68ms (cache miss)
+397 http fetch GET 200 https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz 100ms (cache miss)
+398 http fetch GET 200 https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz 101ms (cache miss)
+399 http fetch GET 200 https://registry.npmjs.org/@actions/io/-/io-1.1.3.tgz 103ms (cache miss)
+400 http fetch GET 200 https://registry.npmjs.org/@jest/schemas/-/schemas-29.6.3.tgz 138ms (cache miss)
+401 http fetch GET 200 https://registry.npmjs.org/diff-sequences/-/diff-sequences-29.6.3.tgz 145ms (cache miss)
+402 http fetch GET 200 https://registry.npmjs.org/jest-get-type/-/jest-get-type-29.6.3.tgz 147ms (cache miss)
+403 http fetch GET 200 https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz 146ms (cache miss)
+404 http fetch GET 200 https://registry.npmjs.org/@fastify/busboy/-/busboy-2.1.1.tgz 152ms (cache miss)
+405 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-runner/-/hardhat-node-test-runner-3.0.10.tgz 149ms (cache miss)
+406 http fetch GET 200 https://registry.npmjs.org/readdirp/-/readdirp-4.1.2.tgz 153ms (cache miss)
+407 http fetch GET 200 https://registry.npmjs.org/chokidar/-/chokidar-4.0.3.tgz 174ms (cache miss)
+408 http fetch GET 200 https://registry.npmjs.org/jest-diff/-/jest-diff-29.7.0.tgz 179ms (cache miss)
+409 http fetch GET 200 https://registry.npmjs.org/pretty-format/-/pretty-format-29.7.0.tgz 183ms (cache miss)
+410 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 225ms
+411 silly audit report {
+411 silly audit report   undici: [
+411 silly audit report     {
+411 silly audit report       id: 1112496,
+411 silly audit report       url: 'https://github.com/advisories/GHSA-g9mf-h72j-4rw9',
+411 silly audit report       title: 'Undici has an unbounded decompression chain in HTTP responses on Node.js Fetch API via Content-Encoding leads to resource exhaustion',
+411 silly audit report       severity: 'moderate',
+411 silly audit report       vulnerable_versions: '<6.23.0',
+411 silly audit report       cwe: [Array],
+411 silly audit report       cvss: [Object]
+411 silly audit report     }
+411 silly audit report   ],
+411 silly audit report   'bn.js': [
+411 silly audit report     {
+411 silly audit report       id: 1113441,
+411 silly audit report       url: 'https://github.com/advisories/GHSA-378v-28hj-76wf',
+411 silly audit report       title: 'bn.js affected by an infinite loop',
+411 silly audit report       severity: 'moderate',
+411 silly audit report       vulnerable_versions: '>=5.0.0 <5.2.3',
+411 silly audit report       cwe: [Array],
+411 silly audit report       cvss: [Object]
+411 silly audit report     },
+411 silly audit report     {
+411 silly audit report       id: 1113442,
+411 silly audit report       url: 'https://github.com/advisories/GHSA-378v-28hj-76wf',
+411 silly audit report       title: 'bn.js affected by an infinite loop',
+411 silly audit report       severity: 'moderate',
+411 silly audit report       vulnerable_versions: '<4.12.3',
+411 silly audit report       cwe: [Array],
+411 silly audit report       cvss: [Object]
+411 silly audit report     }
+411 silly audit report   ],
+411 silly audit report   elliptic: [
+411 silly audit report     {
+411 silly audit report       id: 1112030,
+411 silly audit report       url: 'https://github.com/advisories/GHSA-848j-6mx2-7j84',
+411 silly audit report       title: 'Elliptic Uses a Cryptographic Primitive with a Risky Implementation',
+411 silly audit report       severity: 'low',
+411 silly audit report       vulnerable_versions: '<=6.6.1',
+411 silly audit report       cwe: [Array],
+411 silly audit report       cvss: [Object]
+411 silly audit report     }
+411 silly audit report   ],
+411 silly audit report   'lodash-es': [
+411 silly audit report     {
+411 silly audit report       id: 1112453,
+411 silly audit report       url: 'https://github.com/advisories/GHSA-xxjr-mmjv-4gpg',
+411 silly audit report       title: 'Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions',
+411 silly audit report       severity: 'moderate',
+411 silly audit report       vulnerable_versions: '>=4.0.0 <=4.17.22',
+411 silly audit report       cwe: [Array],
+411 silly audit report       cvss: [Object]
+411 silly audit report     }
+411 silly audit report   ],
+411 silly audit report   diff: [
+411 silly audit report     {
+411 silly audit report       id: 1112704,
+411 silly audit report       url: 'https://github.com/advisories/GHSA-73rr-hh4g-fpgx',
+411 silly audit report       title: 'jsdiff has a Denial of Service vulnerability in parsePatch and applyPatch',
+411 silly audit report       severity: 'low',
+411 silly audit report       vulnerable_versions: '>=4.0.0 <4.0.4',
+411 silly audit report       cwe: [Array],
+411 silly audit report       cvss: [Object]
+411 silly audit report     }
+411 silly audit report   ]
+411 silly audit report }
+412 silly packumentCache corgi:https://registry.npmjs.org/undici cache-miss
+413 silly packumentCache corgi:https://registry.npmjs.org/bn.js cache-miss
+414 silly packumentCache corgi:https://registry.npmjs.org/elliptic cache-miss
+415 silly packumentCache corgi:https://registry.npmjs.org/lodash-es cache-miss
+416 silly packumentCache corgi:https://registry.npmjs.org/diff cache-miss
+417 http fetch GET 200 https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz 217ms (cache miss)
+418 http cache https://registry.npmjs.org/lodash-es 23ms (cache hit)
+419 silly packumentCache corgi:https://registry.npmjs.org/lodash-es set size:41564 disposed:false
+420 http cache https://registry.npmjs.org/undici 25ms (cache hit)
+421 silly packumentCache corgi:https://registry.npmjs.org/undici set size:409147 disposed:false
+422 http cache https://registry.npmjs.org/bn.js 28ms (cache hit)
+423 silly packumentCache corgi:https://registry.npmjs.org/bn.js set size:73843 disposed:false
+424 http cache https://registry.npmjs.org/elliptic 29ms (cache hit)
+425 silly packumentCache corgi:https://registry.npmjs.org/elliptic set size:67039 disposed:false
+426 http cache https://registry.npmjs.org/diff 34ms (cache hit)
+427 silly packumentCache corgi:https://registry.npmjs.org/diff set size:65404 disposed:false
+428 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils cache-miss
+429 silly packumentCache corgi:https://registry.npmjs.org/@actions%2fhttp-client cache-miss
+430 http fetch GET 200 https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.10.tgz 253ms (cache miss)
+431 http cache https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils 34ms (cache hit)
+432 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fhardhat-utils set size:52165 disposed:false
+433 http fetch GET 200 https://registry.npmjs.org/@actions/http-client/-/http-client-2.2.3.tgz 294ms (cache miss)
+434 http fetch GET 200 https://registry.npmjs.org/@actions/exec/-/exec-1.1.1.tgz 315ms (cache miss)
+435 http fetch GET 200 https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz 326ms (cache miss)
+436 http fetch GET 200 https://registry.npmjs.org/fast-equals/-/fast-equals-5.4.0.tgz 339ms (cache miss)
+437 http fetch GET 200 https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz 360ms (cache miss)
+438 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-errors/-/hardhat-errors-3.0.7.tgz 371ms (cache miss)
+439 http fetch GET 200 https://registry.npmjs.org/@actions/core/-/core-1.11.1.tgz 379ms (cache miss)
+440 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr/-/edr-0.12.0-next.27.tgz 465ms (cache miss)
+441 http fetch GET 200 https://registry.npmjs.org/@actions%2fhttp-client 281ms (cache miss)
+442 silly packumentCache corgi:https://registry.npmjs.org/@actions%2fhttp-client set size:undefined disposed:false
+443 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-zod-utils/-/hardhat-zod-utils-3.0.3.tgz 537ms (cache miss)
+444 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fbignumber cache-miss
+445 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fsigning-key cache-miss
+446 http cache https://registry.npmjs.org/@ethersproject%2fbignumber 24ms (cache hit)
+447 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fbignumber set size:85491 disposed:false
+448 http cache https://registry.npmjs.org/@ethersproject%2fsigning-key 25ms (cache hit)
+449 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fsigning-key set size:74077 disposed:false
+450 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fignition-core cache-miss
+451 http cache https://registry.npmjs.org/@nomicfoundation%2fignition-core 19ms (cache hit)
+452 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fignition-core set size:110566 disposed:false
+453 silly packumentCache corgi:https://registry.npmjs.org/ts-node cache-miss
+454 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-reporter/-/hardhat-node-test-reporter-3.0.2.tgz 628ms (cache miss)
+455 http cache https://registry.npmjs.org/ts-node 18ms (cache hit)
+456 silly packumentCache corgi:https://registry.npmjs.org/ts-node set size:206364 disposed:false
+457 silly packumentCache corgi:https://registry.npmjs.org/@actions%2fcore cache-miss
+458 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-vendored/-/hardhat-vendored-3.0.1.tgz 793ms (cache miss)
+459 http fetch GET 200 https://registry.npmjs.org/@actions%2fcore 164ms (cache miss)
+460 silly packumentCache corgi:https://registry.npmjs.org/@actions%2fcore set size:undefined disposed:false
+461 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2ftransactions cache-miss
+462 http cache https://registry.npmjs.org/@ethersproject%2ftransactions 17ms (cache hit)
+463 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2ftransactions set size:85329 disposed:false
+464 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fhardhat-ignition cache-miss
+465 http fetch GET 200 https://registry.npmjs.org/undici/-/undici-5.29.0.tgz 844ms (cache miss)
+466 http cache https://registry.npmjs.org/@nomicfoundation%2fhardhat-ignition 15ms (cache hit)
+467 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fhardhat-ignition set size:125109 disposed:false
+468 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fabstract-provider cache-miss
+469 http cache https://registry.npmjs.org/@ethersproject%2fabstract-provider 18ms (cache hit)
+470 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fabstract-provider set size:86707 disposed:false
+471 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fabstract-signer cache-miss
+472 http cache https://registry.npmjs.org/@ethersproject%2fabstract-signer 18ms (cache hit)
+473 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fabstract-signer set size:92575 disposed:false
+474 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fhash cache-miss
+475 http cache https://registry.npmjs.org/@ethersproject%2fhash 17ms (cache hit)
+476 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fhash set size:81868 disposed:false
+477 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fabi cache-miss
+478 http cache https://registry.npmjs.org/@ethersproject%2fabi 17ms (cache hit)
+479 silly packumentCache corgi:https://registry.npmjs.org/@ethersproject%2fabi set size:136312 disposed:false
+480 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fhardhat-verify cache-miss
+481 http cache https://registry.npmjs.org/@nomicfoundation%2fhardhat-verify 16ms (cache hit)
+482 silly packumentCache corgi:https://registry.npmjs.org/@nomicfoundation%2fhardhat-verify set size:91078 disposed:false
+483 http fetch GET 200 https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 1055ms (cache miss)
+484 http fetch GET 200 https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 1062ms (cache miss)
+485 http fetch GET 200 https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 1106ms (cache miss)
+486 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 1136ms (cache miss)
+487 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 1154ms (cache miss)
+488 http fetch GET 200 https://registry.npmjs.org/undici/-/undici-6.23.0.tgz 1157ms (cache miss)
+489 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 1207ms (cache miss)
+490 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.0.0.tgz 1222ms (cache miss)
+491 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-darwin-x64/-/edr-darwin-x64-0.12.0-next.27.tgz 1280ms (cache miss)
+492 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-linux-arm64-gnu/-/edr-linux-arm64-gnu-0.12.0-next.27.tgz 1700ms (cache miss)
+493 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-linux-x64-gnu/-/edr-linux-x64-gnu-0.12.0-next.27.tgz 2507ms (cache miss)
+494 http fetch GET 200 https://registry.npmjs.org/hardhat/-/hardhat-3.1.11.tgz 2531ms (cache miss)
+495 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-win32-x64-msvc/-/edr-win32-x64-msvc-0.12.0-next.27.tgz 2652ms (cache miss)
+496 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-darwin-arm64/-/edr-darwin-arm64-0.12.0-next.27.tgz 3160ms (cache miss)
+497 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-linux-x64-musl/-/edr-linux-x64-musl-0.12.0-next.27.tgz 3534ms (cache miss)
+498 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation/edr-linux-arm64-musl/-/edr-linux-arm64-musl-0.12.0-next.27.tgz 3783ms (cache miss)
+499 silly ADD node_modules/color-name
+500 silly ADD node_modules/color-convert
+501 silly ADD node_modules/has-flag
+502 silly ADD node_modules/supports-color
+503 silly ADD node_modules/@fastify/busboy
+504 silly ADD node_modules/@sinclair/typebox
+505 silly ADD node_modules/react-is
+506 silly ADD node_modules/ansi-styles
+507 silly ADD node_modules/@jest/schemas
+508 silly ADD node_modules/pretty-format
+509 silly ADD node_modules/jest-get-type
+510 silly ADD node_modules/diff-sequences
+511 silly ADD node_modules/readdirp
+512 silly ADD node_modules/chokidar
+513 silly ADD node_modules/@nomicfoundation/hardhat-vendored
+514 silly ADD node_modules/undici
+515 silly ADD node_modules/tunnel
+516 silly ADD node_modules/@actions/io
+517 silly ADD node_modules/@actions/http-client
+518 silly ADD node_modules/@actions/exec
+519 silly ADD node_modules/jest-diff
+520 silly ADD node_modules/jest-diff/node_modules/ansi-styles
+521 silly ADD node_modules/jest-diff/node_modules/chalk
+522 silly ADD node_modules/@actions/core
+523 silly ADD node_modules/@nomicfoundation/hardhat-node-test-reporter
+524 silly ADD node_modules/@nomicfoundation/hardhat-node-test-runner
+525 silly ADD node_modules/@nomicfoundation/hardhat-node-test-runner/node_modules/undici
+526 silly ADD node_modules/@nomicfoundation/hardhat-node-test-runner/node_modules/@nomicfoundation/hardhat-utils
+527 silly ADD
+528 silly ADD
+529 silly ADD
+530 silly ADD
+531 silly ADD
+532 silly ADD
+533 silly ADD
+534 silly ADD
+535 silly ADD
+536 silly ADD
+537 silly ADD
+538 silly ADD
+539 silly ADD
+540 silly ADD
+541 silly ADD
+542 silly ADD
+543 silly ADD
+544 silly ADD
+545 silly ADD
+546 silly ADD
+547 silly ADD
+548 silly ADD
+549 silly ADD
+550 silly ADD
+551 silly ADD
+552 silly ADD
+553 silly CHANGE node_modules/hardhat
+554 silly ADD node_modules/hardhat/node_modules/undici
+555 silly ADD node_modules/hardhat/node_modules/@nomicfoundation/hardhat-utils
+556 silly CHANGE node_modules/fast-equals
+557 silly CHANGE node_modules/@nomicfoundation/hardhat-zod-utils
+558 silly ADD node_modules/@nomicfoundation/hardhat-zod-utils/node_modules/undici
+559 silly ADD node_modules/@nomicfoundation/hardhat-zod-utils/node_modules/@nomicfoundation/hardhat-utils
+560 silly CHANGE node_modules/@nomicfoundation/hardhat-errors
+561 silly ADD node_modules/@nomicfoundation/hardhat-errors/node_modules/undici
+562 silly ADD node_modules/@nomicfoundation/hardhat-errors/node_modules/@nomicfoundation/hardhat-utils
+563 silly CHANGE node_modules/@nomicfoundation/edr-win32-x64-msvc
+564 silly CHANGE node_modules/@nomicfoundation/edr-linux-x64-musl
+565 silly CHANGE node_modules/@nomicfoundation/edr-linux-x64-gnu
+566 silly CHANGE node_modules/@nomicfoundation/edr-linux-arm64-musl
+567 silly CHANGE node_modules/@nomicfoundation/edr-linux-arm64-gnu
+568 silly CHANGE node_modules/@nomicfoundation/edr-darwin-x64
+569 silly CHANGE node_modules/@nomicfoundation/edr-darwin-arm64
+570 silly CHANGE node_modules/@nomicfoundation/edr
+571 verbose cwd C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var
+572 verbose os Windows_NT 10.0.26200
+573 verbose node v22.20.0
+574 verbose npm  v10.9.3
+575 verbose exit 0
+576 info ok

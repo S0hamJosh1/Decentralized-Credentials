@@ -8,55 +8,53 @@ import {
   initialOrganization,
   initialTemplates,
 } from "./data/productData";
+import {
+  createCredential,
+  createIssuer,
+  createTemplate,
+  fetchBootstrap,
+  revokeCredentialRecord,
+  updateOrganization,
+} from "./lib/api";
+import { buildVerifyPath, parseRoute, pushRoute, resolveVerificationUrl, sitePathForPage } from "./lib/routes";
 
-const SITE_VIEW = "site";
-const APP_VIEW = "app";
-const VERIFY_VIEW = "verify";
-
-function parseHash() {
-  const hash = window.location.hash.replace("#", "");
-
-  if (hash === APP_VIEW) {
-    return { view: APP_VIEW, verificationCode: "" };
-  }
-
-  if (hash.startsWith(`${VERIFY_VIEW}/`)) {
-    return {
-      view: VERIFY_VIEW,
-      verificationCode: decodeURIComponent(hash.replace(`${VERIFY_VIEW}/`, "")),
-    };
-  }
-
-  if (hash === VERIFY_VIEW) {
-    return { view: VERIFY_VIEW, verificationCode: "" };
-  }
-
-  return { view: SITE_VIEW, verificationCode: "" };
-}
-
-function createCredentialRecord(payload, templateName, issuerName, index) {
-  const suffix = String(index).padStart(4, "0");
-  const today = new Date().toISOString().slice(0, 10);
+function createLocalCredential(payload, organization, templates, issuers, credentials) {
+  const template = templates.find((item) => item.id === payload.templateId);
+  const issuer = issuers.find((item) => item.id === payload.issuerId) || issuers[0];
+  const id = `CRD-${String(credentials.length + 1001).padStart(4, "0")}`;
+  const numericId = id.replace("CRD-", "");
+  const code = template?.name
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 3)
+    .toUpperCase();
+  const verificationPath = buildVerifyPath(`NST-${code}-${numericId}`);
 
   return {
-    id: `CRD-${suffix}`,
-    verificationCode: `NST-${payload.templateId.split("-")[1]}-${suffix}`,
+    id,
+    organizationId: organization.id,
+    verificationCode: verificationPath.replace("/verify/", ""),
+    verificationUrl: verificationPath,
     recipientName: payload.recipientName,
     recipientEmail: payload.recipientEmail,
     recipientWallet: payload.recipientWallet,
     templateId: payload.templateId,
-    templateName,
-    issuedBy: issuerName,
-    issuedAt: today,
+    templateName: template?.name || "Custom Certificate",
+    issuerId: payload.issuerId,
+    issuedBy: issuer?.name || "Authorized Issuer",
+    issuedAt: new Date().toISOString().slice(0, 10),
     status: "Valid",
     cohort: payload.cohort,
     summary: payload.summary,
+    revokedAt: "",
+    revocationReason: "",
   };
 }
 
 export default function App() {
-  const initialRoute = parseHash();
-  const [view, setView] = useState(initialRoute.view);
+  const initialRoute = parseRoute(window.location.pathname);
+  const [route, setRoute] = useState(initialRoute);
   const [organization, setOrganization] = useState(initialOrganization);
   const [templates, setTemplates] = useState(initialTemplates);
   const [issuers, setIssuers] = useState(initialIssuers);
@@ -64,18 +62,42 @@ export default function App() {
   const [selectedVerificationCode, setSelectedVerificationCode] = useState(
     initialRoute.verificationCode || initialCredentials[0]?.verificationCode || ""
   );
+  const [apiMode, setApiMode] = useState("loading");
+  const [apiError, setApiError] = useState("");
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const nextRoute = parseHash();
-      setView(nextRoute.view);
-      if (nextRoute.view === VERIFY_VIEW) {
-        setSelectedVerificationCode(nextRoute.verificationCode || initialCredentials[0]?.verificationCode || "");
+    const handleRouteChange = () => {
+      const nextRoute = parseRoute(window.location.pathname);
+      setRoute(nextRoute);
+      if (nextRoute.view === "verify") {
+        setSelectedVerificationCode(
+          nextRoute.verificationCode || initialCredentials[0]?.verificationCode || ""
+        );
       }
     };
 
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handleRouteChange);
+    return () => window.removeEventListener("popstate", handleRouteChange);
+  }, []);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const bootstrap = await fetchBootstrap();
+        setOrganization(bootstrap.organization || initialOrganization);
+        setTemplates(bootstrap.templates || []);
+        setIssuers(bootstrap.issuers || []);
+        setCredentials(bootstrap.credentials || []);
+        setSelectedVerificationCode((current) => current || bootstrap.credentials?.[0]?.verificationCode || "");
+        setApiMode("ready");
+        setApiError("");
+      } catch (error) {
+        setApiMode("offline");
+        setApiError(error.message || "API unavailable. Using seeded demo data.");
+      }
+    };
+
+    load();
   }, []);
 
   const dashboardStats = useMemo(() => {
@@ -91,95 +113,166 @@ export default function App() {
     };
   }, [credentials, issuers, templates]);
 
-  const syncView = (nextView, options = {}) => {
-    if (nextView === APP_VIEW) {
-      window.location.hash = "app";
-      return;
-    }
-
-    if (nextView === VERIFY_VIEW) {
-      const nextCode = options.verificationCode || selectedVerificationCode;
-      window.location.hash = nextCode ? `verify/${encodeURIComponent(nextCode)}` : "verify";
-      return;
-    }
-
-    window.location.hash = "";
+  const navigateTo = (pathname, options = {}) => {
+    pushRoute(pathname, options);
   };
 
-  const issueCredential = (payload) => {
-    const template = templates.find((item) => item.id === payload.templateId);
-    const issuer = issuers.find((item) => item.id === payload.issuerId) || issuers[0];
-    const nextRecord = createCredentialRecord(
-      payload,
-      template?.name || "Custom Certificate",
-      issuer?.name || "Authorized Issuer",
-      credentials.length + 1001
-    );
+  const openSitePage = (page = "home") => {
+    navigateTo(sitePathForPage(page));
+  };
 
+  const openVerifier = (verificationCode) => {
+    const nextCode = verificationCode || selectedVerificationCode || credentials[0]?.verificationCode || "";
+    navigateTo(buildVerifyPath(nextCode));
+  };
+
+  const issueCredential = async (payload) => {
+    if (apiMode === "ready") {
+      const nextRecord = await createCredential(payload);
+      setCredentials((current) => [nextRecord, ...current]);
+      setSelectedVerificationCode(nextRecord.verificationCode);
+      return nextRecord;
+    }
+
+    const nextRecord = createLocalCredential(payload, organization, templates, issuers, credentials);
     setCredentials((current) => [nextRecord, ...current]);
     setSelectedVerificationCode(nextRecord.verificationCode);
     return nextRecord;
   };
 
-  const revokeCredential = (credentialId) => {
+  const revokeCredential = async (credentialId, reason) => {
+    if (apiMode === "ready") {
+      const nextRecord = await revokeCredentialRecord(credentialId, reason);
+      setCredentials((current) =>
+        current.map((credential) => (credential.id === credentialId ? nextRecord : credential))
+      );
+      return nextRecord;
+    }
+
+    let revokedRecord = null;
     setCredentials((current) =>
-      current.map((credential) =>
-        credential.id === credentialId ? { ...credential, status: "Revoked" } : credential
-      )
+      current.map((credential) => {
+        if (credential.id !== credentialId) {
+          return credential;
+        }
+
+        revokedRecord = {
+          ...credential,
+          status: "Revoked",
+          revokedAt: new Date().toISOString().slice(0, 10),
+          revocationReason: reason || "Revoked by an authorized issuer.",
+        };
+
+        return revokedRecord;
+      })
     );
+
+    return revokedRecord;
   };
 
-  const addTemplate = (template) => {
-    setTemplates((current) => [template, ...current]);
+  const addTemplate = async (template) => {
+    if (apiMode === "ready") {
+      const nextTemplate = await createTemplate(template);
+      setTemplates((current) => [nextTemplate, ...current]);
+      return nextTemplate;
+    }
+
+    const localTemplate = {
+      id: `TPL-${String(templates.length + 401).padStart(3, "0")}`,
+      organizationId: organization.id,
+      ...template,
+    };
+    setTemplates((current) => [localTemplate, ...current]);
+    return localTemplate;
   };
 
-  const addIssuer = (issuer) => {
-    setIssuers((current) => [issuer, ...current]);
+  const addIssuer = async (issuer) => {
+    if (apiMode === "ready") {
+      const nextIssuer = await createIssuer(issuer);
+      setIssuers((current) => [nextIssuer, ...current]);
+      return nextIssuer;
+    }
+
+    const localIssuer = {
+      id: `ISS-${issuers.length + 10}`,
+      organizationId: organization.id,
+      ...issuer,
+    };
+    setIssuers((current) => [localIssuer, ...current]);
+    return localIssuer;
   };
 
-  const updateOrganization = (nextOrganization) => {
+  const saveOrganization = async (nextOrganization) => {
+    if (apiMode === "ready") {
+      const savedOrganization = await updateOrganization(nextOrganization);
+      setOrganization(savedOrganization);
+      setCredentials((current) =>
+        current.map((credential) => ({
+          ...credential,
+          organizationId: savedOrganization.id,
+          verificationUrl: credential.verificationUrl || buildVerifyPath(credential.verificationCode),
+        }))
+      );
+      return savedOrganization;
+    }
+
     setOrganization(nextOrganization);
+    return nextOrganization;
   };
 
-  if (view === APP_VIEW) {
+  const sampleCredential = credentials[0] || initialCredentials[0];
+  const sampleVerificationUrl = sampleCredential?.verificationUrl
+    ? resolveVerificationUrl(sampleCredential.verificationUrl)
+    : resolveVerificationUrl(buildVerifyPath(sampleCredential?.verificationCode || ""));
+
+  const sharedProps = {
+    organization,
+    stats: dashboardStats,
+    apiMode,
+    apiError,
+  };
+
+  if (route.view === "app") {
     return (
       <DashboardApp
-        organization={organization}
+        {...sharedProps}
         templates={templates}
         issuers={issuers}
         credentials={credentials}
-        stats={dashboardStats}
         onIssueCredential={issueCredential}
         onRevokeCredential={revokeCredential}
         onAddTemplate={addTemplate}
         onAddIssuer={addIssuer}
-        onUpdateOrganization={updateOrganization}
-        onBackToSite={() => syncView(SITE_VIEW)}
-        onOpenVerifier={(verificationCode) => syncView(VERIFY_VIEW, { verificationCode })}
+        onUpdateOrganization={saveOrganization}
+        onBackToSite={() => openSitePage("home")}
+        onOpenVerifier={(verificationCode) => openVerifier(verificationCode)}
       />
     );
   }
 
-  if (view === VERIFY_VIEW) {
+  if (route.view === "verify") {
     return (
       <VerifyPortal
-        organization={organization}
+        {...sharedProps}
         credentials={credentials}
         selectedVerificationCode={selectedVerificationCode}
         onSelectVerificationCode={setSelectedVerificationCode}
-        onBackToSite={() => syncView(SITE_VIEW)}
-        onLaunchApp={() => syncView(APP_VIEW)}
+        onVerifyCode={openVerifier}
+        onBackToSite={() => openSitePage("home")}
+        onLaunchApp={() => navigateTo("/app")}
       />
     );
   }
 
   return (
     <MarketingSite
-      organization={organization}
-      stats={dashboardStats}
-      sampleCredential={credentials[0]}
-      onLaunchApp={() => syncView(APP_VIEW)}
-      onOpenVerifier={(verificationCode) => syncView(VERIFY_VIEW, { verificationCode })}
+      {...sharedProps}
+      currentPage={route.page}
+      sampleCredential={sampleCredential}
+      sampleVerificationUrl={sampleVerificationUrl}
+      onNavigatePage={openSitePage}
+      onLaunchApp={() => navigateTo("/app")}
+      onOpenVerifier={(verificationCode) => openVerifier(verificationCode)}
     />
   );
 }

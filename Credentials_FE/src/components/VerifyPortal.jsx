@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { resolveVerificationUrl } from "../lib/routes";
 
 function formatDate(value) {
   return new Date(`${value}T12:00:00`).toLocaleDateString("en-US", {
@@ -13,8 +14,11 @@ export default function VerifyPortal({
   credentials,
   selectedVerificationCode,
   onSelectVerificationCode,
+  onVerifyCode,
   onBackToSite,
   onLaunchApp,
+  apiMode,
+  apiError,
 }) {
   const normalizedCode = selectedVerificationCode.trim().toUpperCase();
   const record = useMemo(
@@ -35,24 +39,24 @@ export default function VerifyPortal({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <button type="button" className="site-ghost" onClick={onBackToSite}>
-              Back to site
-            </button>
-            <button type="button" className="site-button" onClick={onLaunchApp}>
-              Launch issuer app
-            </button>
+            <span className="neo-badge">{apiMode === "ready" ? "Live API" : apiMode === "offline" ? "Seeded fallback" : "Loading"}</span>
+            <button type="button" className="site-ghost" onClick={onBackToSite}>Back to site</button>
+            <button type="button" className="site-button" onClick={onLaunchApp}>Launch issuer app</button>
           </div>
         </header>
 
         <main className="flex-1 py-10">
+          {apiError ? (
+            <div className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+              {apiError}
+            </div>
+          ) : null}
+
           <section className="site-section pt-0">
             <div className="site-section-head max-w-3xl">
               <p className="site-kicker">Instant verification</p>
               <h2>Check whether a credential is valid and who issued it.</h2>
-              <p>
-                This view is public. No wallet connection is required because the verifier only needs clarity,
-                not contract tooling.
-              </p>
+              <p>This view is public. No wallet connection is required because the verifier only needs clarity.</p>
             </div>
 
             <div className="site-grid site-grid-trust">
@@ -68,7 +72,7 @@ export default function VerifyPortal({
                   <button
                     type="button"
                     className="site-button"
-                    onClick={() => onSelectVerificationCode(selectedVerificationCode.trim().toUpperCase())}
+                    onClick={() => onVerifyCode(selectedVerificationCode)}
                   >
                     Verify code
                   </button>
@@ -81,10 +85,10 @@ export default function VerifyPortal({
               <div className="site-panel">
                 <p className="site-panel-label">What a verifier should learn</p>
                 <ul className="site-bullet-list">
-                  <li>Which organization issued the credential</li>
+                  <li>Which issuer created the credential</li>
                   <li>Whether the credential is valid or revoked</li>
                   <li>When it was issued and which template it used</li>
-                  <li>Who the credential belongs to</li>
+                  <li>Who the credential belongs to and where it came from</li>
                 </ul>
               </div>
             </div>
@@ -128,9 +132,21 @@ export default function VerifyPortal({
                       <dd>{record.recipientEmail}</dd>
                     </div>
                     <div>
-                      <dt>Recipient wallet</dt>
-                      <dd className="break-all">{record.recipientWallet}</dd>
+                      <dt>Verification link</dt>
+                      <dd className="break-all">{resolveVerificationUrl(record.verificationUrl)}</dd>
                     </div>
+                    {record.status === "Revoked" ? (
+                      <>
+                        <div>
+                          <dt>Revoked at</dt>
+                          <dd>{record.revokedAt ? formatDate(record.revokedAt) : "Not recorded"}</dd>
+                        </div>
+                        <div>
+                          <dt>Revocation reason</dt>
+                          <dd>{record.revocationReason || "Not recorded"}</dd>
+                        </div>
+                      </>
+                    ) : null}
                   </dl>
                 </article>
 
@@ -149,10 +165,7 @@ export default function VerifyPortal({
               <article className="site-panel">
                 <p className="site-panel-label">No result</p>
                 <h3 className="mt-3 text-2xl font-semibold text-zinc-50">No credential matched that verification code.</h3>
-                <p className="mt-3 text-zinc-300">
-                  In the full product this would check the platform record plus the on-chain anchor. For now,
-                  we are using shared application data to model the verification experience.
-                </p>
+                <p className="mt-3 text-zinc-300">Try one of the sample codes or issue a new credential from the dashboard.</p>
               </article>
             )}
           </section>

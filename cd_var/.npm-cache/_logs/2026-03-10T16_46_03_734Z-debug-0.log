@@ -1,0 +1,109 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.20.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npmrc
+5 silly config load:file:C:\Users\soham\.npmrc
+6 silly config load:file:C:\Users\soham\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npm-cache\_logs\2026-03-10T16_46_03_734Z-
+10 verbose logfile C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npm-cache\_logs\2026-03-10T16_46_03_734Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+13 silly idealTree buildDeps
+14 silly fetch manifest @nomicfoundation/hardhat-ethers@^3.1.0
+15 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-ethers cache-miss
+16 http fetch GET 200 https://registry.npmjs.org/npm 207ms
+17 http fetch GET 200 https://registry.npmjs.org/@nomicfoundation%2fhardhat-ethers 334ms (cache miss)
+18 silly packumentCache full:https://registry.npmjs.org/@nomicfoundation%2fhardhat-ethers set size:undefined disposed:false
+19 silly fetch manifest ethers@^6.14.0
+20 silly packumentCache full:https://registry.npmjs.org/ethers cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/ethers 109ms (cache miss)
+22 silly packumentCache full:https://registry.npmjs.org/ethers set size:undefined disposed:false
+23 silly fetch manifest hardhat@^2.26.0
+24 silly packumentCache full:https://registry.npmjs.org/hardhat cache-miss
+25 http fetch GET 200 https://registry.npmjs.org/hardhat 106ms (cache miss)
+26 silly packumentCache full:https://registry.npmjs.org/hardhat set size:undefined disposed:false
+27 silly fetch manifest ts-node@*
+28 silly packumentCache full:https://registry.npmjs.org/ts-node cache-miss
+29 http fetch GET 200 https://registry.npmjs.org/ts-node 53ms (cache miss)
+30 silly packumentCache full:https://registry.npmjs.org/ts-node set size:undefined disposed:false
+31 silly fetch manifest @swc/core@>=1.2.50
+32 silly packumentCache full:https://registry.npmjs.org/@swc%2fcore cache-miss
+33 http fetch GET 200 https://registry.npmjs.org/@swc%2fcore 203ms (cache miss)
+34 silly packumentCache full:https://registry.npmjs.org/@swc%2fcore set size:undefined disposed:false
+35 silly fetch manifest @swc/helpers@>=0.5.17
+36 silly packumentCache full:https://registry.npmjs.org/@swc%2fhelpers cache-miss
+37 http fetch GET 200 https://registry.npmjs.org/@swc%2fhelpers 79ms (cache miss)
+38 silly packumentCache full:https://registry.npmjs.org/@swc%2fhelpers set size:undefined disposed:false
+39 silly fetch manifest @swc/wasm@>=1.2.50
+40 silly packumentCache full:https://registry.npmjs.org/@swc%2fwasm cache-miss
+41 http fetch GET 200 https://registry.npmjs.org/@swc%2fwasm 109ms (cache miss)
+42 silly packumentCache full:https://registry.npmjs.org/@swc%2fwasm set size:undefined disposed:false
+43 silly fetch manifest @types/node@*
+44 silly packumentCache full:https://registry.npmjs.org/@types%2fnode cache-miss
+45 http fetch GET 200 https://registry.npmjs.org/@types%2fnode 209ms (cache miss)
+46 silly packumentCache full:https://registry.npmjs.org/@types%2fnode set size:undefined disposed:false
+47 silly fetch manifest typescript@>=2.7
+48 silly packumentCache full:https://registry.npmjs.org/typescript cache-miss
+49 http fetch GET 200 https://registry.npmjs.org/typescript 541ms (cache miss)
+50 silly packumentCache full:https://registry.npmjs.org/typescript set size:undefined disposed:false
+51 verbose stack Error: could not resolve
+51 verbose stack     at PlaceDep.failPeerConflict (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\place-dep.js:503:25)
+51 verbose stack     at new PlaceDep (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\place-dep.js:157:21)
+51 verbose stack     at #buildDepStep (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:920:18)
+51 verbose stack     at async Arborist.buildIdealTree (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\build-ideal-tree.js:181:7)
+51 verbose stack     at async Promise.all (index 1)
+51 verbose stack     at async Arborist.reify (C:\Program Files\nodejs\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:131:5)
+51 verbose stack     at async Install.exec (C:\Program Files\nodejs\node_modules\npm\lib\commands\install.js:150:5)
+51 verbose stack     at async Npm.exec (C:\Program Files\nodejs\node_modules\npm\lib\npm.js:207:9)
+51 verbose stack     at async module.exports (C:\Program Files\nodejs\node_modules\npm\lib\cli\entry.js:74:5)
+52 error code ERESOLVE
+53 error ERESOLVE could not resolve
+54 error
+55 error While resolving: @nomicfoundation/hardhat-chai-matchers@2.1.0
+55 error Found: @nomicfoundation/hardhat-ethers@4.0.0
+55 error node_modules/@nomicfoundation/hardhat-ethers
+55 error   dev @nomicfoundation/hardhat-ethers@"^4.0.0" from the root project
+55 error
+55 error Could not resolve dependency:
+55 error peer @nomicfoundation/hardhat-ethers@"^3.1.0" from @nomicfoundation/hardhat-chai-matchers@2.1.0
+55 error node_modules/@nomicfoundation/hardhat-chai-matchers
+55 error   dev @nomicfoundation/hardhat-chai-matchers@"^2.1.0" from the root project
+55 error   peer @nomicfoundation/hardhat-chai-matchers@"^2.1.0" from @nomicfoundation/hardhat-toolbox@6.1.0
+55 error   node_modules/@nomicfoundation/hardhat-toolbox
+55 error     dev @nomicfoundation/hardhat-toolbox@"^6.1.0" from the root project
+55 error
+55 error Conflicting peer dependency: @nomicfoundation/hardhat-ethers@3.1.3
+55 error node_modules/@nomicfoundation/hardhat-ethers
+55 error   peer @nomicfoundation/hardhat-ethers@"^3.1.0" from @nomicfoundation/hardhat-chai-matchers@2.1.0
+55 error   node_modules/@nomicfoundation/hardhat-chai-matchers
+55 error     dev @nomicfoundation/hardhat-chai-matchers@"^2.1.0" from the root project
+55 error     peer @nomicfoundation/hardhat-chai-matchers@"^2.1.0" from @nomicfoundation/hardhat-toolbox@6.1.0
+55 error     node_modules/@nomicfoundation/hardhat-toolbox
+55 error       dev @nomicfoundation/hardhat-toolbox@"^6.1.0" from the root project
+55 error
+55 error Fix the upstream dependency conflict, or retry
+55 error this command with --force or --legacy-peer-deps
+55 error to accept an incorrect (and potentially broken) dependency resolution.
+56 error
+56 error
+56 error For a full report see:
+56 error C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npm-cache\_logs\2026-03-10T16_46_03_734Z-eresolve-report.txt
+57 silly unfinished npm timer reify 1773161164131
+58 silly unfinished npm timer reify:loadTrees 1773161164131
+59 silly unfinished npm timer idealTree:buildDeps 1773161164165
+60 silly unfinished npm timer idealTree:node_modules/@nomicfoundation/hardhat-chai-matchers 1773161164165
+61 verbose cwd C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var
+62 verbose os Windows_NT 10.0.26200
+63 verbose node v22.20.0
+64 verbose npm  v10.9.3
+65 notice
+65 notice New major version of npm available! 10.9.3 -> 11.11.0
+65 notice Changelog: https://github.com/npm/cli/releases/tag/v11.11.0
+65 notice To update run: npm install -g npm@11.11.0
+65 notice  { force: true, [Symbol(proc-log.meta)]: true }
+66 verbose exit 1
+67 verbose code 1
+68 error A complete log of this run can be found in: C:\Users\soham\OneDrive\Desktop\Decentralized-Credentials\cd_var\.npm-cache\_logs\2026-03-10T16_46_03_734Z-debug-0.log

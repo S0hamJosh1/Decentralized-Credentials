@@ -1,68 +1,75 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { ethers } from "hardhat";
 import { keccak256, toUtf8Bytes } from "ethers";
 
-describe("CredentialRegistry", function () {
-  async function deploy() {
-    const [deployer, holder, rando, newIssuer] = await ethers.getSigners();
-    const Factory = await ethers.getContractFactory("CredentialRegistry");
-    const registry = await Factory.deploy();
-    await registry.waitForDeployment();
-    return { registry, deployer, holder, rando, newIssuer };
-  }
+async function deploy() {
+  const [deployer, holder, rando, newIssuer] = await ethers.getSigners();
+  const registry = await ethers.deployContract("CredentialRegistry");
+  await registry.waitForDeployment();
+  return { registry, deployer, holder, rando, newIssuer };
+}
 
-  const h = (obj: any) => keccak256(toUtf8Bytes(JSON.stringify(obj)));
+const hashCredential = (value: unknown) => keccak256(toUtf8Bytes(JSON.stringify(value)));
 
-  it("deployer is owner + issuer", async () => {
+describe("CredentialRegistry", () => {
+  it("starts with the deployer as owner and issuer", async () => {
     const { registry, deployer } = await deploy();
-    expect(await registry.owner()).to.equal(deployer.address);
-    expect(await registry.isIssuer(deployer.address)).to.equal(true);
+    assert.equal(await registry.owner(), deployer.address);
+    assert.equal(await registry.isIssuer(deployer.address), true);
   });
 
-  it("issue → verify true", async () => {
+  it("issues and verifies credentials", async () => {
     const { registry, holder } = await deploy();
-    const hash = h({ type: "CourseCompletion", course: "CS101", name: "Soham" });
-    await expect(registry.issueCredential(holder.address, hash))
-      .to.emit(registry, "CredentialIssued");
-    expect(await registry.verifyCredential(holder.address, hash)).to.equal(true);
+    const hash = hashCredential({ type: "CourseCompletion", course: "CS101", name: "Soham" });
+
+    await (await registry.issueCredential(holder.address, hash)).wait();
+    assert.equal(await registry.verifyCredential(holder.address, hash), true);
   });
 
-  it("revoke → verify false", async () => {
+  it("revokes credentials and flips verification to false", async () => {
     const { registry, holder } = await deploy();
-    const hash = h({ type: "Badge", id: "badge-1" });
-    await registry.issueCredential(holder.address, hash);
-    expect(await registry.verifyCredential(holder.address, hash)).to.equal(true);
-    await expect(registry.revokeCredential(holder.address, hash))
-      .to.emit(registry, "CredentialRevoked");
-    expect(await registry.verifyCredential(holder.address, hash)).to.equal(false);
+    const hash = hashCredential({ type: "Badge", id: "badge-1" });
+
+    await (await registry.issueCredential(holder.address, hash)).wait();
+    await (await registry.revokeCredential(holder.address, hash)).wait();
+
+    assert.equal(await registry.verifyCredential(holder.address, hash), false);
   });
 
-  it("non-issuer cannot issue/revoke", async () => {
+  it("blocks non-issuers from issuing or revoking", async () => {
     const { registry, holder, rando } = await deploy();
-    const hash = h({ foo: "bar" });
-    await expect(
-      registry.connect(rando).issueCredential(holder.address, hash)
-    ).to.be.revertedWith("not issuer");
-    await expect(
-      registry.connect(rando).revokeCredential(holder.address, hash)
-    ).to.be.revertedWith("not issuer");
+    const hash = hashCredential({ foo: "bar" });
+
+    await assert.rejects(
+      registry.connect(rando).issueCredential(holder.address, hash),
+      /not issuer/
+    );
+
+    await assert.rejects(
+      registry.connect(rando).revokeCredential(holder.address, hash),
+      /not issuer/
+    );
   });
 
-  it("owner can add a new issuer who can issue", async () => {
+  it("lets the owner add a new issuer", async () => {
     const { registry, holder, newIssuer } = await deploy();
-    await expect(registry.addIssuer(newIssuer.address))
-      .to.emit(registry, "IssuerAdded").withArgs(newIssuer.address);
-    const hash = h({ t: "VC", n: 1 });
-    await registry.connect(newIssuer).issueCredential(holder.address, hash);
-    expect(await registry.verifyCredential(holder.address, hash)).to.equal(true);
+    const hash = hashCredential({ type: "VC", n: 1 });
+
+    await (await registry.addIssuer(newIssuer.address)).wait();
+    await (await registry.connect(newIssuer).issueCredential(holder.address, hash)).wait();
+
+    assert.equal(await registry.verifyCredential(holder.address, hash), true);
   });
 
-  it("cannot double-issue same hash to same holder", async () => {
+  it("prevents double issuance for the same holder and hash", async () => {
     const { registry, holder } = await deploy();
-    const hash = h({ x: 1 });
-    await registry.issueCredential(holder.address, hash);
-    await expect(
-      registry.issueCredential(holder.address, hash)
-    ).to.be.revertedWith("already issued");
+    const hash = hashCredential({ x: 1 });
+
+    await (await registry.issueCredential(holder.address, hash)).wait();
+
+    await assert.rejects(
+      registry.issueCredential(holder.address, hash),
+      /already issued/
+    );
   });
 });
