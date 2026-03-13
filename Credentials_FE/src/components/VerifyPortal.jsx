@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { resolveVerificationUrl } from "../lib/routes";
+import { useVerifyRecord } from "../hooks/useVerifyRecord";
 
 function formatDate(value) {
   return new Date(`${value}T12:00:00`).toLocaleDateString("en-US", {
@@ -12,6 +13,7 @@ function formatDate(value) {
 export default function VerifyPortal({
   organization,
   credentials,
+  activeVerificationCode,
   selectedVerificationCode,
   onSelectVerificationCode,
   onVerifyCode,
@@ -20,11 +22,27 @@ export default function VerifyPortal({
   apiMode,
   apiError,
 }) {
-  const normalizedCode = selectedVerificationCode.trim().toUpperCase();
-  const record = useMemo(
-    () => credentials.find((credential) => credential.verificationCode.toUpperCase() === normalizedCode),
-    [credentials, normalizedCode]
-  );
+  const fallbackRecord = useMemo(() => {
+    const normalizedActiveCode = activeVerificationCode.trim().toUpperCase();
+    if (!normalizedActiveCode) {
+      return null;
+    }
+
+    return credentials.find((credential) => credential.verificationCode.toUpperCase() === normalizedActiveCode) || null;
+  }, [credentials, activeVerificationCode]);
+
+  const {
+    displayOrganization,
+    record,
+    isLookupLoading,
+    lookupError,
+    notFound,
+  } = useVerifyRecord({
+    activeVerificationCode,
+    fallbackRecord,
+    fallbackOrganization: organization,
+    apiMode,
+  });
 
   return (
     <div className="site-shell min-h-screen text-stone-100">
@@ -49,6 +67,12 @@ export default function VerifyPortal({
           {apiError ? (
             <div className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
               {apiError}
+            </div>
+          ) : null}
+
+          {lookupError ? (
+            <div className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+              {lookupError}
             </div>
           ) : null}
 
@@ -95,7 +119,13 @@ export default function VerifyPortal({
           </section>
 
           <section className="site-section">
-            {record ? (
+            {isLookupLoading ? (
+              <article className="site-panel">
+                <p className="site-panel-label">Verifying</p>
+                <h3 className="mt-3 text-2xl font-semibold text-zinc-50">Checking the latest record for that verification code.</h3>
+                <p className="mt-3 text-zinc-300">The public verifier is querying the API directly instead of relying on the dashboard bootstrap data.</p>
+              </article>
+            ) : record ? (
               <div className="site-grid site-grid-trust">
                 <article className="site-panel">
                   <p className="site-panel-label">Verification result</p>
@@ -117,7 +147,7 @@ export default function VerifyPortal({
                     </div>
                     <div>
                       <dt>Organization</dt>
-                      <dd>{organization.name}</dd>
+                      <dd>{displayOrganization.name}</dd>
                     </div>
                     <div>
                       <dt>Issue date</dt>
@@ -161,11 +191,17 @@ export default function VerifyPortal({
                   </ul>
                 </article>
               </div>
-            ) : (
+            ) : notFound || activeVerificationCode ? (
               <article className="site-panel">
                 <p className="site-panel-label">No result</p>
                 <h3 className="mt-3 text-2xl font-semibold text-zinc-50">No credential matched that verification code.</h3>
                 <p className="mt-3 text-zinc-300">Try one of the sample codes or issue a new credential from the dashboard.</p>
+              </article>
+            ) : (
+              <article className="site-panel">
+                <p className="site-panel-label">Ready to verify</p>
+                <h3 className="mt-3 text-2xl font-semibold text-zinc-50">Enter a verification code to load the public record.</h3>
+                <p className="mt-3 text-zinc-300">This route is designed to be shareable, so each verification code can stand on its own public URL.</p>
               </article>
             )}
           </section>
