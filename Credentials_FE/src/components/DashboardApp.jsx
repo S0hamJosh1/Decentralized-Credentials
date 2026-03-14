@@ -8,12 +8,8 @@ import { getProvider, getSigner } from "../lib/eth";
 import { resolveVerificationUrl } from "../lib/routes";
 
 const tabs = [
-  { id: "overview", label: "Overview" },
-  { id: "issue", label: "Issue Credential" },
-  { id: "credentials", label: "Issued Credentials" },
-  { id: "templates", label: "Templates" },
-  { id: "issuers", label: "Issuer Access" },
-  { id: "organization", label: "Organization Settings" },
+  { id: "credentials", label: "Credentials" },
+  { id: "settings", label: "Settings" },
   { id: "registry", label: "Advanced Registry" },
 ];
 
@@ -69,11 +65,14 @@ export default function DashboardApp({
   const [signer, setSigner] = useState(null);
   const [account, setAccount] = useState(null);
   const [networkOk, setNetworkOk] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("credentials");
   const [busyAction, setBusyAction] = useState("");
+
+  /* ----- Issue form ----- */
+  const [showIssueForm, setShowIssueForm] = useState(false);
   const [issueForm, setIssueForm] = useState({
     templateId: templates[0]?.id || "",
-    issuerId: issuers.find((issuer) => issuer.status === "Approved")?.id || issuers[0]?.id || "",
+    issuerId: issuers.find((i) => i.status === "Approved")?.id || issuers[0]?.id || "",
     recipientName: "",
     recipientEmail: "",
     recipientWallet: "",
@@ -81,463 +80,294 @@ export default function DashboardApp({
     summary: "",
   });
   const [issueMessage, setIssueMessage] = useState("");
-  const [templateForm, setTemplateForm] = useState({
-    name: "",
-    category: "",
-    validity: "",
-    summary: "",
-  });
-  const [issuerForm, setIssuerForm] = useState({
-    name: "",
-    role: "",
-    wallet: "",
-    status: "Pending",
-  });
+
+  /* ----- Template form ----- */
+  const [templateForm, setTemplateForm] = useState({ name: "", category: "", validity: "", summary: "" });
+
+  /* ----- Issuer form ----- */
+  const [issuerForm, setIssuerForm] = useState({ name: "", role: "", wallet: "", status: "Pending" });
+
+  /* ----- Organization ----- */
   const [organizationDraft, setOrganizationDraft] = useState(organization);
+
+  /* ----- Shared state ----- */
   const [search, setSearch] = useState("");
   const [revocationDrafts, setRevocationDrafts] = useState({});
   const [actionMessage, setActionMessage] = useState("");
 
   const iface = useMemo(() => new ethers.Interface(CONTRACT_ABI), []);
 
-  useEffect(() => {
-    setOrganizationDraft(organization);
-  }, [organization]);
+  useEffect(() => { setOrganizationDraft(organization); }, [organization]);
 
   useEffect(() => {
-    setIssueForm((current) => ({
-      ...current,
-      templateId: current.templateId || templates[0]?.id || "",
-      issuerId:
-        current.issuerId || issuers.find((issuer) => issuer.status === "Approved")?.id || issuers[0]?.id || "",
+    setIssueForm((c) => ({
+      ...c,
+      templateId: c.templateId || templates[0]?.id || "",
+      issuerId: c.issuerId || issuers.find((i) => i.status === "Approved")?.id || issuers[0]?.id || "",
     }));
   }, [issuers, templates]);
 
   const filteredCredentials = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return credentials;
-
-    return credentials.filter((credential) => {
-      return [
-        credential.recipientName,
-        credential.templateName,
-        credential.verificationCode,
-        credential.issuedBy,
-        credential.status,
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(query);
-    });
+    const q = search.trim().toLowerCase();
+    if (!q) return credentials;
+    return credentials.filter((c) =>
+      [c.recipientName, c.templateName, c.verificationCode, c.issuedBy, c.status]
+        .join(" ").toLowerCase().includes(q)
+    );
   }, [credentials, search]);
 
-  const approvedIssuers = issuers.filter((issuer) => issuer.status === "Approved");
-  const recentCredentials = credentials.slice(0, 3);
+  const approvedIssuers = issuers.filter((i) => i.status === "Approved");
+
+  /* ---------- handlers ---------- */
 
   const handleConnected = async () => {
-    const nextProvider = await getProvider();
-    setProvider(nextProvider);
-
-    const nextSigner = await getSigner(nextProvider);
-    setSigner(nextSigner);
-
-    const address = await nextSigner.getAddress();
-    setAccount(address);
-
-    const network = await nextProvider.getNetwork();
-    setNetworkOk(network.chainId === 11155111n);
+    const p = await getProvider();
+    setProvider(p);
+    const s = await getSigner(p);
+    setSigner(s);
+    setAccount(await s.getAddress());
+    const n = await p.getNetwork();
+    setNetworkOk(n.chainId === 11155111n);
   };
 
-  const handleIssue = async (event) => {
-    event.preventDefault();
+  const handleIssue = async (e) => {
+    e.preventDefault();
     setBusyAction("issue");
     setIssueMessage("");
     setActionMessage("");
-
     try {
-      const nextRecord = await onIssueCredential(issueForm);
-      setIssueMessage(
-        `Issued ${nextRecord.templateName} for ${nextRecord.recipientName}. Verification code: ${nextRecord.verificationCode}`
-      );
-      setIssueForm((current) => ({
-        ...current,
-        recipientName: "",
-        recipientEmail: "",
-        recipientWallet: "",
-        cohort: "",
-        summary: "",
-      }));
-      setActiveTab("credentials");
-    } catch (error) {
-      setIssueMessage(error.message || "Failed to issue credential.");
+      const rec = await onIssueCredential(issueForm);
+      setIssueMessage(`Issued ${rec.templateName} for ${rec.recipientName}. Code: ${rec.verificationCode}`);
+      setIssueForm((c) => ({ ...c, recipientName: "", recipientEmail: "", recipientWallet: "", cohort: "", summary: "" }));
+      setShowIssueForm(false);
+    } catch (err) {
+      setIssueMessage(err.message || "Failed to issue credential.");
     } finally {
       setBusyAction("");
     }
   };
 
-  const handleTemplateCreate = async (event) => {
-    event.preventDefault();
+  const handleTemplateCreate = async (e) => {
+    e.preventDefault();
     setBusyAction("template");
     setActionMessage("");
-
     try {
       await onAddTemplate(templateForm);
       setTemplateForm({ name: "", category: "", validity: "", summary: "" });
-      setActionMessage("Template added to the organization library.");
-    } finally {
-      setBusyAction("");
-    }
+      setActionMessage("Template added.");
+    } finally { setBusyAction(""); }
   };
 
-  const handleIssuerCreate = async (event) => {
-    event.preventDefault();
+  const handleIssuerCreate = async (e) => {
+    e.preventDefault();
     setBusyAction("issuer");
     setActionMessage("");
-
     try {
       await onAddIssuer(issuerForm);
       setIssuerForm({ name: "", role: "", wallet: "", status: "Pending" });
-      setActionMessage("Issuer access record created.");
-    } finally {
-      setBusyAction("");
-    }
+      setActionMessage("Issuer added.");
+    } finally { setBusyAction(""); }
   };
-  const handleOrganizationSave = async (event) => {
-    event.preventDefault();
+
+  const handleOrganizationSave = async (e) => {
+    e.preventDefault();
     setBusyAction("organization");
     setActionMessage("");
-
     try {
-      const savedOrganization = await onUpdateOrganization(organizationDraft);
-      setOrganizationDraft(savedOrganization);
+      const saved = await onUpdateOrganization(organizationDraft);
+      setOrganizationDraft(saved);
       setActionMessage("Organization settings saved.");
-    } catch (error) {
-      setActionMessage(error.message || "Unable to save organization settings.");
-    } finally {
-      setBusyAction("");
-    }
+    } catch (err) {
+      setActionMessage(err.message || "Unable to save.");
+    } finally { setBusyAction(""); }
   };
 
-  const handleCopyVerificationLink = async (credential) => {
+  const handleCopyLink = async (credential) => {
     const link = resolveVerificationUrl(credential.verificationUrl);
     setActionMessage("");
-
     try {
       await navigator.clipboard.writeText(link);
-      setActionMessage(`Copied verification link for ${credential.recipientName}.`);
+      setActionMessage(`Copied link for ${credential.recipientName}.`);
     } catch {
-      setActionMessage(`Copy failed. Use this link manually: ${link}`);
+      setActionMessage(`Copy failed. Link: ${link}`);
     }
   };
 
-  const handleRevoke = async (credentialId) => {
-    const reason = revocationDrafts[credentialId]?.trim() || "Revoked by an authorized issuer.";
-    setBusyAction(`revoke:${credentialId}`);
+  const handleRevoke = async (id) => {
+    const reason = revocationDrafts[id]?.trim() || "Revoked by an authorized issuer.";
+    setBusyAction(`revoke:${id}`);
     setActionMessage("");
-
     try {
-      const revokedRecord = await onRevokeCredential(credentialId, reason);
-      setRevocationDrafts((current) => ({ ...current, [credentialId]: "" }));
-      setActionMessage(`Revoked ${revokedRecord.recipientName}'s credential.`);
-    } catch (error) {
-      setActionMessage(error.message || "Unable to revoke credential.");
-    } finally {
-      setBusyAction("");
-    }
+      const rec = await onRevokeCredential(id, reason);
+      setRevocationDrafts((c) => ({ ...c, [id]: "" }));
+      setActionMessage(`Revoked ${rec.recipientName}'s credential.`);
+    } catch (err) {
+      setActionMessage(err.message || "Unable to revoke.");
+    } finally { setBusyAction(""); }
   };
+
+  /* ========== RENDER ========== */
 
   return (
     <>
       <div className="cyber-grid-bg" />
       <div className="dashboard-shell min-h-screen text-zinc-100">
-        <div className="mx-auto w-full max-w-7xl px-5 py-8 md:px-8 md:py-10">
-          <header className="mb-8">
-            <div className="flex flex-col gap-5 border-b border-white/10 pb-6 md:flex-row md:items-start md:justify-between">
-              <div className="max-w-3xl">
-                <button type="button" onClick={onBackToSite} className="site-ghost mb-5">
-                  Back to product site
-                </button>
-                <p className="site-kicker">Issuer workspace</p>
-                <h1 className="text-4xl font-extrabold tracking-tight text-zinc-50 md:text-6xl md:leading-[1.02]">
-                  {organization.name}
-                </h1>
-                <p className="mt-4 max-w-2xl text-sm text-zinc-400 md:text-base">
-                  Manage certificate templates, issuer access, recipient records, and verification links from one place.
-                </p>
-              </div>
+        <div className="mx-auto w-full max-w-7xl px-5 py-6 md:px-8">
 
-              <div className="dashboard-meta flex flex-col items-start gap-3 md:items-end">
-                <div className="neo-badge">
-                  <span className="text-zinc-400">Data source</span>
-                  <span>{apiMode === "ready" ? "Live API" : apiMode === "offline" ? "Seeded fallback" : "Loading"}</span>
-                </div>
-                <div className="neo-badge">
-                  <span className="text-zinc-400">Network</span>
-                  <span>{networkOk ? "Sepolia" : "Switch to Sepolia"}</span>
-                </div>
-                <div className="neo-badge">
-                  <span className="text-zinc-400">Contract</span>
-                  <span>{CONTRACT_ADDRESS.slice(0, 6)}...{CONTRACT_ADDRESS.slice(-4)}</span>
-                </div>
-              </div>
+          {/* ---- Compact header ---- */}
+          <header className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
+            <div className="flex items-center gap-4">
+              <button type="button" onClick={onBackToSite} className="site-ghost text-sm">← Back</button>
+              <h1 className="text-2xl font-bold text-zinc-50">{organization.name}</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="neo-badge">
+                <span className={`inline-block h-2 w-2 rounded-full ${apiMode === "ready" ? "bg-emerald-400" : "bg-amber-400"}`} />
+                {apiMode === "ready" ? "Live" : "Offline"}
+              </span>
             </div>
           </header>
 
+          {/* ---- Alerts ---- */}
           {apiError ? (
-            <div className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-              {apiError}
-            </div>
+            <div className="mb-5 rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">{apiError}</div>
           ) : null}
-
           {actionMessage ? (
-            <div className="mb-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-50">
-              {actionMessage}
-            </div>
+            <div className="mb-5 rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-50">{actionMessage}</div>
           ) : null}
 
-          <section className="dashboard-toolbar mb-8">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200/80">Access control</p>
-              <p className="mt-2 max-w-2xl text-sm text-zinc-300">
-                Approved issuer wallets can operate the registry. Public visitors should stay on the marketing and verification routes.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <ConnectButton onConnected={handleConnected} />
-              <span className="text-sm text-zinc-400">
-                {account ? `Connected: ${account.slice(0, 6)}...${account.slice(-4)}` : "Connect an issuer wallet to begin."}
-              </span>
-            </div>
-          </section>
-
-          <nav className="tab-bar mb-8">
-            {tabs.map((tab) => (
+          {/* ---- Tabs ---- */}
+          <nav className="tab-bar mb-6">
+            {tabs.map((t) => (
               <button
-                key={tab.id}
+                key={t.id}
                 type="button"
-                className={`tab-pill ${activeTab === tab.id ? "tab-pill-active" : ""}`}
-                onClick={() => setActiveTab(tab.id)}
+                className={`tab-pill ${activeTab === t.id ? "tab-pill-active" : ""}`}
+                onClick={() => setActiveTab(t.id)}
               >
-                {tab.label}
+                {t.label}
               </button>
             ))}
           </nav>
 
-          <main className="space-y-7">
-            {activeTab === "overview" && (
-              <>
-                <div className="metric-grid">
-                  <Metric label="Issued credentials" value={stats.credentialCount} />
-                  <Metric label="Valid" value={stats.validCount} tone="success" />
-                  <Metric label="Revoked" value={stats.revokedCount} tone="danger" />
-                  <Metric label="Approved issuers" value={stats.issuerCount} />
-                </div>
+          {/* =============== CREDENTIALS TAB =============== */}
+          {activeTab === "credentials" && (
+            <main className="space-y-6">
+              {/* Stats row */}
+              <div className="metric-grid">
+                <Metric label="Issued" value={stats.credentialCount} />
+                <Metric label="Valid" value={stats.validCount} tone="success" />
+                <Metric label="Revoked" value={stats.revokedCount} tone="danger" />
+                <Metric label="Issuers" value={stats.issuerCount} />
+              </div>
 
-                <div className="dashboard-two-col">
-                  <Card title="Product baseline" subtitle="The app now treats organization data and verification links as first-class business records.">
-                    <ul className="site-bullet-list mt-0">
-                      <li>Organization settings persist in the API when the backend is running.</li>
-                      <li>Credential records now carry organization IDs, verification URLs, and revocation metadata.</li>
-                      <li>The public site, verifier, and issuer app are separate routed surfaces in one frontend.</li>
-                      <li>The old contract tools remain available, but they no longer define the main story.</li>
-                    </ul>
-                  </Card>
-
-                  <Card title="Recent activity" subtitle="Recent credentials double as the best smoke test for the end-to-end product flow.">
-                    <div className="record-list">
-                      {recentCredentials.map((credential) => (
-                        <article key={credential.id} className="record-card">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className={`verification-pill ${credential.status === "Valid" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
-                              {credential.status}
-                            </span>
-                            <span className="neo-badge">{credential.verificationCode}</span>
-                          </div>
-                          <h3 className="mt-3 text-2xl font-semibold text-zinc-50">{credential.recipientName}</h3>
-                          <p className="mt-1 text-zinc-300">{credential.templateName}</p>
-                          <div className="mt-4 flex flex-wrap gap-3">
-                            <button type="button" className="site-ghost" onClick={() => onOpenVerifier(credential.verificationCode)}>
-                              Open verifier
-                            </button>
-                            <button type="button" className="site-button" onClick={() => handleCopyVerificationLink(credential)}>
-                              Copy link
-                            </button>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  </Card>
-                </div>
-              </>
-            )}
-
-            {activeTab === "issue" && (
-              <div className="dashboard-two-col">
-                <Card title="Issue a certificate" subtitle="Use structured business data instead of free-form contract inputs.">
+              {/* Issue form toggle */}
+              {!showIssueForm ? (
+                <button type="button" className="site-button" onClick={() => setShowIssueForm(true)}>
+                  + Issue new credential
+                </button>
+              ) : (
+                <Card title="Issue a credential">
                   <form className="space-y-4" onSubmit={handleIssue}>
                     <div className="dashboard-form-grid">
                       <label className="field-block">
                         <span className="neo-label">Template</span>
-                        <select
-                          className="neo-select mt-2"
-                          value={issueForm.templateId}
-                          onChange={(event) => setIssueForm({ ...issueForm, templateId: event.target.value })}
-                        >
-                          {templates.map((template) => (
-                            <option key={template.id} value={template.id}>{template.name}</option>
-                          ))}
+                        <select className="neo-select mt-2" value={issueForm.templateId} onChange={(e) => setIssueForm({ ...issueForm, templateId: e.target.value })}>
+                          {templates.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
                         </select>
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Issuer</span>
-                        <select
-                          className="neo-select mt-2"
-                          value={issueForm.issuerId}
-                          onChange={(event) => setIssueForm({ ...issueForm, issuerId: event.target.value })}
-                        >
-                          {approvedIssuers.map((issuer) => (
-                            <option key={issuer.id} value={issuer.id}>{issuer.name}</option>
-                          ))}
+                        <select className="neo-select mt-2" value={issueForm.issuerId} onChange={(e) => setIssueForm({ ...issueForm, issuerId: e.target.value })}>
+                          {approvedIssuers.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
                         </select>
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Recipient name</span>
-                        <input className="neo-input mt-2" value={issueForm.recipientName} onChange={(event) => setIssueForm({ ...issueForm, recipientName: event.target.value })} />
+                        <input className="neo-input mt-2" value={issueForm.recipientName} onChange={(e) => setIssueForm({ ...issueForm, recipientName: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Recipient email</span>
-                        <input className="neo-input mt-2" value={issueForm.recipientEmail} onChange={(event) => setIssueForm({ ...issueForm, recipientEmail: event.target.value })} />
+                        <input className="neo-input mt-2" value={issueForm.recipientEmail} onChange={(e) => setIssueForm({ ...issueForm, recipientEmail: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Recipient wallet</span>
-                        <input className="neo-input mt-2" value={issueForm.recipientWallet} onChange={(event) => setIssueForm({ ...issueForm, recipientWallet: event.target.value })} />
+                        <input className="neo-input mt-2" value={issueForm.recipientWallet} onChange={(e) => setIssueForm({ ...issueForm, recipientWallet: e.target.value })} />
                       </label>
                       <label className="field-block">
-                        <span className="neo-label">Cohort or program</span>
-                        <input className="neo-input mt-2" value={issueForm.cohort} onChange={(event) => setIssueForm({ ...issueForm, cohort: event.target.value })} />
+                        <span className="neo-label">Cohort / program</span>
+                        <input className="neo-input mt-2" value={issueForm.cohort} onChange={(e) => setIssueForm({ ...issueForm, cohort: e.target.value })} />
                       </label>
                     </div>
                     <label className="field-block">
-                      <span className="neo-label">Credential summary</span>
-                      <textarea
-                        className="neo-textarea mt-2"
-                        rows="4"
-                        value={issueForm.summary}
-                        onChange={(event) => setIssueForm({ ...issueForm, summary: event.target.value })}
-                      />
+                      <span className="neo-label">Summary</span>
+                      <textarea className="neo-textarea mt-2" rows="3" value={issueForm.summary} onChange={(e) => setIssueForm({ ...issueForm, summary: e.target.value })} />
                     </label>
-                    <button type="submit" className="site-button" disabled={busyAction === "issue"}>
-                      {busyAction === "issue" ? "Saving..." : "Create credential record"}
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button type="submit" className="site-button" disabled={busyAction === "issue"}>
+                        {busyAction === "issue" ? "Saving..." : "Create credential"}
+                      </button>
+                      <button type="button" className="site-ghost" onClick={() => setShowIssueForm(false)}>Cancel</button>
+                    </div>
                     {issueMessage ? <p className="text-sm text-emerald-200">{issueMessage}</p> : null}
                   </form>
                 </Card>
+              )}
 
-                <Card title="Issuance guidance" subtitle="The credential record is now the product source of truth for public verification.">
-                  <ul className="site-bullet-list mt-0">
-                    <li>Templates keep credential language consistent across cohorts and teams.</li>
-                    <li>Only approved issuers can create new records in the API-backed model.</li>
-                    <li>Every issued record gets a reusable public verification URL.</li>
-                    <li>Revocation details stay visible instead of disappearing into manual admin notes.</li>
-                  </ul>
-                </Card>
-              </div>
-            )}
-            {activeTab === "credentials" && (
+              {/* Credentials list */}
               <Card
                 title="Issued credentials"
-                subtitle="These are the records recipients and verifiers care about."
-                action={<input className="neo-input" placeholder="Search credentials" value={search} onChange={(event) => setSearch(event.target.value)} />}
+                action={<input className="neo-input" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />}
               >
                 <div className="record-list">
-                  {filteredCredentials.map((credential) => {
-                    const isRevoking = busyAction === `revoke:${credential.id}`;
-                    const verificationLink = resolveVerificationUrl(credential.verificationUrl);
+                  {filteredCredentials.map((c) => {
+                    const isRevoking = busyAction === `revoke:${c.id}`;
+                    const link = resolveVerificationUrl(c.verificationUrl);
 
                     return (
-                      <article key={credential.id} className="record-card">
+                      <article key={c.id} className="record-card">
                         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                           <div>
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className={`verification-pill ${credential.status === "Valid" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
-                                {credential.status}
+                              <span className={`verification-pill ${c.status === "Valid" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
+                                {c.status}
                               </span>
-                              <span className="neo-badge">{credential.verificationCode}</span>
+                              <span className="neo-badge">{c.verificationCode}</span>
                             </div>
-                            <h3 className="mt-3 text-2xl font-semibold text-zinc-50">{credential.recipientName}</h3>
-                            <p className="mt-1 text-zinc-300">{credential.templateName}</p>
-                            <p className="mt-3 text-sm text-zinc-400">{credential.summary}</p>
+                            <h3 className="mt-2 text-xl font-semibold text-zinc-50">{c.recipientName}</h3>
+                            <p className="text-sm text-zinc-300">{c.templateName}</p>
+                            {c.summary ? <p className="mt-2 text-sm text-zinc-400">{c.summary}</p> : null}
                           </div>
-
-                          <div className="flex flex-wrap gap-3">
-                            <button type="button" className="site-ghost" onClick={() => onOpenVerifier(credential.verificationCode)}>
-                              Open verifier
-                            </button>
-                            <button type="button" className="site-button" onClick={() => handleCopyVerificationLink(credential)}>
-                              Copy link
-                            </button>
+                          <div className="flex flex-wrap gap-2">
+                            <button type="button" className="site-ghost text-sm" onClick={() => onOpenVerifier(c.verificationCode)}>Verify</button>
+                            <button type="button" className="site-button text-sm" onClick={() => handleCopyLink(c)}>Copy link</button>
                           </div>
                         </div>
 
-                        <div className="site-detail-grid mt-5">
-                          <div>
-                            <dt>Issued by</dt>
-                            <dd>{credential.issuedBy}</dd>
-                          </div>
-                          <div>
-                            <dt>Issue date</dt>
-                            <dd>{formatDate(credential.issuedAt)}</dd>
-                          </div>
-                          <div>
-                            <dt>Email</dt>
-                            <dd>{credential.recipientEmail}</dd>
-                          </div>
-                          <div>
-                            <dt>Cohort</dt>
-                            <dd>{credential.cohort}</dd>
-                          </div>
-                          <div>
-                            <dt>Verification URL</dt>
-                            <dd className="break-all">{verificationLink}</dd>
-                          </div>
-                          <div>
-                            <dt>Organization</dt>
-                            <dd>{organization.name}</dd>
-                          </div>
-                          {credential.status === "Revoked" ? (
+                        <div className="site-detail-grid mt-4">
+                          <div><dt>Issued by</dt><dd>{c.issuedBy}</dd></div>
+                          <div><dt>Date</dt><dd>{formatDate(c.issuedAt)}</dd></div>
+                          <div><dt>Email</dt><dd>{c.recipientEmail}</dd></div>
+                          <div><dt>Cohort</dt><dd>{c.cohort}</dd></div>
+                          {c.status === "Revoked" ? (
                             <>
-                              <div>
-                                <dt>Revoked at</dt>
-                                <dd>{credential.revokedAt ? formatDate(credential.revokedAt) : "Not recorded"}</dd>
-                              </div>
-                              <div>
-                                <dt>Revocation reason</dt>
-                                <dd>{credential.revocationReason || "Not recorded"}</dd>
-                              </div>
+                              <div><dt>Revoked at</dt><dd>{c.revokedAt ? formatDate(c.revokedAt) : "—"}</dd></div>
+                              <div><dt>Reason</dt><dd>{c.revocationReason || "—"}</dd></div>
                             </>
                           ) : null}
                         </div>
 
-                        {credential.status === "Valid" ? (
-                          <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4">
-                            <p className="site-panel-label">Revocation control</p>
-                            <div className="mt-3 flex flex-col gap-3 lg:flex-row">
-                              <input
-                                className="neo-input"
-                                placeholder="Reason for revocation"
-                                value={revocationDrafts[credential.id] || ""}
-                                onChange={(event) =>
-                                  setRevocationDrafts((current) => ({
-                                    ...current,
-                                    [credential.id]: event.target.value,
-                                  }))
-                                }
-                              />
-                              <button type="button" className="neo-btn-danger" disabled={isRevoking} onClick={() => handleRevoke(credential.id)}>
-                                {isRevoking ? "Revoking..." : "Revoke"}
-                              </button>
-                            </div>
+                        {c.status === "Valid" ? (
+                          <div className="mt-4 flex flex-col gap-2 lg:flex-row lg:items-center">
+                            <input
+                              className="neo-input"
+                              placeholder="Revocation reason"
+                              value={revocationDrafts[c.id] || ""}
+                              onChange={(e) => setRevocationDrafts((d) => ({ ...d, [c.id]: e.target.value }))}
+                            />
+                            <button type="button" className="neo-btn-danger" disabled={isRevoking} onClick={() => handleRevoke(c.id)}>
+                              {isRevoking ? "Revoking..." : "Revoke"}
+                            </button>
                           </div>
                         ) : null}
                       </article>
@@ -545,147 +375,41 @@ export default function DashboardApp({
                   })}
                 </div>
               </Card>
-            )}
+            </main>
+          )}
 
-            {activeTab === "templates" && (
-              <div className="dashboard-two-col">
-                <Card title="Template library" subtitle="Templates make the product easier to explain and scale.">
-                  <div className="record-list">
-                    {templates.map((template) => (
-                      <article key={template.id} className="record-card">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="neo-badge">{template.id}</span>
-                          <span className="neo-badge">{template.category}</span>
-                          <span className="neo-badge">{template.validity}</span>
-                        </div>
-                        <h3 className="mt-3 text-2xl font-semibold text-zinc-50">{template.name}</h3>
-                        <p className="mt-3 text-sm text-zinc-400">{template.summary}</p>
-                      </article>
-                    ))}
-                  </div>
-                </Card>
-
-                <Card title="Create a new template" subtitle="This writes into the backend model when the API is online.">
-                  <form className="space-y-4" onSubmit={handleTemplateCreate}>
-                    <label className="field-block">
-                      <span className="neo-label">Template name</span>
-                      <input className="neo-input mt-2" value={templateForm.name} onChange={(event) => setTemplateForm({ ...templateForm, name: event.target.value })} />
-                    </label>
-                    <label className="field-block">
-                      <span className="neo-label">Category</span>
-                      <input className="neo-input mt-2" value={templateForm.category} onChange={(event) => setTemplateForm({ ...templateForm, category: event.target.value })} />
-                    </label>
-                    <label className="field-block">
-                      <span className="neo-label">Validity period</span>
-                      <input className="neo-input mt-2" value={templateForm.validity} onChange={(event) => setTemplateForm({ ...templateForm, validity: event.target.value })} />
-                    </label>
-                    <label className="field-block">
-                      <span className="neo-label">Summary</span>
-                      <textarea className="neo-textarea mt-2" rows="4" value={templateForm.summary} onChange={(event) => setTemplateForm({ ...templateForm, summary: event.target.value })} />
-                    </label>
-                    <button type="submit" className="site-button" disabled={busyAction === "template"}>{busyAction === "template" ? "Saving..." : "Add template"}</button>
-                  </form>
-                </Card>
-              </div>
-            )}
-
-            {activeTab === "issuers" && (
-              <div className="dashboard-two-col">
-                <Card title="Issuer access" subtitle="Who is allowed to issue on behalf of the organization.">
-                  <div className="record-list">
-                    {issuers.map((issuer) => (
-                      <article key={issuer.id} className="record-card">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className={`verification-pill ${issuer.status === "Approved" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
-                            {issuer.status}
-                          </span>
-                          <span className="neo-badge">{issuer.role}</span>
-                        </div>
-                        <h3 className="mt-3 text-2xl font-semibold text-zinc-50">{issuer.name}</h3>
-                        <p className="mt-3 break-all text-sm text-zinc-400">{issuer.wallet}</p>
-                      </article>
-                    ))}
-                  </div>
-                </Card>
-
-                <Card title="Add issuer" subtitle="This is now backed by the API whenever the backend is running.">
-                  <form className="space-y-4" onSubmit={handleIssuerCreate}>
-                    <label className="field-block">
-                      <span className="neo-label">Name</span>
-                      <input className="neo-input mt-2" value={issuerForm.name} onChange={(event) => setIssuerForm({ ...issuerForm, name: event.target.value })} />
-                    </label>
-                    <label className="field-block">
-                      <span className="neo-label">Role</span>
-                      <input className="neo-input mt-2" value={issuerForm.role} onChange={(event) => setIssuerForm({ ...issuerForm, role: event.target.value })} />
-                    </label>
-                    <label className="field-block">
-                      <span className="neo-label">Wallet address</span>
-                      <input className="neo-input mt-2" value={issuerForm.wallet} onChange={(event) => setIssuerForm({ ...issuerForm, wallet: event.target.value })} />
-                    </label>
-                    <label className="field-block">
-                      <span className="neo-label">Status</span>
-                      <select className="neo-select mt-2" value={issuerForm.status} onChange={(event) => setIssuerForm({ ...issuerForm, status: event.target.value })}>
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                      </select>
-                    </label>
-                    <button type="submit" className="site-button" disabled={busyAction === "issuer"}>{busyAction === "issuer" ? "Saving..." : "Add issuer"}</button>
-                  </form>
-                </Card>
-              </div>
-            )}
-            {activeTab === "organization" && (
-              <div className="dashboard-two-col">
-                <Card title="Organization settings" subtitle="These values now shape the business identity shown across the public site and verification flow.">
+          {/* =============== SETTINGS TAB =============== */}
+          {activeTab === "settings" && (
+            <main className="space-y-8">
+              {/* --- Organization --- */}
+              <section>
+                <h2 className="text-xl font-bold text-zinc-50 mb-4">Organization</h2>
+                <Card title={organization.name}>
                   <form className="space-y-4" onSubmit={handleOrganizationSave}>
                     <div className="dashboard-form-grid">
                       <label className="field-block">
-                        <span className="neo-label">Organization name</span>
-                        <input
-                          className="neo-input mt-2"
-                          value={organizationDraft.name}
-                          onChange={(event) => setOrganizationDraft({ ...organizationDraft, name: event.target.value })}
-                        />
+                        <span className="neo-label">Name</span>
+                        <input className="neo-input mt-2" value={organizationDraft.name} onChange={(e) => setOrganizationDraft({ ...organizationDraft, name: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Slug</span>
-                        <input
-                          className="neo-input mt-2"
-                          value={organizationDraft.slug}
-                          onChange={(event) => setOrganizationDraft({ ...organizationDraft, slug: event.target.value })}
-                        />
+                        <input className="neo-input mt-2" value={organizationDraft.slug} onChange={(e) => setOrganizationDraft({ ...organizationDraft, slug: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Sector</span>
-                        <input
-                          className="neo-input mt-2"
-                          value={organizationDraft.sector}
-                          onChange={(event) => setOrganizationDraft({ ...organizationDraft, sector: event.target.value })}
-                        />
+                        <input className="neo-input mt-2" value={organizationDraft.sector} onChange={(e) => setOrganizationDraft({ ...organizationDraft, sector: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Website</span>
-                        <input
-                          className="neo-input mt-2"
-                          value={organizationDraft.website}
-                          onChange={(event) => setOrganizationDraft({ ...organizationDraft, website: event.target.value })}
-                        />
+                        <input className="neo-input mt-2" value={organizationDraft.website} onChange={(e) => setOrganizationDraft({ ...organizationDraft, website: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Verification domain</span>
-                        <input
-                          className="neo-input mt-2"
-                          value={organizationDraft.verificationDomain}
-                          onChange={(event) => setOrganizationDraft({ ...organizationDraft, verificationDomain: event.target.value })}
-                        />
+                        <input className="neo-input mt-2" value={organizationDraft.verificationDomain} onChange={(e) => setOrganizationDraft({ ...organizationDraft, verificationDomain: e.target.value })} />
                       </label>
                       <label className="field-block">
                         <span className="neo-label">Status</span>
-                        <select
-                          className="neo-select mt-2"
-                          value={organizationDraft.status}
-                          onChange={(event) => setOrganizationDraft({ ...organizationDraft, status: event.target.value })}
-                        >
+                        <select className="neo-select mt-2" value={organizationDraft.status} onChange={(e) => setOrganizationDraft({ ...organizationDraft, status: e.target.value })}>
                           <option value="Active">Active</option>
                           <option value="Pilot">Pilot</option>
                           <option value="Paused">Paused</option>
@@ -693,58 +417,160 @@ export default function DashboardApp({
                       </label>
                     </div>
                     <label className="field-block">
-                      <span className="neo-label">Organization description</span>
-                      <textarea
-                        className="neo-textarea mt-2"
-                        rows="4"
-                        value={organizationDraft.description}
-                        onChange={(event) => setOrganizationDraft({ ...organizationDraft, description: event.target.value })}
-                      />
+                      <span className="neo-label">Description</span>
+                      <textarea className="neo-textarea mt-2" rows="3" value={organizationDraft.description} onChange={(e) => setOrganizationDraft({ ...organizationDraft, description: e.target.value })} />
                     </label>
                     <button type="submit" className="site-button" disabled={busyAction === "organization"}>
-                      {busyAction === "organization" ? "Saving..." : "Save organization settings"}
+                      {busyAction === "organization" ? "Saving..." : "Save settings"}
                     </button>
                   </form>
                 </Card>
+              </section>
 
-                <Card title="Verification identity" subtitle="This is the trust payload a verifier should see without talking to your ops team.">
-                  <ul className="site-bullet-list mt-0">
-                    <li>{organization.name} is the issuing organization surfaced in the public verifier.</li>
-                    <li>{stats.issuerCount} approved issuer records are currently able to issue credentials.</li>
-                    <li>{stats.templateCount} reusable templates are available for consistent certificate language.</li>
-                    <li>Verification links route through the same product surface instead of a disconnected tool.</li>
-                  </ul>
-                </Card>
+              {/* --- Templates --- */}
+              <section>
+                <h2 className="text-xl font-bold text-zinc-50 mb-4">Templates</h2>
+                <div className="dashboard-two-col">
+                  <Card title="Template library">
+                    <div className="record-list">
+                      {templates.map((t) => (
+                        <article key={t.id} className="record-card">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="neo-badge">{t.category}</span>
+                            <span className="neo-badge">{t.validity}</span>
+                          </div>
+                          <h3 className="mt-2 text-lg font-semibold text-zinc-50">{t.name}</h3>
+                          {t.summary ? <p className="mt-2 text-sm text-zinc-400">{t.summary}</p> : null}
+                        </article>
+                      ))}
+                    </div>
+                  </Card>
+
+                  <Card title="Add template">
+                    <form className="space-y-4" onSubmit={handleTemplateCreate}>
+                      <label className="field-block">
+                        <span className="neo-label">Name</span>
+                        <input className="neo-input mt-2" value={templateForm.name} onChange={(e) => setTemplateForm({ ...templateForm, name: e.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Category</span>
+                        <input className="neo-input mt-2" value={templateForm.category} onChange={(e) => setTemplateForm({ ...templateForm, category: e.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Validity</span>
+                        <input className="neo-input mt-2" value={templateForm.validity} onChange={(e) => setTemplateForm({ ...templateForm, validity: e.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Summary</span>
+                        <textarea className="neo-textarea mt-2" rows="3" value={templateForm.summary} onChange={(e) => setTemplateForm({ ...templateForm, summary: e.target.value })} />
+                      </label>
+                      <button type="submit" className="site-button" disabled={busyAction === "template"}>
+                        {busyAction === "template" ? "Saving..." : "Add template"}
+                      </button>
+                    </form>
+                  </Card>
+                </div>
+              </section>
+
+              {/* --- Issuer Access --- */}
+              <section>
+                <h2 className="text-xl font-bold text-zinc-50 mb-4">Issuer Access</h2>
+                <div className="dashboard-two-col">
+                  <Card title="Current issuers">
+                    <div className="record-list">
+                      {issuers.map((i) => (
+                        <article key={i.id} className="record-card">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className={`verification-pill ${i.status === "Approved" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
+                              {i.status}
+                            </span>
+                            <span className="neo-badge">{i.role}</span>
+                          </div>
+                          <h3 className="mt-2 text-lg font-semibold text-zinc-50">{i.name}</h3>
+                          <p className="mt-1 break-all text-sm text-zinc-400">{i.wallet}</p>
+                        </article>
+                      ))}
+                    </div>
+                  </Card>
+
+                  <Card title="Add issuer">
+                    <form className="space-y-4" onSubmit={handleIssuerCreate}>
+                      <label className="field-block">
+                        <span className="neo-label">Name</span>
+                        <input className="neo-input mt-2" value={issuerForm.name} onChange={(e) => setIssuerForm({ ...issuerForm, name: e.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Role</span>
+                        <input className="neo-input mt-2" value={issuerForm.role} onChange={(e) => setIssuerForm({ ...issuerForm, role: e.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Wallet address</span>
+                        <input className="neo-input mt-2" value={issuerForm.wallet} onChange={(e) => setIssuerForm({ ...issuerForm, wallet: e.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Status</span>
+                        <select className="neo-select mt-2" value={issuerForm.status} onChange={(e) => setIssuerForm({ ...issuerForm, status: e.target.value })}>
+                          <option value="Pending">Pending</option>
+                          <option value="Approved">Approved</option>
+                        </select>
+                      </label>
+                      <button type="submit" className="site-button" disabled={busyAction === "issuer"}>
+                        {busyAction === "issuer" ? "Saving..." : "Add issuer"}
+                      </button>
+                    </form>
+                  </Card>
+                </div>
+              </section>
+            </main>
+          )}
+
+          {/* =============== REGISTRY TAB =============== */}
+          {activeTab === "registry" && (
+            <main className="space-y-6">
+              {/* Wallet connect moved here */}
+              <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4">
+                <div className="flex flex-wrap items-center gap-4">
+                  <ConnectButton onConnected={handleConnected} />
+                  <span className="text-sm text-zinc-400">
+                    {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect wallet to use registry."}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="neo-badge">
+                    <span className="text-zinc-400">Network</span>
+                    <span>{networkOk ? "Sepolia" : "Switch to Sepolia"}</span>
+                  </span>
+                  <span className="neo-badge">
+                    <span className="text-zinc-400">Contract</span>
+                    <span>{CONTRACT_ADDRESS.slice(0, 6)}...{CONTRACT_ADDRESS.slice(-4)}</span>
+                  </span>
+                </div>
               </div>
-            )}
 
-            {activeTab === "registry" && (
-              <>
-                <Card title="Registry-backed certificate actions" subtitle="Use the current contract workflow while the business backend evolves.">
-                  <CredentialActions
-                    contractAddress={CONTRACT_ADDRESS}
-                    abi={CONTRACT_ABI}
-                    provider={provider}
-                    signer={signer}
-                    networkOk={networkOk}
-                    account={account}
-                  />
-                </Card>
+              <Card title="Certificate actions" subtitle="Issue, verify, or revoke via the on-chain registry.">
+                <CredentialActions
+                  contractAddress={CONTRACT_ADDRESS}
+                  abi={CONTRACT_ABI}
+                  provider={provider}
+                  signer={signer}
+                  networkOk={networkOk}
+                  account={account}
+                />
+              </Card>
 
-                <Card title="Advanced contract tools" subtitle="Keep this available for debugging and admin checks, not the main business journey.">
-                  <FunctionRunner
-                    iface={iface}
-                    contractAddress={CONTRACT_ADDRESS}
-                    abi={CONTRACT_ABI}
-                    provider={provider}
-                    signer={signer}
-                    networkOk={networkOk}
-                    account={account}
-                  />
-                </Card>
-              </>
-            )}
-          </main>
+              <Card title="Contract tools" subtitle="Direct contract method invocation.">
+                <FunctionRunner
+                  iface={iface}
+                  contractAddress={CONTRACT_ADDRESS}
+                  abi={CONTRACT_ABI}
+                  provider={provider}
+                  signer={signer}
+                  networkOk={networkOk}
+                  account={account}
+                />
+              </Card>
+            </main>
+          )}
         </div>
       </div>
     </>

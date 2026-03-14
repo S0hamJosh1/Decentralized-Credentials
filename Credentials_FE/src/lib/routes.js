@@ -1,4 +1,4 @@
-export const SITE_PAGES = ["home", "how-it-works", "use-cases", "trust"];
+export const SITE_PAGES = ["home"];
 
 export function normalizePathname(pathname = "/") {
   const normalized = pathname.startsWith("/") ? pathname : `/${pathname}`;
@@ -13,18 +13,6 @@ export function parseRoute(pathname = "/") {
     return { view: "app", page: null, verificationCode: "" };
   }
 
-  if (normalized === "/how-it-works") {
-    return { view: "site", page: "how-it-works", verificationCode: "" };
-  }
-
-  if (normalized === "/use-cases") {
-    return { view: "site", page: "use-cases", verificationCode: "" };
-  }
-
-  if (normalized === "/trust") {
-    return { view: "site", page: "trust", verificationCode: "" };
-  }
-
   if (normalized.startsWith("/verify/")) {
     return {
       view: "verify",
@@ -37,13 +25,11 @@ export function parseRoute(pathname = "/") {
     return { view: "verify", page: null, verificationCode: "" };
   }
 
+  // All other routes (including old /how-it-works, /use-cases, /trust) → home
   return { view: "site", page: "home", verificationCode: "" };
 }
 
 export function sitePathForPage(page = "home") {
-  if (page === "how-it-works") return "/how-it-works";
-  if (page === "use-cases") return "/use-cases";
-  if (page === "trust") return "/trust";
   return "/";
 }
 

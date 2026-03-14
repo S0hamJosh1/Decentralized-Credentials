@@ -4,7 +4,7 @@ import MarketingSite from "./components/MarketingSite";
 import VerifyPortal from "./components/VerifyPortal";
 import { initialCredentials } from "./data/productData";
 import { useProductData } from "./hooks/useProductData";
-import { buildVerifyPath, parseRoute, pushRoute, resolveVerificationUrl, sitePathForPage } from "./lib/routes";
+import { buildVerifyPath, parseRoute, pushRoute, resolveVerificationUrl } from "./lib/routes";
 
 export default function App() {
   const initialRoute = parseRoute(window.location.pathname);
@@ -38,12 +38,8 @@ export default function App() {
     return () => window.removeEventListener("popstate", handleRouteChange);
   }, []);
 
-  const navigateTo = (pathname, options = {}) => {
-    pushRoute(pathname, options);
-  };
-
-  const openSitePage = (page = "home") => {
-    navigateTo(sitePathForPage(page));
+  const navigateTo = (pathname) => {
+    pushRoute(pathname);
   };
 
   const openVerifier = (verificationCode) => {
@@ -75,7 +71,7 @@ export default function App() {
         onAddTemplate={addTemplate}
         onAddIssuer={addIssuer}
         onUpdateOrganization={saveOrganization}
-        onBackToSite={() => openSitePage("home")}
+        onBackToSite={() => navigateTo("/")}
         onOpenVerifier={openVerifier}
       />
     );
@@ -90,7 +86,7 @@ export default function App() {
         selectedVerificationCode={selectedVerificationCode}
         onSelectVerificationCode={setSelectedVerificationCode}
         onVerifyCode={openVerifier}
-        onBackToSite={() => openSitePage("home")}
+        onBackToSite={() => navigateTo("/")}
         onLaunchApp={() => navigateTo("/app")}
       />
     );
@@ -99,10 +95,8 @@ export default function App() {
   return (
     <MarketingSite
       {...sharedProps}
-      currentPage={route.page}
       sampleCredential={sampleCredential}
       sampleVerificationUrl={sampleVerificationUrl}
-      onNavigatePage={openSitePage}
       onLaunchApp={() => navigateTo("/app")}
       onOpenVerifier={openVerifier}
     />
