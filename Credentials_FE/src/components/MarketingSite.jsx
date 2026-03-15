@@ -1,4 +1,5 @@
 import React from "react";
+import { initialOrganization } from "../data/productData";
 
 const howSteps = [
   {
@@ -35,10 +36,11 @@ export default function MarketingSite({
   stats,
   apiMode,
   sampleCredential,
-  sampleVerificationUrl,
   onLaunchApp,
   onOpenVerifier,
 }) {
+  const isDemoWorkspace = organization.slug === initialOrganization.slug;
+
   return (
     <div className="site-shell min-h-screen text-stone-100">
       <div className="site-orb site-orb-left" />
@@ -60,7 +62,7 @@ export default function MarketingSite({
               Verify
             </button>
             <button type="button" className="site-button" onClick={onLaunchApp}>
-              Launch App
+              Issuer sign in
             </button>
           </div>
         </header>
@@ -72,11 +74,13 @@ export default function MarketingSite({
               <p className="site-kicker">Business credential infrastructure</p>
               <h1 className="site-title">Issue digital certificates people can trust in seconds.</h1>
               <p className="site-lede">
-                {organization.name} uses Credential Foundry to issue, verify, and manage digital credentials through a single workspace.
+                {isDemoWorkspace
+                  ? "Launch the issuer app to sign in, add your company, and create a real workspace instead of landing in the Northstar demo."
+                  : `${organization.name} uses Credential Foundry to issue, verify, and manage digital credentials through a single workspace.`}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <button type="button" className="site-button" onClick={onLaunchApp}>Launch app</button>
+                <button type="button" className="site-button" onClick={onLaunchApp}>Issuer sign in</button>
                 <button type="button" className="site-ghost" onClick={() => onOpenVerifier(sampleCredential?.verificationCode)}>
                   Verify a credential
                 </button>
@@ -136,10 +140,10 @@ export default function MarketingSite({
           <section className="site-cta">
             <div>
               <h2>Ready to start issuing?</h2>
-              <p>One workspace for templates, issuers, credentials, and verification links.</p>
+              <p>Sign in, name your company, and move straight into the issuer workspace.</p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <button type="button" className="site-button" onClick={onLaunchApp}>Launch app</button>
+              <button type="button" className="site-button" onClick={onLaunchApp}>Issuer sign in</button>
               <button type="button" className="site-ghost" onClick={() => onOpenVerifier(sampleCredential?.verificationCode)}>
                 Try the verifier
               </button>

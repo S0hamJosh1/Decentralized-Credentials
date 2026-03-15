@@ -55,7 +55,7 @@ export default function VerifyPortal({
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <button type="button" className="site-ghost" onClick={onBackToSite}>Back to site</button>
-            <button type="button" className="site-button" onClick={onLaunchApp}>Launch app</button>
+            <button type="button" className="site-button" onClick={onLaunchApp}>Issuer sign in</button>
           </div>
         </header>
 
@@ -87,7 +87,7 @@ export default function VerifyPortal({
               </button>
             </div>
             <p className="mt-3 text-sm text-zinc-500">
-              Try: {credentials[0]?.verificationCode}, {credentials[1]?.verificationCode}
+              {credentials.length > 0 ? `Try: ${credentials[0]?.verificationCode}${credentials[1] ? `, ${credentials[1]?.verificationCode}` : ""}` : "No sample credentials yet."}
             </p>
           </div>
 

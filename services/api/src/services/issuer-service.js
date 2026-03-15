@@ -15,6 +15,7 @@ function sanitizeIssuer(payload = {}) {
   return {
     name: sanitizeText(payload.name),
     role: sanitizeText(payload.role),
+    email: sanitizeText(payload.email),
     wallet: sanitizeText(payload.wallet),
     status: sanitizeText(payload.status) || "Pending",
   };
@@ -29,16 +30,27 @@ export async function createIssuer(payload) {
   const db = await readDb();
   const issuerInput = sanitizeIssuer(payload);
 
-  requireFields(issuerInput, ["name", "role", "wallet", "status"], "issuer fields");
+  requireFields(issuerInput, ["name", "role", "status"], "issuer fields");
+
+  if (!issuerInput.wallet && !issuerInput.email) {
+    throw createHttpError(400, "Provide a wallet or email for the issuer.");
+  }
+
   ensureUnique(
     db.issuers,
-    (issuer) => issuer.organizationId === db.organization.id && issuer.wallet.toLowerCase() === issuerInput.wallet.toLowerCase(),
-    "That wallet is already registered for this organization."
+    (issuer) =>
+      issuer.organizationId === db.organization.id
+      && (
+        (issuerInput.wallet && issuer.wallet?.toLowerCase() === issuerInput.wallet.toLowerCase())
+        || (issuerInput.email && issuer.email?.toLowerCase() === issuerInput.email.toLowerCase())
+      ),
+    "That issuer is already registered for this organization."
   );
 
   const issuer = {
     id: nextId("ISS-", db.issuers),
     organizationId: db.organization.id,
+    wallet: issuerInput.wallet || issuerInput.email,
     ...issuerInput,
   };
 

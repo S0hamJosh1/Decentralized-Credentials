@@ -175,6 +175,42 @@
     padding: 4.75rem 0 2rem;
   }
 
+  .issuer-access-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .issuer-access-copy {
+    min-height: 100%;
+  }
+
+  .issuer-access-title {
+    margin: 0.9rem 0 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(2.5rem, 4vw, 4.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    color: var(--site-text);
+  }
+
+  .issuer-access-lede {
+    max-width: 36rem;
+  }
+
+  .issuer-access-highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .issuer-step-number {
+    width: 1.65rem;
+    height: 1.65rem;
+    margin-right: 0.55rem;
+    margin-bottom: 0;
+    font-size: 0.72rem;
+  }
+
   .site-hero-copy {
     animation: riseIn 600ms ease-out both;
   }
@@ -552,6 +588,7 @@
 
 @media (max-width: 1024px) {
   .site-hero,
+  .issuer-access-layout,
   .site-grid-trust,
   .site-grid-steps,
   .site-grid-cards,

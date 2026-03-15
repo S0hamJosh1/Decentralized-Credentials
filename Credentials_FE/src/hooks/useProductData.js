@@ -11,6 +11,7 @@ import {
   createTemplate,
   fetchBootstrap,
   revokeCredentialRecord,
+  setupWorkspace,
   updateOrganization,
 } from "../lib/api";
 import {
@@ -18,6 +19,7 @@ import {
   createLocalIssuer,
   createLocalTemplate,
   revokeLocalCredential,
+  setupLocalWorkspace,
 } from "../lib/local-product";
 import { buildVerifyPath } from "../lib/routes";
 
@@ -129,6 +131,24 @@ export function useProductData() {
     return payload;
   };
 
+  const initializeIssuerWorkspace = async (payload) => {
+    if (apiMode === "ready") {
+      const bootstrap = await setupWorkspace(payload);
+      setOrganization(bootstrap.organization || initialOrganization);
+      setTemplates(bootstrap.templates || []);
+      setIssuers(bootstrap.issuers || []);
+      setCredentials(bootstrap.credentials || []);
+      return bootstrap;
+    }
+
+    const bootstrap = setupLocalWorkspace(payload, organization);
+    setOrganization(bootstrap.organization);
+    setTemplates(bootstrap.templates);
+    setIssuers(bootstrap.issuers);
+    setCredentials(bootstrap.credentials);
+    return bootstrap;
+  };
+
   return {
     organization,
     templates,
@@ -142,5 +162,6 @@ export function useProductData() {
     addTemplate,
     addIssuer,
     saveOrganization,
+    initializeIssuerWorkspace,
   };
 }

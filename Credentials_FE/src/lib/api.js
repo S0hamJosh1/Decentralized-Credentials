@@ -42,6 +42,13 @@ export function createIssuer(payload) {
   });
 }
 
+export function setupWorkspace(payload) {
+  return request("/api/workspace/setup", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function createCredential(payload) {
   return request("/api/credentials", {
     method: "POST",

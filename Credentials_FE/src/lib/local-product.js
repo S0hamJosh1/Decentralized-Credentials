@@ -50,6 +50,38 @@ export function createLocalIssuer(payload, organizationId, issuers) {
   };
 }
 
+export function setupLocalWorkspace(payload, organization) {
+  const nextOrganization = {
+    ...organization,
+    name: payload.companyName,
+    slug: payload.companySlug,
+    sector: payload.sector || "Credential issuing",
+    website: payload.website || `https://${payload.companySlug || "issuer-workspace"}.example`,
+    verificationDomain: payload.verificationDomain,
+    status: "Active",
+    description:
+      payload.description || `${payload.companyName} issues digital credentials through Credential Foundry.`,
+  };
+
+  const nextIssuer = {
+    id: "ISS-1",
+    organizationId: nextOrganization.id,
+    name: payload.fullName,
+    role: payload.role || "Issuer admin",
+    email: payload.workEmail,
+    wallet: payload.workEmail,
+    status: "Approved",
+  };
+
+  return {
+    organization: nextOrganization,
+    templates: [],
+    issuers: [nextIssuer],
+    credentials: [],
+    issuer: nextIssuer,
+  };
+}
+
 export function revokeLocalCredential(credentials, credentialId, reason) {
   let revokedRecord = null;
 

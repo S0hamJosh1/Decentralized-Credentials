@@ -8,6 +8,7 @@ import { createIssuerRouter } from "./routes/issuer-routes.js";
 import { createOrganizationRouter } from "./routes/organization-routes.js";
 import { createTemplateRouter } from "./routes/template-routes.js";
 import { createVerifyRouter } from "./routes/verify-routes.js";
+import { createWorkspaceRouter } from "./routes/workspace-routes.js";
 
 export function createApp() {
   const app = express();
@@ -17,6 +18,7 @@ export function createApp() {
 
   app.use(createHealthRouter());
   app.use(createBootstrapRouter());
+  app.use(createWorkspaceRouter());
   app.use(createOrganizationRouter());
   app.use(createTemplateRouter());
   app.use(createIssuerRouter());

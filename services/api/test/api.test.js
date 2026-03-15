@@ -36,25 +36,56 @@ try {
   assert.ok(bootstrap.templates.every((item) => item.organizationId === bootstrap.organization.id));
   assert.ok(bootstrap.credentials.every((item) => item.organizationId === bootstrap.organization.id));
 
+  const { response: setupResponse, payload: workspaceSetup } = await request("/api/workspace/setup", {
+    method: "POST",
+    body: JSON.stringify({
+      companyName: "Acme Credential Group",
+      companySlug: "acme-credential-group",
+      website: "https://acme.example",
+      sector: "Corporate learning",
+      verificationDomain: "http://localhost:5173",
+      fullName: "Jane Founder",
+      workEmail: "jane@acme.example",
+      role: "Issuer admin",
+    }),
+  });
+  assert.equal(setupResponse.status, 201);
+  assert.equal(workspaceSetup.organization.name, "Acme Credential Group");
+  assert.equal(workspaceSetup.templates.length, 0);
+  assert.equal(workspaceSetup.credentials.length, 0);
+  assert.equal(workspaceSetup.issuer.email, "jane@acme.example");
+
   const { payload: updatedOrganization } = await request("/api/organization", {
     method: "PATCH",
     body: JSON.stringify({
-      name: "Northstar Credential Lab",
-      slug: "northstar-credential-lab",
-      sector: "Workforce training",
-      website: "https://northstar.example",
+      name: "Acme Credential Lab",
+      slug: "acme-credential-lab",
+      sector: "Corporate learning",
+      website: "https://acme.example",
       verificationDomain: "http://localhost:5173",
       status: "Pilot",
-      description: "A pilot credential issuer for workforce programs.",
+      description: "A pilot credential issuer for internal learning programs.",
     }),
   });
-  assert.equal(updatedOrganization.name, "Northstar Credential Lab");
+  assert.equal(updatedOrganization.name, "Acme Credential Lab");
   assert.equal(updatedOrganization.status, "Pilot");
+
+  const { payload: createdTemplate, response: templateResponse } = await request("/api/templates", {
+    method: "POST",
+    body: JSON.stringify({
+      name: "Employee Completion",
+      category: "Learning",
+      validity: "Permanent",
+      summary: "Confirms an employee completed required training.",
+    }),
+  });
+  assert.equal(templateResponse.status, 201);
+  assert.equal(createdTemplate.organizationId, "ORG-1001");
 
   const { payload: createdCredential, response: createResponse } = await request("/api/credentials", {
     method: "POST",
     body: JSON.stringify({
-      templateId: "TPL-101",
+      templateId: createdTemplate.id,
       issuerId: "ISS-1",
       recipientName: "Avery Stone",
       recipientEmail: "avery.stone@example.com",
@@ -80,11 +111,22 @@ try {
   assert.equal(revokedCredential.revocationReason, "Issued to the wrong cohort.");
   assert.ok(revokedCredential.revokedAt);
 
+  const { payload: pendingIssuer, response: pendingIssuerResponse } = await request("/api/issuers", {
+    method: "POST",
+    body: JSON.stringify({
+      name: "Blocked Issuer",
+      role: "Operations",
+      wallet: "blocked@acme.example",
+      status: "Pending",
+    }),
+  });
+  assert.equal(pendingIssuerResponse.status, 201);
+
   const { response: pendingResponse, payload: pendingPayload } = await request("/api/credentials", {
     method: "POST",
     body: JSON.stringify({
-      templateId: "TPL-101",
-      issuerId: "ISS-3",
+      templateId: createdTemplate.id,
+      issuerId: pendingIssuer.id,
       recipientName: "Blocked User",
       recipientEmail: "blocked@example.com",
       recipientWallet: "0x2222222222222222222222222222222222222222",
