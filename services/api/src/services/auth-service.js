@@ -1,7 +1,14 @@
 import { createHttpError } from "../lib/http.js";
 import { verifyGoogleIdToken } from "../lib/google-auth.js";
 import { SESSION_TTL_MS, createPasswordHash, createSessionToken, verifyPassword } from "../lib/auth.js";
-import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
+import {
+  ensureUnique,
+  requireEmailAddress,
+  requireFields,
+  requireHttpUrl,
+  requireSlug,
+  sanitizeText,
+} from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
 import { recordWorkspaceEvent } from "./activity-service.js";
 import {
@@ -290,6 +297,12 @@ export async function registerAccount(payload) {
     ["fullName", "workEmail", "password", "companyName", "companySlug", "verificationDomain", "role"],
     "registration fields"
   );
+  input.workEmail = requireEmailAddress(input.workEmail, "work email");
+  input.companySlug = requireSlug(input.companySlug, "company slug");
+  input.verificationDomain = requireHttpUrl(input.verificationDomain, "verification domain");
+  if (input.website) {
+    input.website = requireHttpUrl(input.website, "website URL");
+  }
 
   if (input.password.length < 8) {
     throw createHttpError(400, "Password must be at least 8 characters.");
@@ -336,6 +349,7 @@ export async function loginAccount(payload) {
 
   const input = sanitizeLoginPayload(payload);
   requireFields(input, ["workEmail", "password"], "login fields");
+  input.workEmail = requireEmailAddress(input.workEmail, "work email");
 
   const user = findUserByEmail(db, input.workEmail);
 
@@ -364,6 +378,11 @@ export async function registerGoogleAccount(payload) {
     ["credential", "companyName", "companySlug", "verificationDomain", "role"],
     "Google workspace registration fields"
   );
+  input.companySlug = requireSlug(input.companySlug, "company slug");
+  input.verificationDomain = requireHttpUrl(input.verificationDomain, "verification domain");
+  if (input.website) {
+    input.website = requireHttpUrl(input.website, "website URL");
+  }
 
   const googleProfile = await verifyGoogleIdToken(input.credential);
 
@@ -429,6 +448,7 @@ export async function acceptInvitationWithPassword(payload) {
 
   const input = sanitizeInvitationPayload(payload);
   requireFields(input, ["invitationCode", "workEmail"], "invitation acceptance fields");
+  input.workEmail = requireEmailAddress(input.workEmail, "work email");
 
   const invitation = findPendingInvitationByCode(db, input.invitationCode);
   ensureInvitationEmailMatches(invitation, input.workEmail);

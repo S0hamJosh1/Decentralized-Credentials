@@ -1,4 +1,6 @@
 import { createHttpError } from "../lib/http.js";
+import { requireWorkspaceManager } from "../lib/permissions.js";
+import { normalizeTemplateFields } from "../lib/template-fields.js";
 import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
 import { recordWorkspaceEvent } from "./activity-service.js";
@@ -18,6 +20,7 @@ function sanitizeTemplate(payload = {}) {
     category: sanitizeText(payload.category),
     validity: sanitizeText(payload.validity),
     summary: sanitizeText(payload.summary),
+    fields: normalizeTemplateFields(payload.fields || []),
     status: sanitizeText(payload.status) || "Active",
   };
 }
@@ -32,6 +35,8 @@ export async function listTemplates(auth) {
 }
 
 export async function createTemplate(auth, payload) {
+  requireWorkspaceManager(auth, "Only workspace owners or admins can create templates.");
+
   const db = await readDb();
   const templateInput = sanitizeTemplate(payload);
 
@@ -63,6 +68,7 @@ export async function createTemplate(auth, payload) {
       templateId: template.id,
       templateName: template.name,
       templateStatus: template.status,
+      templateFieldCount: template.fields.length,
     },
   });
 
@@ -71,6 +77,8 @@ export async function createTemplate(auth, payload) {
 }
 
 export async function updateTemplate(auth, templateId, payload) {
+  requireWorkspaceManager(auth, "Only workspace owners or admins can update templates.");
+
   const db = await readDb();
   const templateIndex = db.templates.findIndex(
     (template) => template.id === templateId && template.organizationId === auth.organization.id
@@ -116,6 +124,7 @@ export async function updateTemplate(auth, templateId, payload) {
       templateId: template.id,
       templateName: db.templates[templateIndex].name,
       templateStatus: db.templates[templateIndex].status,
+      templateFieldCount: db.templates[templateIndex].fields.length,
     },
   });
 

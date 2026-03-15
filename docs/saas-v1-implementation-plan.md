@@ -40,11 +40,11 @@ We have already replaced:
 - localStorage-only issuer session
 - seeded single-company sample data
 
-We still need to remove or heavily refactor:
+We still need to improve over time:
 
-- advanced registry / contract tooling in the main app path
-- remaining single-workspace assumptions inside the product model
-- invite/team lifecycle beyond the initial owner account
+- deeper production persistence and deployment hardening
+- more advanced audit/reporting workflows
+- post-v1 operational polish around recovery, exports, and analytics
 
 ## Implementation Order
 
@@ -80,14 +80,30 @@ Status: completed
 - revocation audit trail
 - public verification lookup
 
+Status: completed
+
+Completed in phase 4:
+- template field schemas and dynamic issue forms
+- credential detail views with audit timeline
+- public verifier trust context with issued field snapshots
+- richer credential filtering and browsing inside the workspace
+
 ### Phase 5: Cleanup And Launch Readiness
 
 - remove legacy blockchain-first surfaces from the main product
 - improve tests
 - finalize deployment configuration
 
+Status: completed
+
+Completed in phase 5:
+- removed legacy blockchain-first frontend and repo residue from the live product path
+- enforced workspace role checks and signed-in issuer identity on protected mutations
+- tightened validation and deployment config with origin allowlists and configurable session cookie behavior
+- expanded API coverage for permissions and issuer identity rules
+
 ## Immediate Next Steps
 
-1. deepen the credential pipeline with richer recipient and program metadata
-2. extend audit visibility into the verification and credential-management surfaces
-3. remove the remaining blockchain-first UI from the main workspace experience
+1. add focused frontend tests around auth, protected states, and settings permissions
+2. move persistence from JSON-file storage toward a production database
+3. add export/reporting and operational admin workflows on top of the hardened core

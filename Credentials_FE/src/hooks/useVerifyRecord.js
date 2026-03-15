@@ -48,6 +48,7 @@ export function useVerifyRecord({ activeVerificationCode, fallbackRecord, fallba
 
   return {
     normalizedCode,
+    payload: lookupState.payload,
     displayOrganization: lookupState.payload?.organization || fallbackOrganization,
     record: notFound ? null : lookupState.payload?.credential || fallbackRecord,
     isLookupLoading,

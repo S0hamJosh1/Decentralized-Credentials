@@ -54,21 +54,42 @@ export function getSessionToken(request) {
   return cookies[SESSION_COOKIE_NAME] || "";
 }
 
+function getCookieSameSite() {
+  const configuredValue = String(process.env.SESSION_COOKIE_SAME_SITE || "lax").toLowerCase();
+
+  if (["strict", "lax", "none"].includes(configuredValue)) {
+    return configuredValue;
+  }
+
+  return "lax";
+}
+
+function getCookieSecure() {
+  if (typeof process.env.SESSION_COOKIE_SECURE === "string") {
+    return process.env.SESSION_COOKIE_SECURE === "true";
+  }
+
+  return process.env.NODE_ENV === "production" || getCookieSameSite() === "none";
+}
+
+function buildSessionCookieOptions() {
+  return {
+    httpOnly: true,
+    sameSite: getCookieSameSite(),
+    secure: getCookieSecure(),
+    path: "/",
+  };
+}
+
 export function setSessionCookie(response, token) {
   response.cookie(SESSION_COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...buildSessionCookieOptions(),
     maxAge: SESSION_TTL_MS,
   });
 }
 
 export function clearSessionCookie(response) {
   response.clearCookie(SESSION_COOKIE_NAME, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...buildSessionCookieOptions(),
   });
 }

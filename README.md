@@ -6,7 +6,6 @@ The company workspace for issuing trusted digital certificates, managing issuer 
 
 - `Credentials_FE/`: workspace frontend for company onboarding, issuer operations, and public verification
 - `services/api/`: Express API for organization settings, issuer access, templates, credential records, revocation, and verification lookup
-- `cd_var/`: legacy Hardhat contract prototype and registry tooling slated for removal from the core product path
 - `docs/`: product direction notes and implementation plans
 
 ## Current product surfaces
@@ -43,6 +42,9 @@ Set these frontend environment variables when you deploy the workspace:
 Set this API environment variable when you want Google sign-in enabled:
 
 - `GOOGLE_CLIENT_ID`: the same Google OAuth client ID accepted by the backend for ID token verification
+- `CORS_ALLOWED_ORIGINS`: comma-separated frontend origins allowed to call the API in production
+- `SESSION_COOKIE_SAME_SITE`: optional cookie policy override, such as `lax` or `none`
+- `SESSION_COOKIE_SECURE`: optional `true` or `false` override for the session cookie secure flag
 
 ## Tests
 
@@ -60,16 +62,6 @@ cd services/api
 npm test
 ```
 
-### Contract tests
-
-```bash
-cd cd_var
-npm install
-npm test
-```
-
-If `hardhat` is missing, install the contract dependencies in `cd_var/` first.
-
 ## Product notes
 
 - The current product direction is a workspace SaaS for companies, not a blockchain-first demo.
@@ -79,8 +71,11 @@ If `hardhat` is missing, install the contract dependencies in `cd_var/` first.
 - The API now persists organizations, users, memberships, sessions, issuers, templates, credentials, and credential events.
 - Team access now supports invitation links, invite acceptance, and multi-workspace sessions with workspace switching.
 - Templates and issuers now have lifecycle controls, and the workspace dashboard shows a recent activity feed for audit visibility.
-- The public verifier shows issuer identity, status, and revocation details.
-- The next major milestone is expanding the tenant-aware data model and finishing the production credential pipeline.
+- Templates can now define credential-specific fields, issuance is driven by that schema, and issued credentials have a detail view with field snapshots and audit timeline.
+- The credential records screen now supports search, status/template/issuer/date filters, sorting, and richer field previews.
+- The public verifier now shows issuer identity, organization trust context, issued field snapshots, and revocation-aware audit details.
+- Workspace permissions are now enforced in the API: managers handle settings and access, and credential issuance/revocation runs through the signed-in approved issuer identity.
+- Legacy blockchain-first UI and repo residue has been removed from the live product path.
 
 ## License
 

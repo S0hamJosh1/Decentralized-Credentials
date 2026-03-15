@@ -206,11 +206,30 @@ try {
       category: "Learning",
       validity: "Permanent",
       summary: "Confirms an employee completed required training.",
+      fields: [
+        {
+          label: "Program name",
+          type: "text",
+          required: true,
+          placeholder: "Leadership Academy",
+        },
+        {
+          label: "Completion date",
+          type: "date",
+          required: true,
+        },
+        {
+          label: "Final score",
+          type: "number",
+          required: false,
+        },
+      ],
     }),
   });
   assert.equal(templateResponse.status, 201);
   assert.equal(createdTemplate.organizationId, registeredSession.organization.id);
   assert.equal(createdTemplate.status, "Active");
+  assert.equal(createdTemplate.fields.length, 3);
 
   const { payload: createdCredential, response: createResponse } = await request("/api/credentials", {
     method: "POST",
@@ -222,12 +241,29 @@ try {
       recipientWallet: "",
       cohort: "Summer 2026",
       summary: "Completed the internship capstone program.",
+      fieldValues: {
+        [createdTemplate.fields[0].id]: "Leadership Academy",
+        [createdTemplate.fields[1].id]: "2026-08-15",
+        [createdTemplate.fields[2].id]: "96",
+      },
     }),
   });
   assert.equal(createResponse.status, 201);
   assert.equal(createdCredential.organizationId, registeredSession.organization.id);
   assert.match(createdCredential.verificationUrl, /^\/verify\//);
   assert.match(createdCredential.verificationCode, /^ACL-EMP-1001$/);
+  assert.equal(createdCredential.fieldValues.length, 3);
+  assert.equal(createdCredential.fieldValues[0].label, "Program name");
+
+  const { response: credentialDetailResponse, payload: credentialDetail } = await request(
+    `/api/credentials/${createdCredential.id}`
+  );
+  assert.equal(credentialDetailResponse.status, 200);
+  assert.equal(credentialDetail.credential.id, createdCredential.id);
+  assert.equal(credentialDetail.template.id, createdTemplate.id);
+  assert.equal(credentialDetail.timeline.length, 1);
+  assert.equal(credentialDetail.timeline[0].type, "credential.issued");
+  assert.equal(credentialDetail.credential.fieldValues[1].value, "2026-08-15");
 
   const { payload: verifyPayload, response: verifyResponse } = await request(
     `/api/verify/${createdCredential.verificationCode}`,
@@ -236,6 +272,10 @@ try {
   assert.equal(verifyResponse.status, 200);
   assert.equal(verifyPayload.credential.id, createdCredential.id);
   assert.equal(verifyPayload.organization.name, "Acme Credential Lab");
+  assert.equal(verifyPayload.template.id, createdTemplate.id);
+  assert.equal(verifyPayload.issuer.id, registeredSession.issuer.id);
+  assert.equal(verifyPayload.credential.fieldValues[0].value, "Leadership Academy");
+  assert.equal(verifyPayload.timeline.length, 1);
 
   const { payload: revokedCredential } = await request(`/api/credentials/${createdCredential.id}/revoke`, {
     method: "PATCH",
@@ -244,6 +284,22 @@ try {
   assert.equal(revokedCredential.status, "Revoked");
   assert.equal(revokedCredential.revocationReason, "Issued to the wrong cohort.");
   assert.ok(revokedCredential.revokedAt);
+
+  const { response: revokedDetailResponse, payload: revokedDetail } = await request(
+    `/api/credentials/${createdCredential.id}`
+  );
+  assert.equal(revokedDetailResponse.status, 200);
+  assert.equal(revokedDetail.timeline.length, 2);
+  assert.equal(revokedDetail.timeline[0].type, "credential.revoked");
+
+  const { response: revokedVerifyResponse, payload: revokedVerifyPayload } = await request(
+    `/api/verify/${createdCredential.verificationCode}`,
+    { useCookie: false }
+  );
+  assert.equal(revokedVerifyResponse.status, 200);
+  assert.equal(revokedVerifyPayload.credential.status, "Revoked");
+  assert.equal(revokedVerifyPayload.timeline.length, 2);
+  assert.equal(revokedVerifyPayload.timeline[0].reason, "Issued to the wrong cohort.");
 
   const { payload: pendingIssuer, response: pendingIssuerResponse } = await request("/api/issuers", {
     method: "POST",
@@ -263,13 +319,16 @@ try {
       issuerId: pendingIssuer.id,
       recipientName: "Blocked User",
       recipientEmail: "blocked@example.com",
-      recipientWallet: "",
       cohort: "Summer 2026",
       summary: "Should not be created.",
+      fieldValues: {
+        [createdTemplate.fields[0].id]: "Leadership Academy",
+        [createdTemplate.fields[1].id]: "2026-08-15",
+      },
     }),
   });
-  assert.equal(pendingResponse.status, 400);
-  assert.equal(pendingPayload.error, "Only approved issuers can create credentials.");
+  assert.equal(pendingResponse.status, 403);
+  assert.equal(pendingPayload.error, "You can only issue credentials as your own issuer account.");
 
   const { response: archivedTemplateResponse, payload: archivedTemplate } = await request(`/api/templates/${createdTemplate.id}`, {
     method: "PATCH",
@@ -288,9 +347,12 @@ try {
       issuerId: registeredSession.issuer.id,
       recipientName: "Archived Template User",
       recipientEmail: "archived@example.com",
-      recipientWallet: "",
       cohort: "Summer 2026",
       summary: "Should not be created from an archived template.",
+      fieldValues: {
+        [createdTemplate.fields[0].id]: "Leadership Academy",
+        [createdTemplate.fields[1].id]: "2026-08-15",
+      },
     }),
   });
   assert.equal(archivedIssueResponse.status, 400);
@@ -323,18 +385,21 @@ try {
       issuerId: pendingIssuer.id,
       recipientName: "Approved User",
       recipientEmail: "approved@example.com",
-      recipientWallet: "",
       cohort: "Summer 2026",
       summary: "Created after the issuer was approved.",
+      fieldValues: {
+        [createdTemplate.fields[0].id]: "Operations Certification",
+        [createdTemplate.fields[1].id]: "2026-09-01",
+      },
     }),
   });
-  assert.equal(approvedCredentialResponse.status, 201);
-  assert.equal(approvedCredential.issuedBy, "Blocked Issuer");
+  assert.equal(approvedCredentialResponse.status, 403);
+  assert.equal(approvedCredential.error, "You can only issue credentials as your own issuer account.");
 
   const { response: activityBootstrapResponse, payload: activityBootstrap } = await request("/api/bootstrap");
   assert.equal(activityBootstrapResponse.status, 200);
   assert.ok(activityBootstrap.activity.length >= 7);
-  assert.equal(activityBootstrap.activity[0].type, "credential.issued");
+  assert.ok(activityBootstrap.activity.some((event) => event.type === "credential.issued"));
   assert.ok(activityBootstrap.activity.some((event) => event.type === "organization.updated"));
   assert.ok(activityBootstrap.activity.some((event) => event.type === "template.updated"));
   assert.ok(activityBootstrap.activity.some((event) => event.type === "issuer.updated"));
@@ -369,10 +434,146 @@ try {
   assert.equal(jamieBootstrap.members.length, 2);
   assert.equal(jamieBootstrap.invitations.length, 0);
 
+  const { response: jamieCredentialResponse, payload: jamieCredential } = await request("/api/credentials", {
+    method: "POST",
+    body: JSON.stringify({
+      templateId: createdTemplate.id,
+      issuerId: inviteAcceptedSession.issuer.id,
+      recipientName: "Jamie Issued User",
+      recipientEmail: "jamie.issued@example.com",
+      cohort: "Fall 2026",
+      summary: "Issued by the invited admin issuer.",
+      fieldValues: {
+        [createdTemplate.fields[0].id]: "Operations Certification",
+        [createdTemplate.fields[1].id]: "2026-09-15",
+      },
+    }),
+  });
+  assert.equal(jamieCredentialResponse.status, 201);
+  assert.equal(jamieCredential.issuedBy, "Jamie Teammate");
+
+  const { response: ownerInviteByAdminResponse, payload: ownerInviteByAdminPayload } = await request(
+    "/api/team/invitations",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        name: "Should Not Become Owner",
+        email: "owner2@acme.example",
+        membershipRole: "Owner",
+        issuerRole: "Issuer",
+        issuerStatus: "Approved",
+      }),
+    }
+  );
+  assert.equal(ownerInviteByAdminResponse.status, 403);
+  assert.equal(ownerInviteByAdminPayload.error, "Only workspace owners can invite another owner.");
+
+  const { response: samInviteResponse, payload: samInvite } = await request("/api/team/invitations", {
+    method: "POST",
+    body: JSON.stringify({
+      name: "Sam Viewer",
+      email: "sam@acme.example",
+      membershipRole: "Member",
+      issuerRole: "Issuer",
+      issuerStatus: "Pending",
+    }),
+  });
+  assert.equal(samInviteResponse.status, 201);
+  assert.equal(samInvite.email, "sam@acme.example");
+
   const { response: jamieLogoutResponse } = await request("/api/auth/logout", {
     method: "POST",
   });
   assert.equal(jamieLogoutResponse.status, 204);
+
+  cookieJar = "";
+  const { response: samAcceptResponse, payload: samSession } = await request("/api/auth/invitations/accept", {
+    method: "POST",
+    body: JSON.stringify({
+      invitationCode: samInvite.code,
+      fullName: "Sam Viewer",
+      workEmail: "sam@acme.example",
+      password: "member123",
+    }),
+    useCookie: false,
+  });
+  assert.equal(samAcceptResponse.status, 200);
+  assert.equal(samSession.membership.role, "Member");
+
+  const { response: samTemplateResponse, payload: samTemplatePayload } = await request("/api/templates", {
+    method: "POST",
+    body: JSON.stringify({
+      name: "Member Blocked Template",
+      category: "Learning",
+      validity: "Permanent",
+      summary: "Should not be created.",
+    }),
+  });
+  assert.equal(samTemplateResponse.status, 403);
+  assert.equal(samTemplatePayload.error, "Only workspace owners or admins can create templates.");
+
+  const { response: samOrganizationResponse, payload: samOrganizationPayload } = await request("/api/organization", {
+    method: "PATCH",
+    body: JSON.stringify({
+      name: "Blocked Workspace Rename",
+      slug: "blocked-workspace-rename",
+      sector: "Corporate learning",
+      website: "https://acme.example",
+      verificationDomain: "http://localhost:5173",
+      status: "Pilot",
+      description: "Should not be updated by a member.",
+    }),
+  });
+  assert.equal(samOrganizationResponse.status, 403);
+  assert.equal(samOrganizationPayload.error, "Only workspace owners or admins can update organization settings.");
+
+  const { response: samInviteCreateResponse, payload: samInviteCreatePayload } = await request(
+    "/api/team/invitations",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        name: "Blocked Invite",
+        email: "blocked.invite@acme.example",
+        membershipRole: "Member",
+        issuerRole: "Issuer",
+        issuerStatus: "Pending",
+      }),
+    }
+  );
+  assert.equal(samInviteCreateResponse.status, 403);
+  assert.equal(samInviteCreatePayload.error, "Only workspace owners or admins can manage team access.");
+
+  const { response: samCredentialResponse, payload: samCredentialPayload } = await request("/api/credentials", {
+    method: "POST",
+    body: JSON.stringify({
+      templateId: createdTemplate.id,
+      recipientName: "Blocked Member Issue",
+      recipientEmail: "blocked.member@example.com",
+      cohort: "Fall 2026",
+      summary: "Should not be issued.",
+      fieldValues: {
+        [createdTemplate.fields[0].id]: "Operations Certification",
+        [createdTemplate.fields[1].id]: "2026-10-01",
+      },
+    }),
+  });
+  assert.equal(samCredentialResponse.status, 403);
+  assert.equal(samCredentialPayload.error, "Your issuer access must be approved before you can issue credentials.");
+
+  const { response: samRevokeResponse, payload: samRevokePayload } = await request(
+    `/api/credentials/${jamieCredential.id}/revoke`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ reason: "Blocked member should not revoke." }),
+    }
+  );
+  assert.equal(samRevokeResponse.status, 403);
+  assert.equal(samRevokePayload.error, "Your issuer access must be approved before you can revoke credentials.");
+
+  const { response: samLogoutResponse } = await request("/api/auth/logout", {
+    method: "POST",
+  });
+  assert.equal(samLogoutResponse.status, 204);
 
   cookieJar = "";
   const { response: loginResponse, payload: loggedInSession } = await request("/api/auth/login", {
@@ -390,7 +591,7 @@ try {
   const { response: reloggedBootstrapResponse } = await request("/api/bootstrap");
   assert.equal(reloggedBootstrapResponse.status, 200);
   const { payload: reloggedBootstrap } = await request("/api/bootstrap");
-  assert.equal(reloggedBootstrap.members.length, 2);
+  assert.equal(reloggedBootstrap.members.length, 3);
 
   const janeGoogleToken = createGoogleIdToken({
     sub: "google-jane-founder",

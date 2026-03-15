@@ -183,6 +183,10 @@ export function createCredential(payload) {
   });
 }
 
+export function fetchCredentialDetails(id) {
+  return request(`/api/credentials/${id}`);
+}
+
 export function revokeCredentialRecord(id, reason) {
   return request(`/api/credentials/${id}/revoke`, {
     method: "PATCH",

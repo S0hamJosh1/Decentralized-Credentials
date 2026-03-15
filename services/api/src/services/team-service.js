@@ -1,5 +1,6 @@
 import { createHttpError } from "../lib/http.js";
-import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
+import { requireOwner, requireWorkspaceManager } from "../lib/permissions.js";
+import { ensureUnique, requireEmailAddress, requireFields, sanitizeText } from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
 import { recordWorkspaceEvent } from "./activity-service.js";
 import {
@@ -24,9 +25,7 @@ function sanitizeInvitationPayload(payload = {}) {
 }
 
 function requireTeamManager(auth) {
-  if (!["Owner", "Admin"].includes(auth.membership?.role)) {
-    throw createHttpError(403, "Only workspace owners or admins can manage team access.");
-  }
+  requireWorkspaceManager(auth, "Only workspace owners or admins can manage team access.");
 }
 
 function buildInvitationRecord(db, organization, invitation) {
@@ -114,6 +113,11 @@ export async function createInvitation(auth, payload) {
     ["name", "email", "membershipRole", "issuerRole", "issuerStatus"],
     "team invitation fields"
   );
+  invitationInput.email = requireEmailAddress(invitationInput.email, "teammate email");
+
+  if (invitationInput.membershipRole === "Owner") {
+    requireOwner(auth, "Only workspace owners can invite another owner.");
+  }
 
   const existingUser = findUserByEmail(db, invitationInput.email);
   const existingMembership = existingUser

@@ -91,6 +91,18 @@ function normalizeSession(session = {}) {
   };
 }
 
+function normalizeTemplateField(field = {}) {
+  return {
+    id: normalizeText(field.id),
+    key: normalizeText(field.key),
+    label: normalizeText(field.label),
+    type: normalizeText(field.type, "text") || "text",
+    required: field.required === true,
+    placeholder: normalizeText(field.placeholder),
+    helpText: normalizeText(field.helpText),
+  };
+}
+
 function normalizeTemplate(template = {}) {
   return {
     id: normalizeText(template.id),
@@ -99,6 +111,7 @@ function normalizeTemplate(template = {}) {
     category: normalizeText(template.category),
     validity: normalizeText(template.validity),
     summary: normalizeText(template.summary),
+    fields: normalizeList(template.fields, normalizeTemplateField),
     status: normalizeText(template.status, "Active") || "Active",
     createdAt: normalizeText(template.createdAt),
     updatedAt: normalizeText(template.updatedAt),
@@ -119,6 +132,16 @@ function normalizeIssuer(issuer = {}) {
     createdAt: normalizeText(issuer.createdAt),
     updatedAt: normalizeText(issuer.updatedAt),
     approvedAt: normalizeText(issuer.approvedAt),
+  };
+}
+
+function normalizeCredentialFieldValue(fieldValue = {}) {
+  return {
+    fieldId: normalizeText(fieldValue.fieldId),
+    key: normalizeText(fieldValue.key),
+    label: normalizeText(fieldValue.label),
+    type: normalizeText(fieldValue.type, "text") || "text",
+    value: normalizeText(fieldValue.value),
   };
 }
 
@@ -149,6 +172,7 @@ function normalizeCredential(credential = {}) {
     status,
     cohort: normalizeText(credential.cohort),
     summary: normalizeText(credential.summary),
+    fieldValues: normalizeList(credential.fieldValues, normalizeCredentialFieldValue),
     revokedAt,
     revocationReason,
   };

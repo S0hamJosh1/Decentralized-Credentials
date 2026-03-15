@@ -1,5 +1,6 @@
 import { createHttpError } from "../lib/http.js";
-import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
+import { requireWorkspaceManager } from "../lib/permissions.js";
+import { ensureUnique, requireFields, requireHttpUrl, requireSlug, sanitizeText } from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
 import { recordWorkspaceEvent } from "./activity-service.js";
 
@@ -34,6 +35,8 @@ export async function getOrganization(auth) {
 }
 
 export async function updateOrganization(auth, payload) {
+  requireWorkspaceManager(auth, "Only workspace owners or admins can update organization settings.");
+
   const db = await readDb();
   const { organizationIndex, organization } = requireOrganization(db, auth.organization.id);
   const nextOrganization = sanitizeOrganization({
@@ -45,6 +48,12 @@ export async function updateOrganization(auth, payload) {
     nextOrganization,
     ["name", "slug", "sector", "website", "verificationDomain", "description"],
     "organization fields"
+  );
+  nextOrganization.slug = requireSlug(nextOrganization.slug, "company slug");
+  nextOrganization.website = requireHttpUrl(nextOrganization.website, "website URL");
+  nextOrganization.verificationDomain = requireHttpUrl(
+    nextOrganization.verificationDomain,
+    "verification domain"
   );
 
   ensureUnique(

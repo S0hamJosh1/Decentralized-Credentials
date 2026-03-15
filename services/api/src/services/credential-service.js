@@ -1,7 +1,10 @@
 import { buildVerificationUrl, readDb, writeDb } from "../store.js";
 import { createHttpError } from "../lib/http.js";
-import { requireFields, sanitizeText } from "../lib/validation.js";
-import { recordWorkspaceEvent } from "./activity-service.js";
+import { requireApprovedIssuer } from "../lib/permissions.js";
+import { mapCredentialFieldValues, validateCredentialFieldValues } from "../lib/template-fields.js";
+import { requireEmailAddress, requireFields, sanitizeText } from "../lib/validation.js";
+import { buildCredentialTimeline, recordWorkspaceEvent } from "./activity-service.js";
+import { findIssuerForUserInOrganization } from "./workspace-access-service.js";
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -49,9 +52,12 @@ function sanitizeCredential(payload = {}) {
     issuerId: sanitizeText(payload.issuerId),
     recipientName: sanitizeText(payload.recipientName),
     recipientEmail: sanitizeText(payload.recipientEmail).toLowerCase(),
-    recipientWallet: sanitizeText(payload.recipientWallet),
     cohort: sanitizeText(payload.cohort),
     summary: sanitizeText(payload.summary),
+    fieldValues:
+      typeof payload.fieldValues === "object" && payload.fieldValues !== null && !Array.isArray(payload.fieldValues)
+        ? payload.fieldValues
+        : {},
   };
 }
 
@@ -71,22 +77,33 @@ export async function listCredentials(auth) {
 }
 
 export async function createCredential(auth, payload) {
+  requireApprovedIssuer(auth, "Your issuer access must be approved before you can issue credentials.");
+
   const db = await readDb();
   const credentialInput = sanitizeCredential(payload);
 
   requireFields(
     credentialInput,
-    ["templateId", "issuerId", "recipientName", "recipientEmail", "cohort", "summary"],
+    ["templateId", "recipientName", "recipientEmail", "summary"],
     "credential fields"
   );
+  credentialInput.recipientEmail = requireEmailAddress(credentialInput.recipientEmail, "recipient email");
 
   const organization = requireOrganization(db, auth.organization.id);
+  const actingIssuer = findIssuerForUserInOrganization(db, organization.id, auth.user);
+
+  if (!actingIssuer || actingIssuer.id !== auth.issuer?.id) {
+    throw createHttpError(403, "Your account is not linked to an issuer profile in this workspace.");
+  }
+
+  if (credentialInput.issuerId && credentialInput.issuerId !== actingIssuer.id) {
+    throw createHttpError(403, "You can only issue credentials as your own issuer account.");
+  }
+
   const template = db.templates.find(
     (item) => item.id === credentialInput.templateId && item.organizationId === organization.id
   );
-  const issuer = db.issuers.find(
-    (item) => item.id === credentialInput.issuerId && item.organizationId === organization.id
-  );
+  const issuer = actingIssuer;
 
   if (!template) {
     throw createHttpError(404, "Template not found.");
@@ -104,6 +121,9 @@ export async function createCredential(auth, payload) {
     throw createHttpError(400, "Only approved issuers can create credentials.");
   }
 
+  const fieldValues = mapCredentialFieldValues(template.fields || [], credentialInput.fieldValues);
+  validateCredentialFieldValues(template.fields || [], fieldValues);
+
   const id = nextId("CRD-", db.credentials, 1000);
   const numericId = id.replace("CRD-", "");
   const verificationCode = `${organizationCode(organization.slug)}-${templateCode(template.name)}-${numericId}`;
@@ -119,6 +139,8 @@ export async function createCredential(auth, payload) {
     revokedAt: "",
     revocationReason: "",
     ...credentialInput,
+    issuerId: issuer.id,
+    fieldValues,
   };
 
   db.credentials.unshift(credential);
@@ -134,6 +156,7 @@ export async function createCredential(auth, payload) {
       templateId: template.id,
       templateName: template.name,
       verificationCode,
+      fieldValues,
     },
   });
 
@@ -141,7 +164,23 @@ export async function createCredential(auth, payload) {
   return credential;
 }
 
+function buildCredentialDetail(db, credential) {
+  const organization = db.organizations.find((item) => item.id === credential.organizationId);
+  const template = db.templates.find((item) => item.id === credential.templateId) || null;
+  const issuer = db.issuers.find((item) => item.id === credential.issuerId) || null;
+
+  return {
+    organization: organization || null,
+    template,
+    issuer,
+    credential,
+    timeline: buildCredentialTimeline(db, credential.id),
+  };
+}
+
 export async function revokeCredential(auth, credentialId, reason) {
+  requireApprovedIssuer(auth, "Your issuer access must be approved before you can revoke credentials.");
+
   const db = await readDb();
   const credential = db.credentials.find(
     (item) => item.id === credentialId && item.organizationId === auth.organization.id
@@ -179,6 +218,19 @@ export async function revokeCredential(auth, credentialId, reason) {
   return credential;
 }
 
+export async function getCredentialDetails(auth, credentialId) {
+  const db = await readDb();
+  const credential = db.credentials.find(
+    (item) => item.id === credentialId && item.organizationId === auth.organization.id
+  );
+
+  if (!credential) {
+    throw createHttpError(404, "Credential not found.");
+  }
+
+  return buildCredentialDetail(db, credential);
+}
+
 export async function getVerificationRecord(code) {
   const db = await readDb();
   const normalizedCode = decodeURIComponent(code).toUpperCase();
@@ -194,8 +246,5 @@ export async function getVerificationRecord(code) {
     throw createHttpError(404, "Workspace not found.");
   }
 
-  return {
-    organization,
-    credential,
-  };
+  return buildCredentialDetail(db, credential);
 }

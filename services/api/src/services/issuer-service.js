@@ -1,5 +1,6 @@
 import { createHttpError } from "../lib/http.js";
-import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
+import { requireWorkspaceManager } from "../lib/permissions.js";
+import { ensureUnique, requireEmailAddress, requireFields, sanitizeText } from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
 import { recordWorkspaceEvent } from "./activity-service.js";
 
@@ -17,7 +18,6 @@ function sanitizeIssuer(payload = {}) {
     name: sanitizeText(payload.name),
     role: sanitizeText(payload.role),
     email: sanitizeText(payload.email).toLowerCase(),
-    wallet: sanitizeText(payload.wallet),
     status: sanitizeText(payload.status) || "Pending",
   };
 }
@@ -32,23 +32,19 @@ export async function listIssuers(auth) {
 }
 
 export async function createIssuer(auth, payload) {
+  requireWorkspaceManager(auth, "Only workspace owners or admins can add issuers.");
+
   const db = await readDb();
   const issuerInput = sanitizeIssuer(payload);
 
-  requireFields(issuerInput, ["name", "role", "status"], "issuer fields");
-
-  if (!issuerInput.wallet && !issuerInput.email) {
-    throw createHttpError(400, "Provide a wallet or email for the issuer.");
-  }
+  requireFields(issuerInput, ["name", "role", "email", "status"], "issuer fields");
+  issuerInput.email = requireEmailAddress(issuerInput.email, "issuer email");
 
   ensureUnique(
     db.issuers,
     (issuer) =>
       issuer.organizationId === auth.organization.id
-      && (
-        (issuerInput.wallet && issuer.wallet?.toLowerCase() === issuerInput.wallet.toLowerCase())
-        || (issuerInput.email && issuer.email?.toLowerCase() === issuerInput.email.toLowerCase())
-      ),
+      && issuer.email?.toLowerCase() === issuerInput.email.toLowerCase(),
     "That issuer is already registered for this organization."
   );
 
@@ -56,7 +52,7 @@ export async function createIssuer(auth, payload) {
     id: nextId("ISS-", db.issuers),
     organizationId: auth.organization.id,
     userId: "",
-    wallet: issuerInput.wallet || "",
+    wallet: "",
     createdAt: nowIso(),
     updatedAt: nowIso(),
     approvedAt: issuerInput.status === "Approved" ? nowIso() : "",
@@ -80,6 +76,8 @@ export async function createIssuer(auth, payload) {
 }
 
 export async function updateIssuer(auth, issuerId, payload) {
+  requireWorkspaceManager(auth, "Only workspace owners or admins can update issuer access.");
+
   const db = await readDb();
   const issuerIndex = db.issuers.findIndex(
     (issuer) => issuer.id === issuerId && issuer.organizationId === auth.organization.id
@@ -95,28 +93,22 @@ export async function updateIssuer(auth, issuerId, payload) {
     ...payload,
   });
 
-  requireFields(nextIssuer, ["name", "role", "status"], "issuer fields");
-
-  if (!nextIssuer.wallet && !nextIssuer.email) {
-    throw createHttpError(400, "Provide a wallet or email for the issuer.");
-  }
+  requireFields(nextIssuer, ["name", "role", "email", "status"], "issuer fields");
+  nextIssuer.email = requireEmailAddress(nextIssuer.email, "issuer email");
 
   ensureUnique(
     db.issuers,
     (item) =>
       item.id !== issuer.id
       && item.organizationId === auth.organization.id
-      && (
-        (nextIssuer.wallet && item.wallet?.toLowerCase() === nextIssuer.wallet.toLowerCase())
-        || (nextIssuer.email && item.email?.toLowerCase() === nextIssuer.email.toLowerCase())
-      ),
+      && item.email?.toLowerCase() === nextIssuer.email.toLowerCase(),
     "That issuer is already registered for this organization."
   );
 
   db.issuers[issuerIndex] = {
     ...issuer,
     ...nextIssuer,
-    wallet: nextIssuer.wallet || "",
+    wallet: "",
     updatedAt: nowIso(),
     approvedAt:
       nextIssuer.status === "Approved"
