@@ -7,17 +7,33 @@ import { createApp } from "../src/app.js";
 let server;
 let baseUrl;
 let tempDir;
+let cookieJar = "";
 
 async function request(pathname, options = {}) {
+  const headers = {
+    ...(options.body ? { "Content-Type": "application/json" } : {}),
+    ...(options.headers || {}),
+  };
+
+  if (options.useCookie !== false && cookieJar) {
+    headers.Cookie = cookieJar;
+  }
+
   const response = await fetch(`${baseUrl}${pathname}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
     ...options,
+    headers,
   });
 
-  const payload = await response.json();
+  const setCookie =
+    typeof response.headers.getSetCookie === "function"
+      ? response.headers.getSetCookie()[0]
+      : response.headers.get("set-cookie");
+
+  if (setCookie) {
+    cookieJar = setCookie.split(";")[0];
+  }
+
+  const payload = response.status === 204 ? null : await response.json();
   return { response, payload };
 }
 
@@ -30,30 +46,40 @@ try {
   await new Promise((resolve) => server.once("listening", resolve));
   baseUrl = `http://127.0.0.1:${server.address().port}`;
 
-  const { response: bootstrapResponse, payload: bootstrap } = await request("/api/bootstrap");
-  assert.equal(bootstrapResponse.status, 200);
-  assert.equal(bootstrap.organization.id, "ORG-1001");
-  assert.ok(bootstrap.templates.every((item) => item.organizationId === bootstrap.organization.id));
-  assert.ok(bootstrap.credentials.every((item) => item.organizationId === bootstrap.organization.id));
+  const { response: unauthBootstrapResponse } = await request("/api/bootstrap");
+  assert.equal(unauthBootstrapResponse.status, 401);
 
-  const { response: setupResponse, payload: workspaceSetup } = await request("/api/workspace/setup", {
+  const { response: registerResponse, payload: registeredSession } = await request("/api/auth/register", {
     method: "POST",
     body: JSON.stringify({
+      fullName: "Jane Founder",
+      workEmail: "jane@acme.example",
+      password: "workspace123",
       companyName: "Acme Credential Group",
       companySlug: "acme-credential-group",
       website: "https://acme.example",
       sector: "Corporate learning",
       verificationDomain: "http://localhost:5173",
-      fullName: "Jane Founder",
-      workEmail: "jane@acme.example",
       role: "Issuer admin",
     }),
   });
-  assert.equal(setupResponse.status, 201);
-  assert.equal(workspaceSetup.organization.name, "Acme Credential Group");
-  assert.equal(workspaceSetup.templates.length, 0);
-  assert.equal(workspaceSetup.credentials.length, 0);
-  assert.equal(workspaceSetup.issuer.email, "jane@acme.example");
+  assert.equal(registerResponse.status, 201);
+  assert.equal(registeredSession.user.email, "jane@acme.example");
+  assert.equal(registeredSession.organization.name, "Acme Credential Group");
+  assert.equal(registeredSession.issuer.role, "Issuer admin");
+  assert.ok(cookieJar);
+
+  const { response: sessionResponse, payload: currentSession } = await request("/api/auth/session");
+  assert.equal(sessionResponse.status, 200);
+  assert.equal(currentSession.user.fullName, "Jane Founder");
+  assert.equal(currentSession.organization.slug, "acme-credential-group");
+
+  const { response: bootstrapResponse, payload: bootstrap } = await request("/api/bootstrap");
+  assert.equal(bootstrapResponse.status, 200);
+  assert.equal(bootstrap.organization.name, "Acme Credential Group");
+  assert.equal(bootstrap.templates.length, 0);
+  assert.equal(bootstrap.credentials.length, 0);
+  assert.equal(bootstrap.issuers.length, 1);
 
   const { payload: updatedOrganization } = await request("/api/organization", {
     method: "PATCH",
@@ -80,28 +106,32 @@ try {
     }),
   });
   assert.equal(templateResponse.status, 201);
-  assert.equal(createdTemplate.organizationId, "ORG-1001");
+  assert.equal(createdTemplate.organizationId, registeredSession.organization.id);
 
   const { payload: createdCredential, response: createResponse } = await request("/api/credentials", {
     method: "POST",
     body: JSON.stringify({
       templateId: createdTemplate.id,
-      issuerId: "ISS-1",
+      issuerId: registeredSession.issuer.id,
       recipientName: "Avery Stone",
       recipientEmail: "avery.stone@example.com",
-      recipientWallet: "0x1111111111111111111111111111111111111111",
+      recipientWallet: "",
       cohort: "Summer 2026",
       summary: "Completed the internship capstone program.",
     }),
   });
   assert.equal(createResponse.status, 201);
-  assert.equal(createdCredential.organizationId, "ORG-1001");
+  assert.equal(createdCredential.organizationId, registeredSession.organization.id);
   assert.match(createdCredential.verificationUrl, /^\/verify\//);
+  assert.match(createdCredential.verificationCode, /^ACL-EMP-1001$/);
 
-  const { payload: verifyPayload, response: verifyResponse } = await request(`/api/verify/${createdCredential.verificationCode}`);
+  const { payload: verifyPayload, response: verifyResponse } = await request(
+    `/api/verify/${createdCredential.verificationCode}`,
+    { useCookie: false }
+  );
   assert.equal(verifyResponse.status, 200);
   assert.equal(verifyPayload.credential.id, createdCredential.id);
-  assert.equal(verifyPayload.organization.id, "ORG-1001");
+  assert.equal(verifyPayload.organization.name, "Acme Credential Lab");
 
   const { payload: revokedCredential } = await request(`/api/credentials/${createdCredential.id}/revoke`, {
     method: "PATCH",
@@ -116,7 +146,7 @@ try {
     body: JSON.stringify({
       name: "Blocked Issuer",
       role: "Operations",
-      wallet: "blocked@acme.example",
+      email: "blocked@acme.example",
       status: "Pending",
     }),
   });
@@ -129,13 +159,37 @@ try {
       issuerId: pendingIssuer.id,
       recipientName: "Blocked User",
       recipientEmail: "blocked@example.com",
-      recipientWallet: "0x2222222222222222222222222222222222222222",
+      recipientWallet: "",
       cohort: "Summer 2026",
       summary: "Should not be created.",
     }),
   });
   assert.equal(pendingResponse.status, 400);
   assert.equal(pendingPayload.error, "Only approved issuers can create credentials.");
+
+  const { response: logoutResponse } = await request("/api/auth/logout", {
+    method: "POST",
+  });
+  assert.equal(logoutResponse.status, 204);
+
+  const { response: loggedOutBootstrapResponse } = await request("/api/bootstrap");
+  assert.equal(loggedOutBootstrapResponse.status, 401);
+
+  cookieJar = "";
+  const { response: loginResponse, payload: loggedInSession } = await request("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({
+      workEmail: "jane@acme.example",
+      password: "workspace123",
+    }),
+    useCookie: false,
+  });
+  assert.equal(loginResponse.status, 200);
+  assert.equal(loggedInSession.organization.name, "Acme Credential Lab");
+  assert.ok(cookieJar);
+
+  const { response: reloggedBootstrapResponse } = await request("/api/bootstrap");
+  assert.equal(reloggedBootstrapResponse.status, 200);
 
   console.log("API assertions passed.");
 } finally {

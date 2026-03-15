@@ -2,6 +2,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),
@@ -11,10 +12,40 @@ async function request(path, options = {}) {
 
   if (!response.ok) {
     const payload = await response.json().catch(() => ({}));
-    throw new Error(payload.error || `Request failed: ${response.status}`);
+    const error = new Error(payload.error || `Request failed: ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
+
+  if (response.status === 204) {
+    return null;
   }
 
   return response.json();
+}
+
+export function registerAccount(payload) {
+  return request("/api/auth/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function loginAccount(payload) {
+  return request("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function logoutAccount() {
+  return request("/api/auth/logout", {
+    method: "POST",
+  });
+}
+
+export function fetchAuthSession() {
+  return request("/api/auth/session");
 }
 
 export function fetchBootstrap() {
@@ -37,13 +68,6 @@ export function createTemplate(payload) {
 
 export function createIssuer(payload) {
   return request("/api/issuers", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export function setupWorkspace(payload) {
-  return request("/api/workspace/setup", {
     method: "POST",
     body: JSON.stringify(payload),
   });

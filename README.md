@@ -15,8 +15,6 @@ The company workspace for issuing trusted digital certificates, managing issuer 
 - `/app`: workspace dashboard alias
 - `/verify/:code`: public verification portal
 
-The old marketing/demo experience should be split into its own repository and deployment.
-
 ## Local development
 
 ### Frontend
@@ -66,9 +64,11 @@ If `hardhat` is missing, install the contract dependencies in `cd_var/` first.
 ## Product notes
 
 - The current product direction is a workspace SaaS for companies, not a blockchain-first demo.
-- The API currently persists organization settings plus credential revocation metadata.
+- The seeded Northstar/demo workspace has been removed from the live product path.
+- The app now uses real API-backed authentication with users, memberships, and secure sessions.
+- The API now persists organizations, users, memberships, sessions, issuers, templates, credentials, and credential events.
 - The public verifier shows issuer identity, status, and revocation details.
-- The next major milestone is replacing demo/local auth with real user accounts and organization membership.
+- The next major milestone is expanding the tenant-aware data model and finishing the production credential pipeline.
 
 ## License
 

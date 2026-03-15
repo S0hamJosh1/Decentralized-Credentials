@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { fetchVerifyRecord } from "../lib/api";
 
-export function useVerifyRecord({ activeVerificationCode, fallbackRecord, fallbackOrganization, apiMode }) {
+export function useVerifyRecord({ activeVerificationCode, fallbackRecord, fallbackOrganization }) {
   const normalizedCode = useMemo(
     () => activeVerificationCode.trim().toUpperCase(),
     [activeVerificationCode]
@@ -13,7 +13,7 @@ export function useVerifyRecord({ activeVerificationCode, fallbackRecord, fallba
   });
 
   useEffect(() => {
-    if (apiMode !== "ready" || normalizedCode === "") {
+    if (normalizedCode === "") {
       setLookupState({ status: "idle", payload: null, error: "" });
       return;
     }
@@ -40,21 +40,16 @@ export function useVerifyRecord({ activeVerificationCode, fallbackRecord, fallba
     return () => {
       cancelled = true;
     };
-  }, [apiMode, normalizedCode]);
+  }, [normalizedCode]);
 
   const notFound = lookupState.status === "error" && lookupState.error === "Credential not found.";
-  const isLookupLoading = apiMode === "ready" && normalizedCode !== "" && lookupState.status === "loading";
-  const lookupError = apiMode === "ready" && !notFound ? lookupState.error : "";
+  const isLookupLoading = normalizedCode !== "" && lookupState.status === "loading";
+  const lookupError = !notFound ? lookupState.error : "";
 
   return {
     normalizedCode,
     displayOrganization: lookupState.payload?.organization || fallbackOrganization,
-    record:
-      apiMode === "ready"
-        ? notFound
-          ? null
-          : lookupState.payload?.credential || fallbackRecord
-        : fallbackRecord,
+    record: notFound ? null : lookupState.payload?.credential || fallbackRecord,
     isLookupLoading,
     lookupError,
     notFound,

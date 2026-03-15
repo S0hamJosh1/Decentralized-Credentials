@@ -1,5 +1,6 @@
-import { buildVerificationUrl, readDb, writeDb } from "../store.js";
+import { createHttpError } from "../lib/http.js";
 import { requireFields, sanitizeText } from "../lib/validation.js";
+import { readDb, writeDb } from "../store.js";
 
 function sanitizeOrganization(payload = {}) {
   return {
@@ -13,15 +14,29 @@ function sanitizeOrganization(payload = {}) {
   };
 }
 
-export async function getOrganization() {
-  const db = await readDb();
-  return db.organization;
+function requireOrganization(db, organizationId) {
+  const organizationIndex = db.organizations.findIndex((item) => item.id === organizationId);
+
+  if (organizationIndex === -1) {
+    throw createHttpError(404, "Workspace not found.");
+  }
+
+  return {
+    organizationIndex,
+    organization: db.organizations[organizationIndex],
+  };
 }
 
-export async function updateOrganization(payload) {
+export async function getOrganization(auth) {
   const db = await readDb();
+  return requireOrganization(db, auth.organization.id).organization;
+}
+
+export async function updateOrganization(auth, payload) {
+  const db = await readDb();
+  const { organizationIndex, organization } = requireOrganization(db, auth.organization.id);
   const nextOrganization = sanitizeOrganization({
-    ...db.organization,
+    ...organization,
     ...payload,
   });
 
@@ -31,17 +46,11 @@ export async function updateOrganization(payload) {
     "organization fields"
   );
 
-  db.organization = {
-    ...db.organization,
+  db.organizations[organizationIndex] = {
+    ...organization,
     ...nextOrganization,
   };
 
-  db.credentials = db.credentials.map((credential) => ({
-    ...credential,
-    organizationId: db.organization.id,
-    verificationUrl: credential.verificationUrl || buildVerificationUrl(credential.verificationCode),
-  }));
-
   const savedDb = await writeDb(db);
-  return savedDb.organization;
+  return savedDb.organizations[organizationIndex];
 }

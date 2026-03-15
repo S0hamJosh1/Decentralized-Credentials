@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { asyncHandler } from "../lib/http.js";
+import { requireAuth } from "../middleware/auth-middleware.js";
 import { getOrganization, updateOrganization } from "../services/organization-service.js";
 
 export function createOrganizationRouter() {
@@ -7,15 +8,17 @@ export function createOrganizationRouter() {
 
   router.get(
     "/api/organization",
-    asyncHandler(async (_, response) => {
-      response.json(await getOrganization());
+    requireAuth,
+    asyncHandler(async (request, response) => {
+      response.json(await getOrganization(request.auth));
     })
   );
 
   router.patch(
     "/api/organization",
+    requireAuth,
     asyncHandler(async (request, response) => {
-      response.json(await updateOrganization(request.body));
+      response.json(await updateOrganization(request.auth, request.body));
     })
   );
 

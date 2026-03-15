@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { sendError } from "./lib/http.js";
+import { createAuthRouter } from "./routes/auth-routes.js";
 import { createBootstrapRouter } from "./routes/bootstrap-routes.js";
 import { createCredentialRouter } from "./routes/credential-routes.js";
 import { createHealthRouter } from "./routes/health-routes.js";
@@ -8,17 +9,16 @@ import { createIssuerRouter } from "./routes/issuer-routes.js";
 import { createOrganizationRouter } from "./routes/organization-routes.js";
 import { createTemplateRouter } from "./routes/template-routes.js";
 import { createVerifyRouter } from "./routes/verify-routes.js";
-import { createWorkspaceRouter } from "./routes/workspace-routes.js";
 
 export function createApp() {
   const app = express();
 
-  app.use(cors());
+  app.use(cors({ origin: true, credentials: true }));
   app.use(express.json());
 
   app.use(createHealthRouter());
+  app.use(createAuthRouter());
   app.use(createBootstrapRouter());
-  app.use(createWorkspaceRouter());
   app.use(createOrganizationRouter());
   app.use(createTemplateRouter());
   app.use(createIssuerRouter());

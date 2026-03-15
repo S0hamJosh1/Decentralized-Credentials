@@ -1,16 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ethers } from "ethers";
-import { ConnectButton } from "./ConnectButton";
-import { FunctionRunner } from "./FunctionRunner";
-import CredentialActions from "./CredentialActions";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../config/contract";
-import { getProvider, getSigner } from "../lib/eth";
 import { resolveVerificationUrl } from "../lib/routes";
 
 const tabs = [
   { id: "credentials", label: "Credentials" },
   { id: "settings", label: "Settings" },
-  { id: "registry", label: "Advanced Registry" },
 ];
 
 function Card({ title, subtitle, action, children }) {
@@ -64,10 +57,6 @@ export default function DashboardApp({
   onOpenVerifier,
   onSignOut,
 }) {
-  const [provider, setProvider] = useState(null);
-  const [signer, setSigner] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [networkOk, setNetworkOk] = useState(false);
   const [activeTab, setActiveTab] = useState("credentials");
   const [busyAction, setBusyAction] = useState("");
 
@@ -90,8 +79,6 @@ export default function DashboardApp({
   const [search, setSearch] = useState("");
   const [revocationDrafts, setRevocationDrafts] = useState({});
   const [actionMessage, setActionMessage] = useState("");
-
-  const iface = useMemo(() => new ethers.Interface(CONTRACT_ABI), []);
 
   useEffect(() => {
     setOrganizationDraft(organization);
@@ -126,18 +113,6 @@ export default function DashboardApp({
 
   const approvedIssuers = issuers.filter((issuer) => issuer.status === "Approved");
   const canIssueCredentials = templates.length > 0 && approvedIssuers.length > 0;
-
-  const handleConnected = async () => {
-    const nextProvider = await getProvider();
-    setProvider(nextProvider);
-
-    const nextSigner = await getSigner(nextProvider);
-    setSigner(nextSigner);
-    setAccount(await nextSigner.getAddress());
-
-    const network = await nextProvider.getNetwork();
-    setNetworkOk(network.chainId === 11155111n);
-  };
 
   const handleIssue = async (event) => {
     event.preventDefault();
@@ -599,51 +574,6 @@ export default function DashboardApp({
             </main>
           ) : null}
 
-          {activeTab === "registry" ? (
-            <main className="space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4">
-                <div className="flex flex-wrap items-center gap-4">
-                  <ConnectButton onConnected={handleConnected} />
-                  <span className="text-sm text-zinc-400">
-                    {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect wallet to use registry."}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="neo-badge">
-                    <span className="text-zinc-400">Network</span>
-                    <span>{networkOk ? "Sepolia" : "Switch to Sepolia"}</span>
-                  </span>
-                  <span className="neo-badge">
-                    <span className="text-zinc-400">Contract</span>
-                    <span>{CONTRACT_ADDRESS.slice(0, 6)}...{CONTRACT_ADDRESS.slice(-4)}</span>
-                  </span>
-                </div>
-              </div>
-
-              <Card title="Certificate actions" subtitle="Issue, verify, or revoke via the on-chain registry.">
-                <CredentialActions
-                  contractAddress={CONTRACT_ADDRESS}
-                  abi={CONTRACT_ABI}
-                  provider={provider}
-                  signer={signer}
-                  networkOk={networkOk}
-                  account={account}
-                />
-              </Card>
-
-              <Card title="Contract tools" subtitle="Direct contract method invocation.">
-                <FunctionRunner
-                  iface={iface}
-                  contractAddress={CONTRACT_ADDRESS}
-                  abi={CONTRACT_ABI}
-                  provider={provider}
-                  signer={signer}
-                  networkOk={networkOk}
-                  account={account}
-                />
-              </Card>
-            </main>
-          ) : null}
         </div>
       </div>
     </>

@@ -1,57 +1,75 @@
 import React, { useMemo, useState } from "react";
-import { initialOrganization } from "../data/productData";
-import { slugifyCompanyName } from "../lib/issuer-session";
-
-function buildDefaultForm(organization) {
-  const isDemoWorkspace = organization.slug === initialOrganization.slug;
-
-  return {
-    fullName: "",
-    workEmail: "",
-    role: "Issuer admin",
-    companyName: isDemoWorkspace ? "" : organization.name,
-    website: isDemoWorkspace ? "" : organization.website,
-    sector: isDemoWorkspace ? "" : organization.sector,
-  };
-}
+import { slugifyCompanyName } from "../lib/company";
 
 const setupHighlights = [
   {
-    title: "Sign in as the issuer owner",
-    body: "Start with the person who should control templates, staff access, and the first credentials.",
+    title: "Create the company workspace",
+    body: "Set up the organization that will own templates, issuer access, credentials, and verification links.",
   },
   {
-    title: "Create a clean company workspace",
-    body: "First launch provisions your company profile and starts with a clean issuer workspace.",
+    title: "Sign in securely",
+    body: "Use a real account instead of a browser-only demo session so the workspace is tied to your company.",
   },
   {
     title: "Move straight into operations",
-    body: "After setup, the workspace opens on the actual issuer dashboard for templates, issuers, and credentials.",
+    body: "Once you are in, you can manage issuers, templates, credential issuance, and verification from one dashboard.",
   },
 ];
 
-export default function IssuerAccessFlow({ organization, apiMode, onComplete }) {
-  const isDemoWorkspace = organization.slug === initialOrganization.slug;
-  const [form, setForm] = useState(() => buildDefaultForm(organization));
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
+function buildRegisterForm() {
+  return {
+    fullName: "",
+    workEmail: "",
+    password: "",
+    role: "Issuer admin",
+    companyName: "",
+    website: "",
+    sector: "",
+  };
+}
 
-  const companySlug = useMemo(() => slugifyCompanyName(form.companyName), [form.companyName]);
+function buildSignInForm() {
+  return {
+    workEmail: "",
+    password: "",
+  };
+}
+
+export default function IssuerAccessFlow({ authError, onRegister, onSignIn }) {
+  const [mode, setMode] = useState("register");
+  const [registerForm, setRegisterForm] = useState(buildRegisterForm);
+  const [signInForm, setSignInForm] = useState(buildSignInForm);
+  const [busy, setBusy] = useState(false);
+  const [localError, setLocalError] = useState("");
+
+  const companySlug = useMemo(
+    () => slugifyCompanyName(registerForm.companyName),
+    [registerForm.companyName]
+  );
+
+  const activeError = localError || authError;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setBusy(true);
-    setError("");
+    setLocalError("");
 
     try {
-      await onComplete({
-        ...form,
-        companySlug,
-      });
+      if (mode === "register") {
+        await onRegister({
+          ...registerForm,
+          companySlug,
+        });
+      } else {
+        await onSignIn(signInForm);
+      }
     } catch (submitError) {
+      setLocalError(submitError.message || "Unable to continue.");
       setBusy(false);
-      setError(submitError.message || "Unable to enter the issuer app.");
+      return;
     }
+
+    setBusy(false);
   };
 
   return (
@@ -65,22 +83,16 @@ export default function IssuerAccessFlow({ organization, apiMode, onComplete }) 
             <p className="site-brand">Credential Foundry</p>
             <p className="site-brand-subtitle">Company workspace</p>
           </div>
-          <span className="neo-badge">
-            <span className={`inline-block h-2 w-2 rounded-full ${apiMode === "ready" ? "bg-emerald-400" : "bg-amber-400"}`} />
-            {apiMode === "ready" ? "Saving to API" : "Saving locally"}
-          </span>
+          <span className="neo-badge">Secure access</span>
         </header>
 
         <main className="issuer-access-layout flex-1 py-8">
           <section className="site-panel issuer-access-copy">
-            <p className="site-panel-label">{isDemoWorkspace ? "First issuer setup" : "Sign in to issuer app"}</p>
-            <h1 className="issuer-access-title">
-              {isDemoWorkspace ? "Set up your company before entering the issuer workspace." : `Continue into ${organization.name}.`}
-            </h1>
+            <p className="site-panel-label">Credential operations</p>
+            <h1 className="issuer-access-title">Issue trusted credentials from one secure company workspace.</h1>
             <p className="site-lede issuer-access-lede">
-              {isDemoWorkspace
-                ? "Create the real company workspace and sign in the initial admin so you can manage templates, issuers, credentials, and verification from one place."
-                : "Use your work identity to enter the issuer workspace. You can adjust company details here before heading into templates, issuers, and credentials."}
+              Create the workspace once, sign in with your company account, and manage templates, issuer access,
+              credential records, and public verification without any seeded demo data in the way.
             </p>
 
             <div className="site-mini-grid issuer-access-highlights">
@@ -97,94 +109,160 @@ export default function IssuerAccessFlow({ organization, apiMode, onComplete }) 
           </section>
 
           <section className="site-panel">
-            <p className="site-panel-label">{isDemoWorkspace ? "Create workspace" : "Issuer sign in"}</p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                className={mode === "register" ? "site-button" : "site-ghost"}
+                onClick={() => {
+                  setMode("register");
+                  setLocalError("");
+                }}
+              >
+                Create workspace
+              </button>
+              <button
+                type="button"
+                className={mode === "signin" ? "site-button" : "site-ghost"}
+                onClick={() => {
+                  setMode("signin");
+                  setLocalError("");
+                }}
+              >
+                Sign in
+              </button>
+            </div>
+
+            <p className="site-panel-label mt-6">{mode === "register" ? "New company account" : "Existing account"}</p>
             <h2 className="mt-3 text-3xl font-semibold text-zinc-50" style={{ fontFamily: "'Fraunces', Georgia, serif" }}>
-              {isDemoWorkspace ? "Who should own this company workspace?" : "Confirm your issuer details"}
+              {mode === "register" ? "Who should own this workspace?" : "Sign back into your workspace"}
             </h2>
 
             <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
-              <div className="dashboard-form-grid">
-                <label className="field-block">
-                  <span className="neo-label">Full name</span>
-                  <input
-                    className="neo-input mt-2"
-                    value={form.fullName}
-                    onChange={(event) => setForm((current) => ({ ...current, fullName: event.target.value }))}
-                    placeholder="Jane Founder"
-                  />
-                </label>
+              {mode === "register" ? (
+                <>
+                  <div className="dashboard-form-grid">
+                    <label className="field-block">
+                      <span className="neo-label">Full name</span>
+                      <input
+                        className="neo-input mt-2"
+                        value={registerForm.fullName}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, fullName: event.target.value }))}
+                        placeholder="Jane Founder"
+                      />
+                    </label>
 
-                <label className="field-block">
-                  <span className="neo-label">Work email</span>
-                  <input
-                    className="neo-input mt-2"
-                    type="email"
-                    value={form.workEmail}
-                    onChange={(event) => setForm((current) => ({ ...current, workEmail: event.target.value }))}
-                    placeholder="jane@company.com"
-                  />
-                </label>
+                    <label className="field-block">
+                      <span className="neo-label">Work email</span>
+                      <input
+                        className="neo-input mt-2"
+                        type="email"
+                        value={registerForm.workEmail}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, workEmail: event.target.value }))}
+                        placeholder="jane@company.com"
+                      />
+                    </label>
 
-                <label className="field-block">
-                  <span className="neo-label">Company name</span>
-                  <input
-                    className="neo-input mt-2"
-                    value={form.companyName}
-                    onChange={(event) => setForm((current) => ({ ...current, companyName: event.target.value }))}
-                    placeholder="Acme Training Group"
-                  />
-                </label>
+                    <label className="field-block">
+                      <span className="neo-label">Password</span>
+                      <input
+                        className="neo-input mt-2"
+                        type="password"
+                        value={registerForm.password}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, password: event.target.value }))}
+                        placeholder="At least 8 characters"
+                      />
+                    </label>
 
-                <label className="field-block">
-                  <span className="neo-label">Your role</span>
-                  <input
-                    className="neo-input mt-2"
-                    value={form.role}
-                    onChange={(event) => setForm((current) => ({ ...current, role: event.target.value }))}
-                    placeholder="Issuer admin"
-                  />
-                </label>
+                    <label className="field-block">
+                      <span className="neo-label">Your role</span>
+                      <input
+                        className="neo-input mt-2"
+                        value={registerForm.role}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, role: event.target.value }))}
+                        placeholder="Issuer admin"
+                      />
+                    </label>
 
-                <label className="field-block">
-                  <span className="neo-label">Website</span>
-                  <input
-                    className="neo-input mt-2"
-                    value={form.website}
-                    onChange={(event) => setForm((current) => ({ ...current, website: event.target.value }))}
-                    placeholder="https://acmetraining.com"
-                  />
-                </label>
+                    <label className="field-block">
+                      <span className="neo-label">Company name</span>
+                      <input
+                        className="neo-input mt-2"
+                        value={registerForm.companyName}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, companyName: event.target.value }))}
+                        placeholder="Acme Training Group"
+                      />
+                    </label>
 
-                <label className="field-block">
-                  <span className="neo-label">Sector</span>
-                  <input
-                    className="neo-input mt-2"
-                    value={form.sector}
-                    onChange={(event) => setForm((current) => ({ ...current, sector: event.target.value }))}
-                    placeholder="Workforce training"
-                  />
-                </label>
-              </div>
+                    <label className="field-block">
+                      <span className="neo-label">Website</span>
+                      <input
+                        className="neo-input mt-2"
+                        value={registerForm.website}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, website: event.target.value }))}
+                        placeholder="https://acmetraining.com"
+                      />
+                    </label>
 
-              <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-300">
-                <p className="m-0">
-                  Company slug: <span className="text-zinc-50">{companySlug || "generated after you enter a company name"}</span>
-                </p>
-                <p className="mb-0 mt-2 text-zinc-500">
-                  {isDemoWorkspace
-                    ? "Submitting this provisions your company workspace with a clean starting state."
-                    : "Your existing workspace data stays in place. We just update company details and make sure your issuer account exists."}
-                </p>
-              </div>
+                    <label className="field-block">
+                      <span className="neo-label">Sector</span>
+                      <input
+                        className="neo-input mt-2"
+                        value={registerForm.sector}
+                        onChange={(event) => setRegisterForm((current) => ({ ...current, sector: event.target.value }))}
+                        placeholder="Workforce training"
+                      />
+                    </label>
+                  </div>
 
-              {error ? (
+                  <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-300">
+                    <p className="m-0">
+                      Company slug: <span className="text-zinc-50">{companySlug || "generated after you enter a company name"}</span>
+                    </p>
+                    <p className="mb-0 mt-2 text-zinc-500">
+                      This becomes the internal workspace identifier for your company.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="dashboard-form-grid">
+                  <label className="field-block">
+                    <span className="neo-label">Work email</span>
+                    <input
+                      className="neo-input mt-2"
+                      type="email"
+                      value={signInForm.workEmail}
+                      onChange={(event) => setSignInForm((current) => ({ ...current, workEmail: event.target.value }))}
+                      placeholder="jane@company.com"
+                    />
+                  </label>
+
+                  <label className="field-block">
+                    <span className="neo-label">Password</span>
+                    <input
+                      className="neo-input mt-2"
+                      type="password"
+                      value={signInForm.password}
+                      onChange={(event) => setSignInForm((current) => ({ ...current, password: event.target.value }))}
+                      placeholder="Enter your password"
+                    />
+                  </label>
+                </div>
+              )}
+
+              {activeError ? (
                 <div className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-                  {error}
+                  {activeError}
                 </div>
               ) : null}
 
               <button type="submit" className="site-button" disabled={busy}>
-                {busy ? "Opening issuer app..." : "Enter issuer app"}
+                {busy
+                  ? mode === "register"
+                    ? "Creating workspace..."
+                    : "Signing in..."
+                  : mode === "register"
+                    ? "Create workspace"
+                    : "Sign in"}
               </button>
             </form>
           </section>

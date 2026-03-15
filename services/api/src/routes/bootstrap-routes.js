@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { asyncHandler } from "../lib/http.js";
+import { requireAuth } from "../middleware/auth-middleware.js";
 import { getBootstrap } from "../services/bootstrap-service.js";
 
 export function createBootstrapRouter() {
@@ -7,8 +8,9 @@ export function createBootstrapRouter() {
 
   router.get(
     "/api/bootstrap",
-    asyncHandler(async (_, response) => {
-      response.json(await getBootstrap());
+    requireAuth,
+    asyncHandler(async (request, response) => {
+      response.json(await getBootstrap(request.auth));
     })
   );
 

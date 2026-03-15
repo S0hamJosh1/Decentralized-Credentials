@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { DEFAULT_DB, DEFAULT_ORGANIZATION } from "./data/default-db.js";
+import { DEFAULT_DB } from "./data/default-db.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_DATA_DIR = path.resolve(__dirname, "../data");
@@ -20,50 +20,137 @@ export function buildVerificationUrl(verificationCode) {
   return `/verify/${encodeURIComponent(verificationCode)}`;
 }
 
+function normalizeText(value, fallback = "") {
+  return typeof value === "string" ? value : fallback;
+}
+
 function normalizeOrganization(organization = {}) {
   return {
-    ...DEFAULT_ORGANIZATION,
-    ...organization,
+    id: normalizeText(organization.id),
+    name: normalizeText(organization.name),
+    slug: normalizeText(organization.slug),
+    sector: normalizeText(organization.sector),
+    website: normalizeText(organization.website),
+    verificationDomain: normalizeText(organization.verificationDomain),
+    status: normalizeText(organization.status, "Active") || "Active",
+    description: normalizeText(organization.description),
   };
 }
 
-export function normalizeDb(rawDb = {}) {
-  const organization = normalizeOrganization(rawDb.organization);
-  const organizationId = organization.id;
+function normalizeUser(user = {}) {
+  return {
+    id: normalizeText(user.id),
+    fullName: normalizeText(user.fullName),
+    email: normalizeText(user.email).toLowerCase(),
+    passwordHash: normalizeText(user.passwordHash),
+    createdAt: normalizeText(user.createdAt),
+  };
+}
 
-  const templates = (rawDb.templates || DEFAULT_DB.templates).map((template) => ({
-    ...template,
-    organizationId: template.organizationId || organizationId,
-  }));
+function normalizeMembership(membership = {}) {
+  return {
+    id: normalizeText(membership.id),
+    userId: normalizeText(membership.userId),
+    organizationId: normalizeText(membership.organizationId),
+    role: normalizeText(membership.role, "Member") || "Member",
+    status: normalizeText(membership.status, "Active") || "Active",
+    createdAt: normalizeText(membership.createdAt),
+  };
+}
 
-  const issuers = (rawDb.issuers || DEFAULT_DB.issuers).map((issuer) => ({
-    ...issuer,
-    organizationId: issuer.organizationId || organizationId,
-  }));
+function normalizeSession(session = {}) {
+  return {
+    id: normalizeText(session.id),
+    token: normalizeText(session.token),
+    userId: normalizeText(session.userId),
+    createdAt: normalizeText(session.createdAt),
+    expiresAt: normalizeText(session.expiresAt),
+  };
+}
 
-  const credentials = (rawDb.credentials || DEFAULT_DB.credentials).map((credential) => {
-    const status = credential.status || "Valid";
-    const revokedAt =
-      status === "Revoked" ? credential.revokedAt || credential.issuedAt || "" : credential.revokedAt || "";
-    const revocationReason =
-      status === "Revoked"
-        ? credential.revocationReason || "Revoked by an authorized issuer."
-        : credential.revocationReason || "";
+function normalizeTemplate(template = {}) {
+  return {
+    id: normalizeText(template.id),
+    organizationId: normalizeText(template.organizationId),
+    name: normalizeText(template.name),
+    category: normalizeText(template.category),
+    validity: normalizeText(template.validity),
+    summary: normalizeText(template.summary),
+  };
+}
 
-    return {
-      ...credential,
-      organizationId: credential.organizationId || organizationId,
-      verificationUrl: credential.verificationUrl || buildVerificationUrl(credential.verificationCode),
-      revokedAt,
-      revocationReason,
-    };
-  });
+function normalizeIssuer(issuer = {}) {
+  return {
+    id: normalizeText(issuer.id),
+    organizationId: normalizeText(issuer.organizationId),
+    userId: normalizeText(issuer.userId),
+    name: normalizeText(issuer.name),
+    role: normalizeText(issuer.role),
+    email: normalizeText(issuer.email).toLowerCase(),
+    wallet: normalizeText(issuer.wallet),
+    status: normalizeText(issuer.status, "Pending") || "Pending",
+    createdAt: normalizeText(issuer.createdAt),
+  };
+}
+
+function normalizeCredential(credential = {}) {
+  const status = normalizeText(credential.status, "Valid") || "Valid";
+  const revokedAt =
+    status === "Revoked"
+      ? normalizeText(credential.revokedAt || credential.issuedAt)
+      : normalizeText(credential.revokedAt);
+  const revocationReason =
+    status === "Revoked"
+      ? normalizeText(credential.revocationReason, "Revoked by an authorized issuer.") || "Revoked by an authorized issuer."
+      : normalizeText(credential.revocationReason);
 
   return {
-    organization,
-    templates,
-    issuers,
-    credentials,
+    id: normalizeText(credential.id),
+    organizationId: normalizeText(credential.organizationId),
+    verificationCode: normalizeText(credential.verificationCode),
+    verificationUrl: normalizeText(credential.verificationUrl) || buildVerificationUrl(normalizeText(credential.verificationCode)),
+    recipientName: normalizeText(credential.recipientName),
+    recipientEmail: normalizeText(credential.recipientEmail).toLowerCase(),
+    recipientWallet: normalizeText(credential.recipientWallet),
+    templateId: normalizeText(credential.templateId),
+    templateName: normalizeText(credential.templateName),
+    issuerId: normalizeText(credential.issuerId),
+    issuedBy: normalizeText(credential.issuedBy),
+    issuedAt: normalizeText(credential.issuedAt),
+    status,
+    cohort: normalizeText(credential.cohort),
+    summary: normalizeText(credential.summary),
+    revokedAt,
+    revocationReason,
+  };
+}
+
+function normalizeCredentialEvent(event = {}) {
+  return {
+    id: normalizeText(event.id),
+    credentialId: normalizeText(event.credentialId),
+    organizationId: normalizeText(event.organizationId),
+    actorUserId: normalizeText(event.actorUserId),
+    type: normalizeText(event.type),
+    createdAt: normalizeText(event.createdAt),
+    details: typeof event.details === "object" && event.details !== null ? event.details : {},
+  };
+}
+
+function normalizeList(items, normalizer) {
+  return Array.isArray(items) ? items.map(normalizer) : [];
+}
+
+export function normalizeDb(rawDb = {}) {
+  return {
+    organizations: normalizeList(rawDb.organizations, normalizeOrganization),
+    users: normalizeList(rawDb.users, normalizeUser),
+    memberships: normalizeList(rawDb.memberships, normalizeMembership),
+    sessions: normalizeList(rawDb.sessions, normalizeSession),
+    templates: normalizeList(rawDb.templates, normalizeTemplate),
+    issuers: normalizeList(rawDb.issuers, normalizeIssuer),
+    credentials: normalizeList(rawDb.credentials, normalizeCredential),
+    credentialEvents: normalizeList(rawDb.credentialEvents, normalizeCredentialEvent),
   };
 }
 
@@ -99,4 +186,4 @@ export async function writeDb(nextDb) {
   return normalized;
 }
 
-export { DEFAULT_DB, DEFAULT_ORGANIZATION };
+export { DEFAULT_DB };

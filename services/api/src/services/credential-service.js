@@ -6,6 +6,10 @@ function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function nowIso() {
+  return new Date().toISOString();
+}
+
 function nextId(prefix, list, start = 1) {
   const numericValues = list
     .map((item) => Number(String(item.id || "").replace(/^[A-Z-]+/, "")))
@@ -16,6 +20,13 @@ function nextId(prefix, list, start = 1) {
 }
 
 function templateCode(templateName) {
+  const firstWord = templateName.split(/\s+/).find(Boolean) || "";
+  const normalized = firstWord.replace(/[^a-z0-9]/gi, "").slice(0, 3).toUpperCase();
+
+  if (normalized.length >= 2) {
+    return normalized;
+  }
+
   return templateName
     .split(/\s+/)
     .map((part) => part[0])
@@ -24,35 +35,61 @@ function templateCode(templateName) {
     .toUpperCase();
 }
 
+function organizationCode(slug = "") {
+  const code = slug
+    .split("-")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 3)
+    .toUpperCase();
+
+  return code || "CF";
+}
+
 function sanitizeCredential(payload = {}) {
   return {
     templateId: sanitizeText(payload.templateId),
     issuerId: sanitizeText(payload.issuerId),
     recipientName: sanitizeText(payload.recipientName),
-    recipientEmail: sanitizeText(payload.recipientEmail),
+    recipientEmail: sanitizeText(payload.recipientEmail).toLowerCase(),
     recipientWallet: sanitizeText(payload.recipientWallet),
     cohort: sanitizeText(payload.cohort),
     summary: sanitizeText(payload.summary),
   };
 }
 
-export async function listCredentials() {
-  const db = await readDb();
-  return db.credentials;
+function requireOrganization(db, organizationId) {
+  const organization = db.organizations.find((item) => item.id === organizationId);
+
+  if (!organization) {
+    throw createHttpError(404, "Workspace not found.");
+  }
+
+  return organization;
 }
 
-export async function createCredential(payload) {
+export async function listCredentials(auth) {
+  const db = await readDb();
+  return db.credentials.filter((credential) => credential.organizationId === auth.organization.id);
+}
+
+export async function createCredential(auth, payload) {
   const db = await readDb();
   const credentialInput = sanitizeCredential(payload);
 
   requireFields(
     credentialInput,
-    ["templateId", "issuerId", "recipientName", "recipientEmail", "recipientWallet", "cohort", "summary"],
+    ["templateId", "issuerId", "recipientName", "recipientEmail", "cohort", "summary"],
     "credential fields"
   );
 
-  const template = db.templates.find((item) => item.id === credentialInput.templateId);
-  const issuer = db.issuers.find((item) => item.id === credentialInput.issuerId);
+  const organization = requireOrganization(db, auth.organization.id);
+  const template = db.templates.find(
+    (item) => item.id === credentialInput.templateId && item.organizationId === organization.id
+  );
+  const issuer = db.issuers.find(
+    (item) => item.id === credentialInput.issuerId && item.organizationId === organization.id
+  );
 
   if (!template) {
     throw createHttpError(404, "Template not found.");
@@ -66,16 +103,12 @@ export async function createCredential(payload) {
     throw createHttpError(400, "Only approved issuers can create credentials.");
   }
 
-  if (issuer.organizationId !== template.organizationId) {
-    throw createHttpError(400, "Issuer and template must belong to the same organization.");
-  }
-
   const id = nextId("CRD-", db.credentials, 1000);
   const numericId = id.replace("CRD-", "");
-  const verificationCode = `NST-${templateCode(template.name)}-${numericId}`;
+  const verificationCode = `${organizationCode(organization.slug)}-${templateCode(template.name)}-${numericId}`;
   const credential = {
     id,
-    organizationId: db.organization.id,
+    organizationId: organization.id,
     verificationCode,
     verificationUrl: buildVerificationUrl(verificationCode),
     templateName: template.name,
@@ -88,13 +121,28 @@ export async function createCredential(payload) {
   };
 
   db.credentials.unshift(credential);
+  db.credentialEvents.unshift({
+    id: nextId("EVT-", db.credentialEvents),
+    credentialId: credential.id,
+    organizationId: organization.id,
+    actorUserId: auth.user.id,
+    type: "issued",
+    createdAt: nowIso(),
+    details: {
+      issuerId: issuer.id,
+      verificationCode,
+    },
+  });
+
   await writeDb(db);
   return credential;
 }
 
-export async function revokeCredential(credentialId, reason) {
+export async function revokeCredential(auth, credentialId, reason) {
   const db = await readDb();
-  const credential = db.credentials.find((item) => item.id === credentialId);
+  const credential = db.credentials.find(
+    (item) => item.id === credentialId && item.organizationId === auth.organization.id
+  );
 
   if (!credential) {
     throw createHttpError(404, "Credential not found.");
@@ -107,6 +155,18 @@ export async function revokeCredential(credentialId, reason) {
   credential.status = "Revoked";
   credential.revokedAt = today();
   credential.revocationReason = sanitizeText(reason) || "Revoked by an authorized issuer.";
+
+  db.credentialEvents.unshift({
+    id: nextId("EVT-", db.credentialEvents),
+    credentialId: credential.id,
+    organizationId: credential.organizationId,
+    actorUserId: auth.user.id,
+    type: "revoked",
+    createdAt: nowIso(),
+    details: {
+      reason: credential.revocationReason,
+    },
+  });
 
   await writeDb(db);
   return credential;
@@ -121,8 +181,14 @@ export async function getVerificationRecord(code) {
     throw createHttpError(404, "Credential not found.");
   }
 
+  const organization = db.organizations.find((item) => item.id === credential.organizationId);
+
+  if (!organization) {
+    throw createHttpError(404, "Workspace not found.");
+  }
+
   return {
-    organization: db.organization,
+    organization,
     credential,
   };
 }

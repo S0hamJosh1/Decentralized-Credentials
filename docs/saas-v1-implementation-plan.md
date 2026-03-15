@@ -1,13 +1,8 @@
 # SaaS V1 Implementation Plan
 
-## Product Split
+## Product Direction
 
-We are building two separate surfaces:
-
-- `workspace app`: the actual company product for sign-in, onboarding, templates, issuers, issuance, records, revocation, and verification management
-- `demo site`: a public-facing marketing and demo experience that can live in a separate repository and deployment
-
-This repository should now become the `workspace app` repository.
+This repository is the actual company workspace product. We are not maintaining a seeded demo path inside the live app.
 
 ## What Stays Here
 
@@ -17,13 +12,6 @@ This repository should now become the `workspace app` repository.
 - credential issuing pipeline
 - public verification endpoint and verifier page
 - backend API and persistence
-
-## What Moves Out
-
-- marketing homepage
-- explainer/demo pages
-- demo storytelling around seeded sample data
-- any blockchain-first experience that is not required for the SaaS workflow
 
 ## Workspace V1 Definition Of Done
 
@@ -46,21 +34,27 @@ We can reuse:
 - verifier page
 - credential/template/issuer service structure in the API
 
-We should replace or heavily refactor:
+We have already replaced:
 
 - demo-first routing
 - localStorage-only issuer session
-- single-organization flat JSON database model
+- seeded single-company sample data
+
+We still need to remove or heavily refactor:
+
 - advanced registry / contract tooling in the main app path
+- remaining single-workspace assumptions inside the product model
+- invite/team lifecycle beyond the initial owner account
 
 ## Implementation Order
 
-### Phase 1: Repo Split
+### Phase 1: Remove Seeded Demo Residue
 
-- make `/` the workspace entry point
-- keep `/verify/:code` in this repo
-- remove marketing/demo from the live app flow
-- update README and product copy so this repo is clearly the workspace product
+- remove Northstar/sample records from frontend and API
+- make the app start from a real company onboarding state
+- keep `/verify/:code` public without any demo fallback
+
+Status: completed
 
 ### Phase 2: Real Auth
 
@@ -68,10 +62,13 @@ We should replace or heavily refactor:
 - protect workspace routes
 - connect users to organizations and roles
 
+Status: completed
+
 ### Phase 3: Real Workspace Data Model
 
 - support organizations, memberships, templates, issuers, credentials, and credential events
-- move away from the single seeded organization model
+- remove remaining assumptions that one user only ever touches one workspace
+- define the next persistence shape for production use
 
 ### Phase 4: Credential Pipeline
 
@@ -88,6 +85,6 @@ We should replace or heavily refactor:
 
 ## Immediate Next Steps
 
-1. make this repo workspace-first
-2. extract the demo site into its own repo later from the existing marketing/verifier assets
-3. implement real auth and tenant-aware persistence next
+1. expand the workspace data model beyond the initial owner/company bootstrap
+2. finish the production credential pipeline and issuer/team workflows
+3. remove the remaining blockchain-first UI from the main workspace experience

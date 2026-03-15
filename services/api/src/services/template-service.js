@@ -1,6 +1,5 @@
-import { readDb, writeDb } from "../store.js";
-import { createHttpError } from "../lib/http.js";
 import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
+import { readDb, writeDb } from "../store.js";
 
 function nextId(prefix, list, start = 1) {
   const numericValues = list
@@ -20,40 +19,31 @@ function sanitizeTemplate(payload = {}) {
   };
 }
 
-export async function listTemplates() {
+export async function listTemplates(auth) {
   const db = await readDb();
-  return db.templates;
+  return db.templates.filter((template) => template.organizationId === auth.organization.id);
 }
 
-export async function createTemplate(payload) {
+export async function createTemplate(auth, payload) {
   const db = await readDb();
   const templateInput = sanitizeTemplate(payload);
 
   requireFields(templateInput, ["name", "category", "validity", "summary"], "template fields");
   ensureUnique(
     db.templates,
-    (template) => template.organizationId === db.organization.id && template.name.toLowerCase() === templateInput.name.toLowerCase(),
+    (template) =>
+      template.organizationId === auth.organization.id
+      && template.name.toLowerCase() === templateInput.name.toLowerCase(),
     "A template with that name already exists for this organization."
   );
 
   const template = {
     id: nextId("TPL-", db.templates, 100),
-    organizationId: db.organization.id,
+    organizationId: auth.organization.id,
     ...templateInput,
   };
 
   db.templates.unshift(template);
   await writeDb(db);
   return template;
-}
-
-export async function requireTemplate(templateId) {
-  const db = await readDb();
-  const template = db.templates.find((item) => item.id === templateId);
-
-  if (!template) {
-    throw createHttpError(404, "Template not found.");
-  }
-
-  return { db, template };
 }

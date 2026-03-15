@@ -1,54 +1,88 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  initialCredentials,
-  initialIssuers,
-  initialOrganization,
-  initialTemplates,
-} from "../data/productData";
-import {
   createCredential,
   createIssuer,
   createTemplate,
   fetchBootstrap,
   revokeCredentialRecord,
-  setupWorkspace,
   updateOrganization,
 } from "../lib/api";
-import {
-  createLocalCredential,
-  createLocalIssuer,
-  createLocalTemplate,
-  revokeLocalCredential,
-  setupLocalWorkspace,
-} from "../lib/local-product";
-import { buildVerifyPath } from "../lib/routes";
+import { EMPTY_ORGANIZATION } from "../lib/company";
 
-export function useProductData() {
-  const [organization, setOrganization] = useState(initialOrganization);
-  const [templates, setTemplates] = useState(initialTemplates);
-  const [issuers, setIssuers] = useState(initialIssuers);
-  const [credentials, setCredentials] = useState(initialCredentials);
-  const [apiMode, setApiMode] = useState("loading");
+function emptyWorkspaceState() {
+  return {
+    organization: EMPTY_ORGANIZATION,
+    templates: [],
+    issuers: [],
+    credentials: [],
+  };
+}
+
+export function useProductData({ authStatus, onUnauthorized }) {
+  const [organization, setOrganization] = useState(EMPTY_ORGANIZATION);
+  const [templates, setTemplates] = useState([]);
+  const [issuers, setIssuers] = useState([]);
+  const [credentials, setCredentials] = useState([]);
+  const [apiMode, setApiMode] = useState("idle");
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const bootstrap = await fetchBootstrap();
-        setOrganization(bootstrap.organization || initialOrganization);
+    if (authStatus === "loading") {
+      setApiMode("loading");
+      setApiError("");
+      return;
+    }
+
+    if (authStatus !== "authenticated") {
+      const nextState = emptyWorkspaceState();
+      setOrganization(nextState.organization);
+      setTemplates(nextState.templates);
+      setIssuers(nextState.issuers);
+      setCredentials(nextState.credentials);
+      setApiMode("idle");
+      setApiError("");
+      return;
+    }
+
+    let cancelled = false;
+    setApiMode("loading");
+    setApiError("");
+
+    fetchBootstrap()
+      .then((bootstrap) => {
+        if (cancelled) {
+          return;
+        }
+
+        setOrganization(bootstrap.organization || EMPTY_ORGANIZATION);
         setTemplates(bootstrap.templates || []);
         setIssuers(bootstrap.issuers || []);
         setCredentials(bootstrap.credentials || []);
         setApiMode("ready");
-        setApiError("");
-      } catch (error) {
-        setApiMode("offline");
-        setApiError(error.message || "API unavailable. Using seeded demo data.");
-      }
-    };
+      })
+      .catch((error) => {
+        if (cancelled) {
+          return;
+        }
 
-    load();
-  }, []);
+        if (error.status === 401) {
+          onUnauthorized?.();
+          return;
+        }
+
+        const nextState = emptyWorkspaceState();
+        setOrganization(nextState.organization);
+        setTemplates(nextState.templates);
+        setIssuers(nextState.issuers);
+        setCredentials(nextState.credentials);
+        setApiMode("error");
+        setApiError(error.message || "Workspace data is unavailable right now.");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authStatus, onUnauthorized]);
 
   const stats = useMemo(() => {
     const validCount = credentials.filter((credential) => credential.status === "Valid").length;
@@ -63,90 +97,65 @@ export function useProductData() {
     };
   }, [credentials, issuers, templates]);
 
+  const handleProtectedError = (error) => {
+    if (error.status === 401) {
+      onUnauthorized?.();
+      throw new Error("Your session expired. Please sign in again.");
+    }
+
+    throw error;
+  };
+
   const issueCredential = async (payload) => {
-    if (apiMode === "ready") {
+    try {
       const nextRecord = await createCredential(payload);
       setCredentials((current) => [nextRecord, ...current]);
       return nextRecord;
+    } catch (error) {
+      handleProtectedError(error);
     }
-
-    const nextRecord = createLocalCredential(payload, organization, templates, issuers, credentials);
-    setCredentials((current) => [nextRecord, ...current]);
-    return nextRecord;
   };
 
   const revokeCredential = async (credentialId, reason) => {
-    if (apiMode === "ready") {
+    try {
       const nextRecord = await revokeCredentialRecord(credentialId, reason);
       setCredentials((current) =>
         current.map((credential) => (credential.id === credentialId ? nextRecord : credential))
       );
       return nextRecord;
+    } catch (error) {
+      handleProtectedError(error);
     }
-
-    const { nextCredentials, revokedRecord } = revokeLocalCredential(credentials, credentialId, reason);
-    setCredentials(nextCredentials);
-    return revokedRecord;
   };
 
   const addTemplate = async (payload) => {
-    if (apiMode === "ready") {
+    try {
       const nextTemplate = await createTemplate(payload);
       setTemplates((current) => [nextTemplate, ...current]);
       return nextTemplate;
+    } catch (error) {
+      handleProtectedError(error);
     }
-
-    const nextTemplate = createLocalTemplate(payload, organization.id, templates);
-    setTemplates((current) => [nextTemplate, ...current]);
-    return nextTemplate;
   };
 
   const addIssuer = async (payload) => {
-    if (apiMode === "ready") {
+    try {
       const nextIssuer = await createIssuer(payload);
       setIssuers((current) => [nextIssuer, ...current]);
       return nextIssuer;
+    } catch (error) {
+      handleProtectedError(error);
     }
-
-    const nextIssuer = createLocalIssuer(payload, organization.id, issuers);
-    setIssuers((current) => [nextIssuer, ...current]);
-    return nextIssuer;
   };
 
   const saveOrganization = async (payload) => {
-    if (apiMode === "ready") {
+    try {
       const savedOrganization = await updateOrganization(payload);
       setOrganization(savedOrganization);
-      setCredentials((current) =>
-        current.map((credential) => ({
-          ...credential,
-          organizationId: savedOrganization.id,
-          verificationUrl: credential.verificationUrl || buildVerifyPath(credential.verificationCode),
-        }))
-      );
       return savedOrganization;
+    } catch (error) {
+      handleProtectedError(error);
     }
-
-    setOrganization(payload);
-    return payload;
-  };
-
-  const initializeIssuerWorkspace = async (payload) => {
-    if (apiMode === "ready") {
-      const bootstrap = await setupWorkspace(payload);
-      setOrganization(bootstrap.organization || initialOrganization);
-      setTemplates(bootstrap.templates || []);
-      setIssuers(bootstrap.issuers || []);
-      setCredentials(bootstrap.credentials || []);
-      return bootstrap;
-    }
-
-    const bootstrap = setupLocalWorkspace(payload, organization);
-    setOrganization(bootstrap.organization);
-    setTemplates(bootstrap.templates);
-    setIssuers(bootstrap.issuers);
-    setCredentials(bootstrap.credentials);
-    return bootstrap;
   };
 
   return {
@@ -162,6 +171,5 @@ export function useProductData() {
     addTemplate,
     addIssuer,
     saveOrganization,
-    initializeIssuerWorkspace,
   };
 }

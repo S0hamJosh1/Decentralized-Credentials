@@ -1,6 +1,6 @@
-import { readDb, writeDb } from "../store.js";
 import { createHttpError } from "../lib/http.js";
 import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
+import { readDb, writeDb } from "../store.js";
 
 function nextId(prefix, list, start = 1) {
   const numericValues = list
@@ -15,18 +15,18 @@ function sanitizeIssuer(payload = {}) {
   return {
     name: sanitizeText(payload.name),
     role: sanitizeText(payload.role),
-    email: sanitizeText(payload.email),
+    email: sanitizeText(payload.email).toLowerCase(),
     wallet: sanitizeText(payload.wallet),
     status: sanitizeText(payload.status) || "Pending",
   };
 }
 
-export async function listIssuers() {
+export async function listIssuers(auth) {
   const db = await readDb();
-  return db.issuers;
+  return db.issuers.filter((issuer) => issuer.organizationId === auth.organization.id);
 }
 
-export async function createIssuer(payload) {
+export async function createIssuer(auth, payload) {
   const db = await readDb();
   const issuerInput = sanitizeIssuer(payload);
 
@@ -39,7 +39,7 @@ export async function createIssuer(payload) {
   ensureUnique(
     db.issuers,
     (issuer) =>
-      issuer.organizationId === db.organization.id
+      issuer.organizationId === auth.organization.id
       && (
         (issuerInput.wallet && issuer.wallet?.toLowerCase() === issuerInput.wallet.toLowerCase())
         || (issuerInput.email && issuer.email?.toLowerCase() === issuerInput.email.toLowerCase())
@@ -49,23 +49,13 @@ export async function createIssuer(payload) {
 
   const issuer = {
     id: nextId("ISS-", db.issuers),
-    organizationId: db.organization.id,
-    wallet: issuerInput.wallet || issuerInput.email,
+    organizationId: auth.organization.id,
+    userId: "",
+    wallet: issuerInput.wallet || "",
     ...issuerInput,
   };
 
   db.issuers.unshift(issuer);
   await writeDb(db);
   return issuer;
-}
-
-export async function requireIssuer(issuerId) {
-  const db = await readDb();
-  const issuer = db.issuers.find((item) => item.id === issuerId);
-
-  if (!issuer) {
-    throw createHttpError(404, "Issuer not found.");
-  }
-
-  return { db, issuer };
 }
