@@ -77,6 +77,8 @@ If `hardhat` is missing, install the contract dependencies in `cd_var/` first.
 - The app now uses real API-backed authentication with users, memberships, and secure sessions.
 - Google sign-in can now create or access a workspace account when the Google OAuth client ID is configured on both the frontend and API.
 - The API now persists organizations, users, memberships, sessions, issuers, templates, credentials, and credential events.
+- Team access now supports invitation links, invite acceptance, and multi-workspace sessions with workspace switching.
+- Templates and issuers now have lifecycle controls, and the workspace dashboard shows a recent activity feed for audit visibility.
 - The public verifier shows issuer identity, status, and revocation details.
 - The next major milestone is expanding the tenant-aware data model and finishing the production credential pipeline.
 

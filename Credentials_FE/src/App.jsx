@@ -3,6 +3,7 @@ import DashboardApp from "./components/DashboardApp";
 import IssuerAccessFlow from "./components/IssuerAccessFlow";
 import VerifyPortal from "./components/VerifyPortal";
 import { useAuthSession } from "./hooks/useAuthSession";
+import { useInvitationLookup } from "./hooks/useInvitationLookup";
 import { useProductData } from "./hooks/useProductData";
 import { EMPTY_ORGANIZATION } from "./lib/company";
 import { buildVerifyPath, parseRoute, pushRoute } from "./lib/routes";
@@ -38,6 +39,9 @@ export default function App() {
     registerWorkspaceWithGoogle,
     signInAccount,
     signInWithGoogle,
+    acceptWorkspaceInvitation,
+    acceptWorkspaceInvitationWithGoogle,
+    switchActiveWorkspace,
     signOutAccount,
     refreshSession,
     clearAuthSession,
@@ -47,18 +51,28 @@ export default function App() {
     templates,
     issuers,
     credentials,
+    activity,
+    members,
+    invitations,
     apiMode,
     apiError,
     stats,
     issueCredential,
     revokeCredential,
     addTemplate,
+    updateTemplate,
     addIssuer,
+    updateIssuer,
     saveOrganization,
+    inviteTeamMember,
+    refreshWorkspace,
   } = useProductData({
     authStatus,
     onUnauthorized: clearAuthSession,
   });
+  const { invitationStatus, invitationPayload, invitationError } = useInvitationLookup(
+    route.view === "join" ? route.invitationCode || "" : ""
+  );
 
   React.useEffect(() => {
     const handleRouteChange = () => {
@@ -86,10 +100,12 @@ export default function App() {
       fullName: authSession.user.fullName,
       workEmail: authSession.user.email,
       role: authSession.issuer?.role || authSession.membership?.role || "Owner",
+      membershipRole: authSession.membership?.role || "Member",
       organizationId: authSession.organization?.id || "",
       organizationName: authSession.organization?.name || "",
       issuerId: authSession.issuer?.id || "",
       signedInAt: authSession.session?.createdAt || "",
+      workspaces: authSession.workspaces || [],
     };
   }, [authSession]);
 
@@ -119,10 +135,31 @@ export default function App() {
     navigateTo("/");
   };
 
+  const handleAcceptInvitation = async (form) => {
+    await acceptWorkspaceInvitation({
+      ...form,
+      invitationCode: route.invitationCode,
+    });
+    navigateTo("/");
+  };
+
+  const handleAcceptInvitationWithGoogle = async (form) => {
+    await acceptWorkspaceInvitationWithGoogle({
+      ...form,
+      invitationCode: route.invitationCode,
+    });
+    navigateTo("/");
+  };
+
   const handleOrganizationUpdate = async (payload) => {
     const savedOrganization = await saveOrganization(payload);
     await refreshSession();
     return savedOrganization;
+  };
+
+  const handleWorkspaceSwitch = async (organizationId) => {
+    await switchActiveWorkspace(organizationId);
+    await refreshWorkspace();
   };
 
   const openVerifier = (verificationCode) => {
@@ -158,11 +195,16 @@ export default function App() {
   if (authStatus !== "authenticated") {
     return (
       <IssuerAccessFlow
-        authError={authError}
+        authError={route.view === "join" ? invitationError || authError : authError}
+        invitationCode={route.view === "join" ? route.invitationCode || "" : ""}
+        invitationStatus={route.view === "join" ? invitationStatus : "idle"}
+        invitationPayload={route.view === "join" ? invitationPayload : null}
         onRegister={handleRegister}
         onSignIn={handleSignIn}
         onGoogleRegister={handleGoogleRegister}
         onGoogleSignIn={handleGoogleSignIn}
+        onAcceptInvitation={handleAcceptInvitation}
+        onAcceptInvitationWithGoogle={handleAcceptInvitationWithGoogle}
       />
     );
   }
@@ -196,11 +238,18 @@ export default function App() {
       templates={templates}
       issuers={issuers}
       credentials={credentials}
+      activity={activity}
+      members={members}
+      invitations={invitations}
       onIssueCredential={issueCredential}
       onRevokeCredential={revokeCredential}
       onAddTemplate={addTemplate}
+      onUpdateTemplate={updateTemplate}
       onAddIssuer={addIssuer}
+      onUpdateIssuer={updateIssuer}
+      onInviteTeamMember={inviteTeamMember}
       onUpdateOrganization={handleOrganizationUpdate}
+      onSwitchWorkspace={handleWorkspaceSwitch}
       onBackToSite={() => navigateTo("/")}
       onOpenVerifier={openVerifier}
       onSignOut={signOutAccount}

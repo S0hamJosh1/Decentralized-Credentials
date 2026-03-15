@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  createTeamInvitation,
   createCredential,
   createIssuer,
   createTemplate,
   fetchBootstrap,
   revokeCredentialRecord,
+  updateIssuerRecord,
   updateOrganization,
+  updateTemplateRecord,
 } from "../lib/api";
 import { EMPTY_ORGANIZATION } from "../lib/company";
 
@@ -15,6 +18,9 @@ function emptyWorkspaceState() {
     templates: [],
     issuers: [],
     credentials: [],
+    activity: [],
+    members: [],
+    invitations: [],
   };
 }
 
@@ -23,8 +29,52 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const [templates, setTemplates] = useState([]);
   const [issuers, setIssuers] = useState([]);
   const [credentials, setCredentials] = useState([]);
+  const [activity, setActivity] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [invitations, setInvitations] = useState([]);
   const [apiMode, setApiMode] = useState("idle");
   const [apiError, setApiError] = useState("");
+
+  const resetWorkspace = () => {
+    const nextState = emptyWorkspaceState();
+    setOrganization(nextState.organization);
+    setTemplates(nextState.templates);
+    setIssuers(nextState.issuers);
+    setCredentials(nextState.credentials);
+    setActivity(nextState.activity);
+    setMembers(nextState.members);
+    setInvitations(nextState.invitations);
+  };
+
+  const applyWorkspace = (bootstrap) => {
+    setOrganization(bootstrap.organization || EMPTY_ORGANIZATION);
+    setTemplates(bootstrap.templates || []);
+    setIssuers(bootstrap.issuers || []);
+    setCredentials(bootstrap.credentials || []);
+    setActivity(bootstrap.activity || []);
+    setMembers(bootstrap.members || []);
+    setInvitations(bootstrap.invitations || []);
+    setApiMode("ready");
+  };
+
+  const refreshWorkspace = async () => {
+    try {
+      const bootstrap = await fetchBootstrap();
+      applyWorkspace(bootstrap);
+      setApiError("");
+      return bootstrap;
+    } catch (error) {
+      if (error.status === 401) {
+        onUnauthorized?.();
+        throw new Error("Your session expired. Please sign in again.");
+      }
+
+      resetWorkspace();
+      setApiMode("error");
+      setApiError(error.message || "Workspace data is unavailable right now.");
+      throw error;
+    }
+  };
 
   useEffect(() => {
     if (authStatus === "loading") {
@@ -34,11 +84,7 @@ export function useProductData({ authStatus, onUnauthorized }) {
     }
 
     if (authStatus !== "authenticated") {
-      const nextState = emptyWorkspaceState();
-      setOrganization(nextState.organization);
-      setTemplates(nextState.templates);
-      setIssuers(nextState.issuers);
-      setCredentials(nextState.credentials);
+      resetWorkspace();
       setApiMode("idle");
       setApiError("");
       return;
@@ -50,15 +96,9 @@ export function useProductData({ authStatus, onUnauthorized }) {
 
     fetchBootstrap()
       .then((bootstrap) => {
-        if (cancelled) {
-          return;
+        if (!cancelled) {
+          applyWorkspace(bootstrap);
         }
-
-        setOrganization(bootstrap.organization || EMPTY_ORGANIZATION);
-        setTemplates(bootstrap.templates || []);
-        setIssuers(bootstrap.issuers || []);
-        setCredentials(bootstrap.credentials || []);
-        setApiMode("ready");
       })
       .catch((error) => {
         if (cancelled) {
@@ -70,11 +110,7 @@ export function useProductData({ authStatus, onUnauthorized }) {
           return;
         }
 
-        const nextState = emptyWorkspaceState();
-        setOrganization(nextState.organization);
-        setTemplates(nextState.templates);
-        setIssuers(nextState.issuers);
-        setCredentials(nextState.credentials);
+        resetWorkspace();
         setApiMode("error");
         setApiError(error.message || "Workspace data is unavailable right now.");
       });
@@ -109,7 +145,7 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const issueCredential = async (payload) => {
     try {
       const nextRecord = await createCredential(payload);
-      setCredentials((current) => [nextRecord, ...current]);
+      await refreshWorkspace();
       return nextRecord;
     } catch (error) {
       handleProtectedError(error);
@@ -119,9 +155,7 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const revokeCredential = async (credentialId, reason) => {
     try {
       const nextRecord = await revokeCredentialRecord(credentialId, reason);
-      setCredentials((current) =>
-        current.map((credential) => (credential.id === credentialId ? nextRecord : credential))
-      );
+      await refreshWorkspace();
       return nextRecord;
     } catch (error) {
       handleProtectedError(error);
@@ -131,7 +165,17 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const addTemplate = async (payload) => {
     try {
       const nextTemplate = await createTemplate(payload);
-      setTemplates((current) => [nextTemplate, ...current]);
+      await refreshWorkspace();
+      return nextTemplate;
+    } catch (error) {
+      handleProtectedError(error);
+    }
+  };
+
+  const updateTemplate = async (templateId, payload) => {
+    try {
+      const nextTemplate = await updateTemplateRecord(templateId, payload);
+      await refreshWorkspace();
       return nextTemplate;
     } catch (error) {
       handleProtectedError(error);
@@ -141,7 +185,17 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const addIssuer = async (payload) => {
     try {
       const nextIssuer = await createIssuer(payload);
-      setIssuers((current) => [nextIssuer, ...current]);
+      await refreshWorkspace();
+      return nextIssuer;
+    } catch (error) {
+      handleProtectedError(error);
+    }
+  };
+
+  const updateIssuer = async (issuerId, payload) => {
+    try {
+      const nextIssuer = await updateIssuerRecord(issuerId, payload);
+      await refreshWorkspace();
       return nextIssuer;
     } catch (error) {
       handleProtectedError(error);
@@ -151,8 +205,18 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const saveOrganization = async (payload) => {
     try {
       const savedOrganization = await updateOrganization(payload);
-      setOrganization(savedOrganization);
+      await refreshWorkspace();
       return savedOrganization;
+    } catch (error) {
+      handleProtectedError(error);
+    }
+  };
+
+  const inviteTeamMember = async (payload) => {
+    try {
+      const invitation = await createTeamInvitation(payload);
+      await refreshWorkspace();
+      return invitation;
     } catch (error) {
       handleProtectedError(error);
     }
@@ -163,13 +227,20 @@ export function useProductData({ authStatus, onUnauthorized }) {
     templates,
     issuers,
     credentials,
+    activity,
+    members,
+    invitations,
     apiMode,
     apiError,
     stats,
     issueCredential,
     revokeCredential,
     addTemplate,
+    updateTemplate,
     addIssuer,
+    updateIssuer,
     saveOrganization,
+    inviteTeamMember,
+    refreshWorkspace,
   };
 }

@@ -1,6 +1,7 @@
 import { createHttpError } from "../lib/http.js";
-import { requireFields, sanitizeText } from "../lib/validation.js";
+import { ensureUnique, requireFields, sanitizeText } from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
+import { recordWorkspaceEvent } from "./activity-service.js";
 
 function sanitizeOrganization(payload = {}) {
   return {
@@ -46,10 +47,25 @@ export async function updateOrganization(auth, payload) {
     "organization fields"
   );
 
+  ensureUnique(
+    db.organizations,
+    (item) => item.id !== organization.id && item.slug === nextOrganization.slug,
+    "A workspace with that company slug already exists."
+  );
+
   db.organizations[organizationIndex] = {
     ...organization,
     ...nextOrganization,
   };
+
+  recordWorkspaceEvent(db, {
+    organizationId: auth.organization.id,
+    actorUserId: auth.user.id,
+    type: "organization.updated",
+    details: {
+      organizationName: nextOrganization.name,
+    },
+  });
 
   const savedDb = await writeDb(db);
   return savedDb.organizations[organizationIndex];

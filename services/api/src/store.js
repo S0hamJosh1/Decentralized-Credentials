@@ -59,6 +59,24 @@ function normalizeMembership(membership = {}) {
     role: normalizeText(membership.role, "Member") || "Member",
     status: normalizeText(membership.status, "Active") || "Active",
     createdAt: normalizeText(membership.createdAt),
+    updatedAt: normalizeText(membership.updatedAt),
+  };
+}
+
+function normalizeInvitation(invitation = {}) {
+  return {
+    id: normalizeText(invitation.id),
+    organizationId: normalizeText(invitation.organizationId),
+    code: normalizeText(invitation.code),
+    email: normalizeText(invitation.email).toLowerCase(),
+    membershipRole: normalizeText(invitation.membershipRole, "Member") || "Member",
+    issuerRole: normalizeText(invitation.issuerRole, "Issuer") || "Issuer",
+    issuerStatus: normalizeText(invitation.issuerStatus, "Pending") || "Pending",
+    invitedByUserId: normalizeText(invitation.invitedByUserId),
+    status: normalizeText(invitation.status, "Pending") || "Pending",
+    createdAt: normalizeText(invitation.createdAt),
+    acceptedAt: normalizeText(invitation.acceptedAt),
+    revokedAt: normalizeText(invitation.revokedAt),
   };
 }
 
@@ -67,6 +85,7 @@ function normalizeSession(session = {}) {
     id: normalizeText(session.id),
     token: normalizeText(session.token),
     userId: normalizeText(session.userId),
+    activeOrganizationId: normalizeText(session.activeOrganizationId),
     createdAt: normalizeText(session.createdAt),
     expiresAt: normalizeText(session.expiresAt),
   };
@@ -80,6 +99,10 @@ function normalizeTemplate(template = {}) {
     category: normalizeText(template.category),
     validity: normalizeText(template.validity),
     summary: normalizeText(template.summary),
+    status: normalizeText(template.status, "Active") || "Active",
+    createdAt: normalizeText(template.createdAt),
+    updatedAt: normalizeText(template.updatedAt),
+    archivedAt: normalizeText(template.archivedAt),
   };
 }
 
@@ -94,6 +117,8 @@ function normalizeIssuer(issuer = {}) {
     wallet: normalizeText(issuer.wallet),
     status: normalizeText(issuer.status, "Pending") || "Pending",
     createdAt: normalizeText(issuer.createdAt),
+    updatedAt: normalizeText(issuer.updatedAt),
+    approvedAt: normalizeText(issuer.approvedAt),
   };
 }
 
@@ -150,6 +175,7 @@ export function normalizeDb(rawDb = {}) {
     organizations: normalizeList(rawDb.organizations, normalizeOrganization),
     users: normalizeList(rawDb.users, normalizeUser),
     memberships: normalizeList(rawDb.memberships, normalizeMembership),
+    invitations: normalizeList(rawDb.invitations, normalizeInvitation),
     sessions: normalizeList(rawDb.sessions, normalizeSession),
     templates: normalizeList(rawDb.templates, normalizeTemplate),
     issuers: normalizeList(rawDb.issuers, normalizeIssuer),

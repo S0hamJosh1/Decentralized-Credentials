@@ -1,5 +1,7 @@
 import { createHttpError } from "../lib/http.js";
 import { readDb } from "../store.js";
+import { buildActivityFeed } from "./activity-service.js";
+import { buildTeamSnapshot } from "./team-service.js";
 
 export async function getBootstrap(auth) {
   const db = await readDb();
@@ -14,5 +16,7 @@ export async function getBootstrap(auth) {
     templates: db.templates.filter((item) => item.organizationId === organization.id),
     issuers: db.issuers.filter((item) => item.organizationId === organization.id),
     credentials: db.credentials.filter((item) => item.organizationId === organization.id),
+    activity: buildActivityFeed(db, organization.id),
+    ...buildTeamSnapshot(db, organization),
   };
 }

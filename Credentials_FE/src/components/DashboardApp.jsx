@@ -38,11 +38,49 @@ function formatDate(value) {
   });
 }
 
+function formatDateTime(value) {
+  return new Date(value).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+function describeActivity(event) {
+  switch (event.type) {
+    case "credential.issued":
+      return `${event.actorName} issued ${event.templateName} for ${event.recipientName}.`;
+    case "credential.revoked":
+      return `${event.actorName} revoked ${event.recipientName}'s credential.`;
+    case "template.created":
+      return `${event.actorName} created the ${event.templateName} template.`;
+    case "template.updated":
+      return `${event.actorName} updated the ${event.templateName} template.`;
+    case "issuer.created":
+      return `${event.actorName} added ${event.issuerName} to issuer access.`;
+    case "issuer.updated":
+      return `${event.actorName} updated ${event.issuerName}'s issuer access.`;
+    case "invitation.created":
+      return `${event.actorName} invited ${event.invitedName || event.invitedEmail} to the workspace.`;
+    case "invitation.accepted":
+      return `${event.invitedEmail || event.actorName} joined the workspace.`;
+    case "organization.updated":
+      return `${event.actorName} updated organization settings.`;
+    default:
+      return `${event.actorName} updated the workspace.`;
+  }
+}
+
 export default function DashboardApp({
   organization,
   templates,
   issuers,
   credentials,
+  activity,
+  members,
+  invitations,
   stats,
   apiMode,
   apiError,
@@ -51,8 +89,12 @@ export default function DashboardApp({
   onIssueCredential,
   onRevokeCredential,
   onAddTemplate,
+  onUpdateTemplate,
   onAddIssuer,
+  onUpdateIssuer,
+  onInviteTeamMember,
   onUpdateOrganization,
+  onSwitchWorkspace,
   onBackToSite,
   onOpenVerifier,
   onSignOut,
@@ -62,7 +104,7 @@ export default function DashboardApp({
 
   const [showIssueForm, setShowIssueForm] = useState(false);
   const [issueForm, setIssueForm] = useState({
-    templateId: templates[0]?.id || "",
+    templateId: templates.find((template) => template.status !== "Archived")?.id || "",
     issuerId: currentIssuerId || issuers.find((issuer) => issuer.status === "Approved")?.id || issuers[0]?.id || "",
     recipientName: "",
     recipientEmail: "",
@@ -73,7 +115,14 @@ export default function DashboardApp({
   const [issueMessage, setIssueMessage] = useState("");
 
   const [templateForm, setTemplateForm] = useState({ name: "", category: "", validity: "", summary: "" });
-  const [issuerForm, setIssuerForm] = useState({ name: "", role: "", wallet: "", status: "Pending" });
+  const [issuerForm, setIssuerForm] = useState({ name: "", role: "", email: "", wallet: "", status: "Pending" });
+  const [inviteForm, setInviteForm] = useState({
+    name: "",
+    email: "",
+    membershipRole: "Member",
+    issuerRole: "Issuer",
+    issuerStatus: "Pending",
+  });
   const [organizationDraft, setOrganizationDraft] = useState(organization);
 
   const [search, setSearch] = useState("");
@@ -87,7 +136,10 @@ export default function DashboardApp({
   useEffect(() => {
     setIssueForm((current) => ({
       ...current,
-      templateId: current.templateId || templates[0]?.id || "",
+      templateId:
+        current.templateId && templates.some((template) => template.id === current.templateId && template.status !== "Archived")
+          ? current.templateId
+          : templates.find((template) => template.status !== "Archived")?.id || "",
       issuerId:
         current.issuerId
         || currentIssuerId
@@ -112,7 +164,9 @@ export default function DashboardApp({
   }, [credentials, search]);
 
   const approvedIssuers = issuers.filter((issuer) => issuer.status === "Approved");
-  const canIssueCredentials = templates.length > 0 && approvedIssuers.length > 0;
+  const activeTemplates = templates.filter((template) => template.status !== "Archived");
+  const canIssueCredentials = activeTemplates.length > 0 && approvedIssuers.length > 0;
+  const canManageTeam = ["Owner", "Admin"].includes(issuerSession?.membershipRole || "");
 
   const handleIssue = async (event) => {
     event.preventDefault();
@@ -148,6 +202,8 @@ export default function DashboardApp({
       await onAddTemplate(templateForm);
       setTemplateForm({ name: "", category: "", validity: "", summary: "" });
       setActionMessage("Template added.");
+    } catch (error) {
+      setActionMessage(error.message || "Unable to add template.");
     } finally {
       setBusyAction("");
     }
@@ -160,8 +216,68 @@ export default function DashboardApp({
 
     try {
       await onAddIssuer(issuerForm);
-      setIssuerForm({ name: "", role: "", wallet: "", status: "Pending" });
+      setIssuerForm({ name: "", role: "", email: "", wallet: "", status: "Pending" });
       setActionMessage("Issuer added.");
+    } catch (error) {
+      setActionMessage(error.message || "Unable to add issuer.");
+    } finally {
+      setBusyAction("");
+    }
+  };
+
+  const handleTeamInvite = async (event) => {
+    event.preventDefault();
+    setBusyAction("invite");
+    setActionMessage("");
+
+    try {
+      const invitation = await onInviteTeamMember(inviteForm);
+      setInviteForm({
+        name: "",
+        email: "",
+        membershipRole: "Member",
+        issuerRole: "Issuer",
+        issuerStatus: "Pending",
+      });
+      setActionMessage(`Invitation created for ${invitation.email}.`);
+    } catch (error) {
+      setActionMessage(error.message || "Unable to invite teammate.");
+    } finally {
+      setBusyAction("");
+    }
+  };
+
+  const handleTemplateStatusToggle = async (template) => {
+    const nextStatus = template.status === "Archived" ? "Active" : "Archived";
+    setBusyAction(`template:${template.id}`);
+    setActionMessage("");
+
+    try {
+      await onUpdateTemplate(template.id, {
+        ...template,
+        status: nextStatus,
+      });
+      setActionMessage(`${template.name} is now ${nextStatus.toLowerCase()}.`);
+    } catch (error) {
+      setActionMessage(error.message || "Unable to update template.");
+    } finally {
+      setBusyAction("");
+    }
+  };
+
+  const handleIssuerStatusToggle = async (issuer) => {
+    const nextStatus = issuer.status === "Approved" ? "Pending" : "Approved";
+    setBusyAction(`issuer:${issuer.id}`);
+    setActionMessage("");
+
+    try {
+      await onUpdateIssuer(issuer.id, {
+        ...issuer,
+        status: nextStatus,
+      });
+      setActionMessage(`${issuer.name} is now ${nextStatus.toLowerCase()}.`);
+    } catch (error) {
+      setActionMessage(error.message || "Unable to update issuer.");
     } finally {
       setBusyAction("");
     }
@@ -192,6 +308,17 @@ export default function DashboardApp({
       setActionMessage(`Copied link for ${credential.recipientName}.`);
     } catch {
       setActionMessage(`Copy failed. Link: ${link}`);
+    }
+  };
+
+  const handleCopyInviteLink = async (invitation) => {
+    setActionMessage("");
+
+    try {
+      await navigator.clipboard.writeText(invitation.joinUrl);
+      setActionMessage(`Copied invite link for ${invitation.email}.`);
+    } catch {
+      setActionMessage(`Copy failed. Invite link: ${invitation.joinUrl}`);
     }
   };
 
@@ -229,6 +356,19 @@ export default function DashboardApp({
               </div>
             </div>
             <div className="flex items-center gap-3">
+              {issuerSession?.workspaces?.length > 1 ? (
+                <select
+                  className="neo-select text-sm"
+                  value={issuerSession.organizationId}
+                  onChange={(event) => onSwitchWorkspace(event.target.value)}
+                >
+                  {issuerSession.workspaces.map((workspace) => (
+                    <option key={workspace.organization.id} value={workspace.organization.id}>
+                      {workspace.organization.name}
+                    </option>
+                  ))}
+                </select>
+              ) : null}
               <span className="neo-badge">
                 <span className={`inline-block h-2 w-2 rounded-full ${apiMode === "ready" ? "bg-emerald-400" : "bg-amber-400"}`} />
                 {apiMode === "ready" ? "Live" : "Offline"}
@@ -275,7 +415,7 @@ export default function DashboardApp({
               </div>
 
               {!canIssueCredentials ? (
-                <Card title="Complete setup before issuing" subtitle="New issuer workspaces start empty on purpose. Add at least one template in Settings, then return here to issue credentials.">
+                <Card title="Complete setup before issuing" subtitle="New issuer workspaces start empty on purpose. Add at least one active template in Settings, then return here to issue credentials.">
                   <button type="button" className="site-button" onClick={() => setActiveTab("settings")}>
                     Go to settings
                   </button>
@@ -295,7 +435,7 @@ export default function DashboardApp({
                           value={issueForm.templateId}
                           onChange={(event) => setIssueForm({ ...issueForm, templateId: event.target.value })}
                         >
-                          {templates.map((template) => (
+                          {activeTemplates.map((template) => (
                             <option key={template.id} value={template.id}>
                               {template.name}
                             </option>
@@ -422,6 +562,31 @@ export default function DashboardApp({
                   )}
                 </div>
               </Card>
+
+              <Card title="Recent activity" subtitle="Track issuing, revocations, template changes, and issuer access updates.">
+                <div className="record-list">
+                  {activity.length === 0 ? (
+                    <article className="record-card">
+                      <h3 className="text-xl font-semibold text-zinc-50">No activity yet</h3>
+                      <p className="mt-2 text-sm text-zinc-400">
+                        Workspace actions will appear here as your team starts issuing credentials and managing access.
+                      </p>
+                    </article>
+                  ) : (
+                    activity.map((event) => (
+                      <article key={event.id} className="record-card">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="neo-badge">{event.type}</span>
+                          {event.verificationCode ? <span className="neo-badge">{event.verificationCode}</span> : null}
+                        </div>
+                        <h3 className="mt-3 text-lg font-semibold text-zinc-50">{describeActivity(event)}</h3>
+                        <p className="mt-2 text-sm text-zinc-400">{formatDateTime(event.createdAt)}</p>
+                        {event.reason ? <p className="mt-2 text-sm text-zinc-400">Reason: {event.reason}</p> : null}
+                      </article>
+                    ))
+                  )}
+                </div>
+              </Card>
             </main>
           ) : null}
 
@@ -483,16 +648,37 @@ export default function DashboardApp({
                           <p className="mt-2 text-sm text-zinc-400">Create your first certificate template to unlock issuing.</p>
                         </article>
                       ) : (
-                        templates.map((template) => (
-                          <article key={template.id} className="record-card">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span className="neo-badge">{template.category}</span>
-                              <span className="neo-badge">{template.validity}</span>
-                            </div>
-                            <h3 className="mt-2 text-lg font-semibold text-zinc-50">{template.name}</h3>
-                            {template.summary ? <p className="mt-2 text-sm text-zinc-400">{template.summary}</p> : null}
-                          </article>
-                        ))
+                        templates.map((template) => {
+                          const isUpdatingTemplate = busyAction === `template:${template.id}`;
+
+                          return (
+                            <article key={template.id} className="record-card">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="neo-badge">{template.category}</span>
+                                <span className="neo-badge">{template.validity}</span>
+                                <span className={`verification-pill ${template.status === "Active" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
+                                  {template.status}
+                                </span>
+                              </div>
+                              <h3 className="mt-2 text-lg font-semibold text-zinc-50">{template.name}</h3>
+                              {template.summary ? <p className="mt-2 text-sm text-zinc-400">{template.summary}</p> : null}
+                              <div className="mt-4 flex flex-wrap gap-2">
+                                <button
+                                  type="button"
+                                  className="site-ghost text-sm"
+                                  disabled={isUpdatingTemplate}
+                                  onClick={() => handleTemplateStatusToggle(template)}
+                                >
+                                  {isUpdatingTemplate
+                                    ? "Saving..."
+                                    : template.status === "Archived"
+                                      ? "Reactivate"
+                                      : "Archive"}
+                                </button>
+                              </div>
+                            </article>
+                          );
+                        })
                       )}
                     </div>
                   </Card>
@@ -524,22 +710,149 @@ export default function DashboardApp({
               </section>
 
               <section>
+                <h2 className="mb-4 text-xl font-bold text-zinc-50">Team Access</h2>
+                <div className="dashboard-two-col">
+                  <Card title="Workspace members" subtitle="Members can belong to the workspace and, when linked, hold issuer access inside it.">
+                    <div className="record-list">
+                      {members.length === 0 ? (
+                        <article className="record-card">
+                          <h3 className="text-lg font-semibold text-zinc-50">No members yet</h3>
+                          <p className="mt-2 text-sm text-zinc-400">Invite teammates and they will appear here after they join.</p>
+                        </article>
+                      ) : (
+                        members.map((member) => (
+                          <article key={member.id} className="record-card">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="neo-badge">{member.role}</span>
+                              {member.issuer ? <span className="neo-badge">{member.issuer.role}</span> : null}
+                              {member.issuer ? (
+                                <span className={`verification-pill ${member.issuer.status === "Approved" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
+                                  {member.issuer.status}
+                                </span>
+                              ) : null}
+                            </div>
+                            <h3 className="mt-2 text-lg font-semibold text-zinc-50">{member.user?.fullName || "Workspace member"}</h3>
+                            <p className="mt-1 break-all text-sm text-zinc-400">{member.user?.email || "-"}</p>
+                            <p className="mt-2 text-xs uppercase tracking-[0.2em] text-zinc-500">
+                              Joined {member.joinedAt ? formatDate(member.joinedAt.slice(0, 10)) : "recently"}
+                            </p>
+                          </article>
+                        ))
+                      )}
+                    </div>
+                  </Card>
+
+                  <Card title="Invite teammate" subtitle="Send a join link that creates or connects a real workspace membership.">
+                    {canManageTeam ? (
+                      <form className="space-y-4" onSubmit={handleTeamInvite}>
+                        <label className="field-block">
+                          <span className="neo-label">Full name</span>
+                          <input className="neo-input mt-2" value={inviteForm.name} onChange={(event) => setInviteForm({ ...inviteForm, name: event.target.value })} />
+                        </label>
+                        <label className="field-block">
+                          <span className="neo-label">Work email</span>
+                          <input className="neo-input mt-2" type="email" value={inviteForm.email} onChange={(event) => setInviteForm({ ...inviteForm, email: event.target.value })} />
+                        </label>
+                        <label className="field-block">
+                          <span className="neo-label">Workspace role</span>
+                          <select className="neo-select mt-2" value={inviteForm.membershipRole} onChange={(event) => setInviteForm({ ...inviteForm, membershipRole: event.target.value })}>
+                            <option value="Member">Member</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Owner">Owner</option>
+                          </select>
+                        </label>
+                        <label className="field-block">
+                          <span className="neo-label">Issuer role</span>
+                          <input className="neo-input mt-2" value={inviteForm.issuerRole} onChange={(event) => setInviteForm({ ...inviteForm, issuerRole: event.target.value })} />
+                        </label>
+                        <label className="field-block">
+                          <span className="neo-label">Issuer status</span>
+                          <select className="neo-select mt-2" value={inviteForm.issuerStatus} onChange={(event) => setInviteForm({ ...inviteForm, issuerStatus: event.target.value })}>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                          </select>
+                        </label>
+                        <button type="submit" className="site-button" disabled={busyAction === "invite"}>
+                          {busyAction === "invite" ? "Creating invite..." : "Create invite link"}
+                        </button>
+                      </form>
+                    ) : (
+                      <p className="text-sm text-zinc-400">
+                        Workspace members can view access details here, but only owners and admins can create new invitations.
+                      </p>
+                    )}
+                  </Card>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="mb-4 text-xl font-bold text-zinc-50">Pending Invites</h2>
+                <Card title="Invitation links" subtitle="These links let teammates join the workspace and attach the right issuer access.">
+                  <div className="record-list">
+                    {invitations.length === 0 ? (
+                      <article className="record-card">
+                        <h3 className="text-lg font-semibold text-zinc-50">No pending invites</h3>
+                        <p className="mt-2 text-sm text-zinc-400">Create an invite above and it will appear here with a copyable join link.</p>
+                      </article>
+                    ) : (
+                      invitations.map((invitation) => (
+                        <article key={invitation.id} className="record-card">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="neo-badge">{invitation.membershipRole}</span>
+                            <span className="neo-badge">{invitation.issuerRole}</span>
+                            <span className={`verification-pill ${invitation.issuerStatus === "Approved" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
+                              {invitation.issuerStatus}
+                            </span>
+                          </div>
+                          <h3 className="mt-2 text-lg font-semibold text-zinc-50">{invitation.email}</h3>
+                          <p className="mt-1 break-all text-sm text-zinc-400">{invitation.joinUrl}</p>
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            <button type="button" className="site-button text-sm" onClick={() => handleCopyInviteLink(invitation)}>
+                              Copy invite link
+                            </button>
+                          </div>
+                        </article>
+                      ))
+                    )}
+                  </div>
+                </Card>
+              </section>
+
+              <section>
                 <h2 className="mb-4 text-xl font-bold text-zinc-50">Issuer Access</h2>
                 <div className="dashboard-two-col">
                   <Card title="Current issuers">
                     <div className="record-list">
-                      {issuers.map((issuer) => (
-                        <article key={issuer.id} className="record-card">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className={`verification-pill ${issuer.status === "Approved" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
-                              {issuer.status}
-                            </span>
-                            <span className="neo-badge">{issuer.role}</span>
-                          </div>
-                          <h3 className="mt-2 text-lg font-semibold text-zinc-50">{issuer.name}</h3>
-                          <p className="mt-1 break-all text-sm text-zinc-400">{issuer.email || issuer.wallet}</p>
-                        </article>
-                      ))}
+                      {issuers.map((issuer) => {
+                        const isUpdatingIssuer = busyAction === `issuer:${issuer.id}`;
+
+                        return (
+                          <article key={issuer.id} className="record-card">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className={`verification-pill ${issuer.status === "Approved" ? "verification-pill-valid" : "verification-pill-revoked"}`}>
+                                {issuer.status}
+                              </span>
+                              <span className="neo-badge">{issuer.role}</span>
+                            </div>
+                            <h3 className="mt-2 text-lg font-semibold text-zinc-50">{issuer.name}</h3>
+                            <p className="mt-1 break-all text-sm text-zinc-400">{issuer.email || issuer.wallet}</p>
+                            <div className="mt-4 flex flex-wrap gap-2">
+                              <button
+                                type="button"
+                                className="site-ghost text-sm"
+                                disabled={isUpdatingIssuer}
+                                onClick={() => handleIssuerStatusToggle(issuer)}
+                              >
+                                {isUpdatingIssuer
+                                  ? "Saving..."
+                                  : issuer.status === "Approved"
+                                    ? "Mark pending"
+                                    : "Approve issuer"}
+                              </button>
+                            </div>
+                          </article>
+                        );
+                      })}
                     </div>
                   </Card>
 
@@ -554,7 +867,11 @@ export default function DashboardApp({
                         <input className="neo-input mt-2" value={issuerForm.role} onChange={(event) => setIssuerForm({ ...issuerForm, role: event.target.value })} />
                       </label>
                       <label className="field-block">
-                        <span className="neo-label">Wallet or email</span>
+                        <span className="neo-label">Email</span>
+                        <input className="neo-input mt-2" value={issuerForm.email} onChange={(event) => setIssuerForm({ ...issuerForm, email: event.target.value })} />
+                      </label>
+                      <label className="field-block">
+                        <span className="neo-label">Wallet</span>
                         <input className="neo-input mt-2" value={issuerForm.wallet} onChange={(event) => setIssuerForm({ ...issuerForm, wallet: event.target.value })} />
                       </label>
                       <label className="field-block">

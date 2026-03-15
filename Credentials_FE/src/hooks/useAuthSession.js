@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import {
+  acceptGoogleInvitation,
+  acceptInvitation,
   fetchAuthSession,
   loginGoogleAccount,
   loginAccount,
   logoutAccount,
   registerGoogleAccount,
   registerAccount,
+  switchWorkspace,
 } from "../lib/api";
 
 export function useAuthSession() {
@@ -127,6 +130,62 @@ export function useAuthSession() {
     }
   };
 
+  const acceptWorkspaceInvitation = async (payload) => {
+    try {
+      const session = await acceptInvitation(payload);
+      setState({
+        status: "authenticated",
+        session,
+        error: "",
+      });
+      return session;
+    } catch (error) {
+      setState({
+        status: "unauthenticated",
+        session: null,
+        error: error.message || "Unable to accept the workspace invitation.",
+      });
+      throw error;
+    }
+  };
+
+  const acceptWorkspaceInvitationWithGoogle = async (payload) => {
+    try {
+      const session = await acceptGoogleInvitation(payload);
+      setState({
+        status: "authenticated",
+        session,
+        error: "",
+      });
+      return session;
+    } catch (error) {
+      setState({
+        status: "unauthenticated",
+        session: null,
+        error: error.message || "Unable to accept the workspace invitation with Google.",
+      });
+      throw error;
+    }
+  };
+
+  const switchActiveWorkspace = async (organizationId) => {
+    try {
+      const session = await switchWorkspace({ organizationId });
+      setState({
+        status: "authenticated",
+        session,
+        error: "",
+      });
+      return session;
+    } catch (error) {
+      setState((current) => ({
+        ...current,
+        error: error.message || "Unable to switch workspaces.",
+      }));
+      throw error;
+    }
+  };
+
   const signOutAccount = async () => {
     try {
       await logoutAccount();
@@ -143,6 +202,9 @@ export function useAuthSession() {
     signInAccount,
     registerWorkspaceWithGoogle,
     signInWithGoogle,
+    acceptWorkspaceInvitation,
+    acceptWorkspaceInvitationWithGoogle,
+    switchActiveWorkspace,
     signOutAccount,
     refreshSession,
     clearAuthSession,

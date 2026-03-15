@@ -7,6 +7,7 @@ import { createCredentialRouter } from "./routes/credential-routes.js";
 import { createHealthRouter } from "./routes/health-routes.js";
 import { createIssuerRouter } from "./routes/issuer-routes.js";
 import { createOrganizationRouter } from "./routes/organization-routes.js";
+import { createTeamRouter } from "./routes/team-routes.js";
 import { createTemplateRouter } from "./routes/template-routes.js";
 import { createVerifyRouter } from "./routes/verify-routes.js";
 
@@ -20,6 +21,7 @@ export function createApp() {
   app.use(createAuthRouter());
   app.use(createBootstrapRouter());
   app.use(createOrganizationRouter());
+  app.use(createTeamRouter());
   app.use(createTemplateRouter());
   app.use(createIssuerRouter());
   app.use(createCredentialRouter());

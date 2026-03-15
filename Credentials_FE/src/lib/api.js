@@ -91,6 +91,20 @@ export function loginGoogleAccount(payload) {
   });
 }
 
+export function acceptInvitation(payload) {
+  return request("/api/auth/invitations/accept", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function acceptGoogleInvitation(payload) {
+  return request("/api/auth/google/invitations/accept", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function logoutAccount() {
   return request("/api/auth/logout", {
     method: "POST",
@@ -101,8 +115,30 @@ export function fetchAuthSession() {
   return request("/api/auth/session");
 }
 
+export function switchWorkspace(payload) {
+  return request("/api/auth/switch-workspace", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function fetchBootstrap() {
   return request("/api/bootstrap");
+}
+
+export function fetchInvitation(code) {
+  return request(`/api/invitations/${encodeURIComponent(code)}`);
+}
+
+export function fetchTeamAccess() {
+  return request("/api/team");
+}
+
+export function createTeamInvitation(payload) {
+  return request("/api/team/invitations", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export function updateOrganization(payload) {
@@ -119,9 +155,23 @@ export function createTemplate(payload) {
   });
 }
 
+export function updateTemplateRecord(id, payload) {
+  return request(`/api/templates/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function createIssuer(payload) {
   return request("/api/issuers", {
     method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateIssuerRecord(id, payload) {
+  return request(`/api/issuers/${id}`, {
+    method: "PATCH",
     body: JSON.stringify(payload),
   });
 }

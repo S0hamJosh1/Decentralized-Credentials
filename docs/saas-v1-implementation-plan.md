@@ -71,6 +71,8 @@ Status: completed
 - remove remaining assumptions that one user only ever touches one workspace
 - define the next persistence shape for production use
 
+Status: completed
+
 ### Phase 4: Credential Pipeline
 
 - template-driven issuance
@@ -86,6 +88,6 @@ Status: completed
 
 ## Immediate Next Steps
 
-1. expand the workspace data model beyond the initial owner/company bootstrap
-2. finish the production credential pipeline and issuer/team workflows
+1. deepen the credential pipeline with richer recipient and program metadata
+2. extend audit visibility into the verification and credential-management surfaces
 3. remove the remaining blockchain-first UI from the main workspace experience

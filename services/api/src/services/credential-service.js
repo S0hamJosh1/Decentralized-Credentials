@@ -1,13 +1,10 @@
 import { buildVerificationUrl, readDb, writeDb } from "../store.js";
 import { createHttpError } from "../lib/http.js";
 import { requireFields, sanitizeText } from "../lib/validation.js";
+import { recordWorkspaceEvent } from "./activity-service.js";
 
 function today() {
   return new Date().toISOString().slice(0, 10);
-}
-
-function nowIso() {
-  return new Date().toISOString();
 }
 
 function nextId(prefix, list, start = 1) {
@@ -95,6 +92,10 @@ export async function createCredential(auth, payload) {
     throw createHttpError(404, "Template not found.");
   }
 
+  if (template.status !== "Active") {
+    throw createHttpError(400, "Only active templates can issue credentials.");
+  }
+
   if (!issuer) {
     throw createHttpError(404, "Issuer not found.");
   }
@@ -121,15 +122,17 @@ export async function createCredential(auth, payload) {
   };
 
   db.credentials.unshift(credential);
-  db.credentialEvents.unshift({
-    id: nextId("EVT-", db.credentialEvents),
-    credentialId: credential.id,
+  recordWorkspaceEvent(db, {
     organizationId: organization.id,
     actorUserId: auth.user.id,
-    type: "issued",
-    createdAt: nowIso(),
+    credentialId: credential.id,
+    type: "credential.issued",
     details: {
       issuerId: issuer.id,
+      issuerName: issuer.name,
+      recipientName: credential.recipientName,
+      templateId: template.id,
+      templateName: template.name,
       verificationCode,
     },
   });
@@ -156,15 +159,19 @@ export async function revokeCredential(auth, credentialId, reason) {
   credential.revokedAt = today();
   credential.revocationReason = sanitizeText(reason) || "Revoked by an authorized issuer.";
 
-  db.credentialEvents.unshift({
-    id: nextId("EVT-", db.credentialEvents),
-    credentialId: credential.id,
+  recordWorkspaceEvent(db, {
     organizationId: credential.organizationId,
     actorUserId: auth.user.id,
-    type: "revoked",
-    createdAt: nowIso(),
+    credentialId: credential.id,
+    type: "credential.revoked",
     details: {
       reason: credential.revocationReason,
+      recipientName: credential.recipientName,
+      templateId: credential.templateId,
+      templateName: credential.templateName,
+      verificationCode: credential.verificationCode,
+      issuerId: credential.issuerId,
+      issuerName: credential.issuedBy,
     },
   });
 

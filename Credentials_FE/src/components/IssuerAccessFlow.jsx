@@ -10,12 +10,12 @@ const setupHighlights = [
     body: "Set up the organization that will own templates, issuer access, credentials, and verification links.",
   },
   {
-    title: "Sign in securely",
-    body: "Use a real account instead of a browser-only demo session so the workspace is tied to your company.",
+    title: "Invite real teammates",
+    body: "Workspace access now supports join links so invited staff become actual company members, not just placeholder records.",
   },
   {
     title: "Move straight into operations",
-    body: "Once you are in, you can manage issuers, templates, credential issuance, and verification from one dashboard.",
+    body: "Once you are in, you can manage templates, issuer approvals, team access, and credential verification from one dashboard.",
   },
 ];
 
@@ -34,6 +34,14 @@ function buildRegisterForm() {
 function buildSignInForm() {
   return {
     workEmail: "",
+    password: "",
+  };
+}
+
+function buildJoinForm(invitationPayload) {
+  return {
+    fullName: "",
+    workEmail: invitationPayload?.invitation?.email || "",
     password: "",
   };
 }
@@ -74,27 +82,48 @@ function loadGoogleIdentityScript() {
 
 export default function IssuerAccessFlow({
   authError,
+  invitationCode,
+  invitationStatus,
+  invitationPayload,
   onRegister,
   onSignIn,
   onGoogleRegister,
   onGoogleSignIn,
+  onAcceptInvitation,
+  onAcceptInvitationWithGoogle,
 }) {
-  const [mode, setMode] = useState("register");
+  const isInvitationFlow = Boolean(invitationCode);
+  const [mode, setMode] = useState(isInvitationFlow ? "join" : "register");
   const [registerForm, setRegisterForm] = useState(buildRegisterForm);
   const [signInForm, setSignInForm] = useState(buildSignInForm);
+  const [joinForm, setJoinForm] = useState(buildJoinForm(invitationPayload));
   const [busy, setBusy] = useState(false);
   const [localError, setLocalError] = useState("");
   const [googleError, setGoogleError] = useState("");
   const googleButtonRef = useRef(null);
   const googleActionRef = useRef(null);
 
+  useEffect(() => {
+    if (isInvitationFlow) {
+      setMode("join");
+    }
+  }, [isInvitationFlow]);
+
+  useEffect(() => {
+    setJoinForm((current) => ({
+      ...current,
+      workEmail: invitationPayload?.invitation?.email || current.workEmail,
+    }));
+  }, [invitationPayload]);
+
   const companySlug = useMemo(
     () => slugifyCompanyName(registerForm.companyName),
     [registerForm.companyName]
   );
 
+  const activeMode = isInvitationFlow ? "join" : mode;
   const activeError = localError || googleError || authError;
-  const googleReady = Boolean(GOOGLE_CLIENT_ID && (onGoogleRegister || onGoogleSignIn));
+  const googleReady = Boolean(GOOGLE_CLIENT_ID && (onGoogleRegister || onGoogleSignIn || onAcceptInvitationWithGoogle));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -102,13 +131,18 @@ export default function IssuerAccessFlow({
     setLocalError("");
 
     try {
-      if (mode === "register") {
+      if (activeMode === "register") {
         await onRegister({
           ...registerForm,
           companySlug,
         });
-      } else {
+      } else if (activeMode === "signin") {
         await onSignIn(signInForm);
+      } else {
+        await onAcceptInvitation({
+          ...joinForm,
+          invitationCode,
+        });
       }
     } catch (submitError) {
       setLocalError(submitError.message || "Unable to continue.");
@@ -126,7 +160,7 @@ export default function IssuerAccessFlow({
       setGoogleError("");
 
       try {
-        if (mode === "register") {
+        if (activeMode === "register") {
           if (!registerForm.companyName || !companySlug || !registerForm.role) {
             throw new Error("Add your company details before continuing with Google.");
           }
@@ -136,17 +170,29 @@ export default function IssuerAccessFlow({
             companySlug,
             credential,
           });
-          return;
+        } else if (activeMode === "signin") {
+          await onGoogleSignIn?.({ credential });
+        } else {
+          await onAcceptInvitationWithGoogle?.({
+            invitationCode,
+            credential,
+          });
         }
-
-        await onGoogleSignIn?.({ credential });
       } catch (submitError) {
         setGoogleError(submitError.message || "Unable to continue with Google.");
       } finally {
         setBusy(false);
       }
     };
-  }, [companySlug, mode, onGoogleRegister, onGoogleSignIn, registerForm]);
+  }, [
+    activeMode,
+    companySlug,
+    invitationCode,
+    onAcceptInvitationWithGoogle,
+    onGoogleRegister,
+    onGoogleSignIn,
+    registerForm,
+  ]);
 
   useEffect(() => {
     if (!googleReady || !googleButtonRef.current) {
@@ -180,7 +226,7 @@ export default function IssuerAccessFlow({
           size: "large",
           shape: "pill",
           width: 320,
-          text: mode === "register" ? "continue_with" : "signin_with",
+          text: activeMode === "signin" ? "signin_with" : "continue_with",
         });
       })
       .catch((error) => {
@@ -195,7 +241,21 @@ export default function IssuerAccessFlow({
         googleButtonRef.current.innerHTML = "";
       }
     };
-  }, [googleReady, mode]);
+  }, [activeMode, googleReady]);
+
+  const heading =
+    activeMode === "register"
+      ? "Who should own this workspace?"
+      : activeMode === "signin"
+        ? "Sign back into your workspace"
+        : `Join ${invitationPayload?.organization?.name || "this workspace"}`;
+
+  const panelLabel =
+    activeMode === "register"
+      ? "New company account"
+      : activeMode === "signin"
+        ? "Existing account"
+        : "Workspace invitation";
 
   return (
     <div className="site-shell min-h-screen text-stone-100">
@@ -216,8 +276,8 @@ export default function IssuerAccessFlow({
             <p className="site-panel-label">Credential operations</p>
             <h1 className="issuer-access-title">Issue trusted credentials from one secure company workspace.</h1>
             <p className="site-lede issuer-access-lede">
-              Create the workspace once, sign in with your company account, and manage templates, issuer access,
-              credential records, and public verification without any seeded demo data in the way.
+              Create the workspace once, invite teammates with join links, and manage templates, issuer access,
+              credential records, and public verification from one product.
             </p>
 
             <div className="site-mini-grid issuer-access-highlights">
@@ -234,36 +294,55 @@ export default function IssuerAccessFlow({
           </section>
 
           <section className="site-panel">
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                className={mode === "register" ? "site-button" : "site-ghost"}
-                onClick={() => {
-                  setMode("register");
-                  setLocalError("");
-                }}
-              >
-                Create workspace
-              </button>
-              <button
-                type="button"
-                className={mode === "signin" ? "site-button" : "site-ghost"}
-                onClick={() => {
-                  setMode("signin");
-                  setLocalError("");
-                }}
-              >
-                Sign in
-              </button>
-            </div>
+            {!isInvitationFlow ? (
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  className={mode === "register" ? "site-button" : "site-ghost"}
+                  onClick={() => {
+                    setMode("register");
+                    setLocalError("");
+                  }}
+                >
+                  Create workspace
+                </button>
+                <button
+                  type="button"
+                  className={mode === "signin" ? "site-button" : "site-ghost"}
+                  onClick={() => {
+                    setMode("signin");
+                    setLocalError("");
+                  }}
+                >
+                  Sign in
+                </button>
+              </div>
+            ) : null}
 
-            <p className="site-panel-label mt-6">{mode === "register" ? "New company account" : "Existing account"}</p>
+            <p className="site-panel-label mt-6">{panelLabel}</p>
             <h2 className="mt-3 text-3xl font-semibold text-zinc-50" style={{ fontFamily: "'Fraunces', Georgia, serif" }}>
-              {mode === "register" ? "Who should own this workspace?" : "Sign back into your workspace"}
+              {heading}
             </h2>
 
+            {activeMode === "join" ? (
+              <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-300">
+                {invitationStatus === "loading" ? (
+                  <p className="m-0">Loading invitation details...</p>
+                ) : invitationPayload ? (
+                  <>
+                    <p className="m-0">
+                      Invited workspace: <span className="text-zinc-50">{invitationPayload.organization.name}</span>
+                    </p>
+                    <p className="mb-0 mt-2">
+                      Invite sent to <span className="text-zinc-50">{invitationPayload.invitation.email}</span>
+                    </p>
+                  </>
+                ) : null}
+              </div>
+            ) : null}
+
             <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
-              {mode === "register" ? (
+              {activeMode === "register" ? (
                 <>
                   <div className="dashboard-form-grid">
                     <label className="field-block">
@@ -348,7 +427,9 @@ export default function IssuerAccessFlow({
                     </p>
                   </div>
                 </>
-              ) : (
+              ) : null}
+
+              {activeMode === "signin" ? (
                 <div className="dashboard-form-grid">
                   <label className="field-block">
                     <span className="neo-label">Work email</span>
@@ -372,7 +453,43 @@ export default function IssuerAccessFlow({
                     />
                   </label>
                 </div>
-              )}
+              ) : null}
+
+              {activeMode === "join" ? (
+                <div className="dashboard-form-grid">
+                  <label className="field-block">
+                    <span className="neo-label">Full name</span>
+                    <input
+                      className="neo-input mt-2"
+                      value={joinForm.fullName}
+                      onChange={(event) => setJoinForm((current) => ({ ...current, fullName: event.target.value }))}
+                      placeholder="Jamie Teammate"
+                    />
+                  </label>
+
+                  <label className="field-block">
+                    <span className="neo-label">Work email</span>
+                    <input
+                      className="neo-input mt-2"
+                      type="email"
+                      value={joinForm.workEmail}
+                      onChange={(event) => setJoinForm((current) => ({ ...current, workEmail: event.target.value }))}
+                      placeholder="jamie@company.com"
+                    />
+                  </label>
+
+                  <label className="field-block">
+                    <span className="neo-label">Password</span>
+                    <input
+                      className="neo-input mt-2"
+                      type="password"
+                      value={joinForm.password}
+                      onChange={(event) => setJoinForm((current) => ({ ...current, password: event.target.value }))}
+                      placeholder="Use your existing password, or create one"
+                    />
+                  </label>
+                </div>
+              ) : null}
 
               {activeError ? (
                 <div className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
@@ -394,14 +511,18 @@ export default function IssuerAccessFlow({
                 </div>
               ) : null}
 
-              <button type="submit" className="site-button" disabled={busy}>
+              <button type="submit" className="site-button" disabled={busy || invitationStatus === "loading"}>
                 {busy
-                  ? mode === "register"
+                  ? activeMode === "register"
                     ? "Creating workspace..."
-                    : "Signing in..."
-                  : mode === "register"
+                    : activeMode === "signin"
+                      ? "Signing in..."
+                      : "Joining workspace..."
+                  : activeMode === "register"
                     ? "Create workspace"
-                    : "Sign in"}
+                    : activeMode === "signin"
+                      ? "Sign in"
+                      : "Join workspace"}
               </button>
             </form>
           </section>

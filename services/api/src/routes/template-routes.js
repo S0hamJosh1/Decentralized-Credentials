@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { asyncHandler } from "../lib/http.js";
 import { requireAuth } from "../middleware/auth-middleware.js";
-import { createTemplate, listTemplates } from "../services/template-service.js";
+import { createTemplate, listTemplates, updateTemplate } from "../services/template-service.js";
 
 export function createTemplateRouter() {
   const router = Router();
@@ -20,6 +20,14 @@ export function createTemplateRouter() {
     asyncHandler(async (request, response) => {
       const template = await createTemplate(request.auth, request.body);
       response.status(201).json(template);
+    })
+  );
+
+  router.patch(
+    "/api/templates/:id",
+    requireAuth,
+    asyncHandler(async (request, response) => {
+      response.json(await updateTemplate(request.auth, request.params.id, request.body));
     })
   );
 

@@ -153,6 +153,9 @@ try {
   assert.equal(bootstrap.templates.length, 0);
   assert.equal(bootstrap.credentials.length, 0);
   assert.equal(bootstrap.issuers.length, 1);
+  assert.equal(bootstrap.activity.length, 0);
+  assert.equal(bootstrap.members.length, 1);
+  assert.equal(bootstrap.invitations.length, 0);
 
   const { payload: updatedOrganization } = await request("/api/organization", {
     method: "PATCH",
@@ -169,6 +172,33 @@ try {
   assert.equal(updatedOrganization.name, "Acme Credential Lab");
   assert.equal(updatedOrganization.status, "Pilot");
 
+  const { payload: createdInvitation, response: invitationResponse } = await request("/api/team/invitations", {
+    method: "POST",
+    body: JSON.stringify({
+      name: "Jamie Teammate",
+      email: "jamie@acme.example",
+      membershipRole: "Admin",
+      issuerRole: "Operations",
+      issuerStatus: "Approved",
+    }),
+  });
+  assert.equal(invitationResponse.status, 201);
+  assert.equal(createdInvitation.email, "jamie@acme.example");
+  assert.match(createdInvitation.joinPath, /^\/join\//);
+
+  const { response: invitationLookupResponse, payload: invitationLookup } = await request(
+    `/api/invitations/${createdInvitation.code}`,
+    { useCookie: false }
+  );
+  assert.equal(invitationLookupResponse.status, 200);
+  assert.equal(invitationLookup.organization.name, "Acme Credential Lab");
+  assert.equal(invitationLookup.invitation.email, "jamie@acme.example");
+
+  const { response: bootstrapWithInviteResponse, payload: bootstrapWithInvite } = await request("/api/bootstrap");
+  assert.equal(bootstrapWithInviteResponse.status, 200);
+  assert.equal(bootstrapWithInvite.invitations.length, 1);
+  assert.equal(bootstrapWithInvite.members.length, 1);
+
   const { payload: createdTemplate, response: templateResponse } = await request("/api/templates", {
     method: "POST",
     body: JSON.stringify({
@@ -180,6 +210,7 @@ try {
   });
   assert.equal(templateResponse.status, 201);
   assert.equal(createdTemplate.organizationId, registeredSession.organization.id);
+  assert.equal(createdTemplate.status, "Active");
 
   const { payload: createdCredential, response: createResponse } = await request("/api/credentials", {
     method: "POST",
@@ -240,6 +271,74 @@ try {
   assert.equal(pendingResponse.status, 400);
   assert.equal(pendingPayload.error, "Only approved issuers can create credentials.");
 
+  const { response: archivedTemplateResponse, payload: archivedTemplate } = await request(`/api/templates/${createdTemplate.id}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      ...createdTemplate,
+      status: "Archived",
+    }),
+  });
+  assert.equal(archivedTemplateResponse.status, 200);
+  assert.equal(archivedTemplate.status, "Archived");
+
+  const { response: archivedIssueResponse, payload: archivedIssuePayload } = await request("/api/credentials", {
+    method: "POST",
+    body: JSON.stringify({
+      templateId: createdTemplate.id,
+      issuerId: registeredSession.issuer.id,
+      recipientName: "Archived Template User",
+      recipientEmail: "archived@example.com",
+      recipientWallet: "",
+      cohort: "Summer 2026",
+      summary: "Should not be created from an archived template.",
+    }),
+  });
+  assert.equal(archivedIssueResponse.status, 400);
+  assert.equal(archivedIssuePayload.error, "Only active templates can issue credentials.");
+
+  const { response: reactivatedTemplateResponse, payload: reactivatedTemplate } = await request(`/api/templates/${createdTemplate.id}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      ...archivedTemplate,
+      status: "Active",
+    }),
+  });
+  assert.equal(reactivatedTemplateResponse.status, 200);
+  assert.equal(reactivatedTemplate.status, "Active");
+
+  const { response: approvedIssuerResponse, payload: approvedIssuer } = await request(`/api/issuers/${pendingIssuer.id}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      ...pendingIssuer,
+      status: "Approved",
+    }),
+  });
+  assert.equal(approvedIssuerResponse.status, 200);
+  assert.equal(approvedIssuer.status, "Approved");
+
+  const { response: approvedCredentialResponse, payload: approvedCredential } = await request("/api/credentials", {
+    method: "POST",
+    body: JSON.stringify({
+      templateId: createdTemplate.id,
+      issuerId: pendingIssuer.id,
+      recipientName: "Approved User",
+      recipientEmail: "approved@example.com",
+      recipientWallet: "",
+      cohort: "Summer 2026",
+      summary: "Created after the issuer was approved.",
+    }),
+  });
+  assert.equal(approvedCredentialResponse.status, 201);
+  assert.equal(approvedCredential.issuedBy, "Blocked Issuer");
+
+  const { response: activityBootstrapResponse, payload: activityBootstrap } = await request("/api/bootstrap");
+  assert.equal(activityBootstrapResponse.status, 200);
+  assert.ok(activityBootstrap.activity.length >= 7);
+  assert.equal(activityBootstrap.activity[0].type, "credential.issued");
+  assert.ok(activityBootstrap.activity.some((event) => event.type === "organization.updated"));
+  assert.ok(activityBootstrap.activity.some((event) => event.type === "template.updated"));
+  assert.ok(activityBootstrap.activity.some((event) => event.type === "issuer.updated"));
+
   const { response: logoutResponse } = await request("/api/auth/logout", {
     method: "POST",
   });
@@ -247,6 +346,33 @@ try {
 
   const { response: loggedOutBootstrapResponse } = await request("/api/bootstrap");
   assert.equal(loggedOutBootstrapResponse.status, 401);
+
+  cookieJar = "";
+  const { response: inviteAcceptResponse, payload: inviteAcceptedSession } = await request("/api/auth/invitations/accept", {
+    method: "POST",
+    body: JSON.stringify({
+      invitationCode: createdInvitation.code,
+      fullName: "Jamie Teammate",
+      workEmail: "jamie@acme.example",
+      password: "teammate123",
+    }),
+    useCookie: false,
+  });
+  assert.equal(inviteAcceptResponse.status, 200);
+  assert.equal(inviteAcceptedSession.organization.name, "Acme Credential Lab");
+  assert.equal(inviteAcceptedSession.workspaces.length, 1);
+  assert.equal(inviteAcceptedSession.membership.role, "Admin");
+  assert.ok(cookieJar);
+
+  const { response: jamieBootstrapResponse, payload: jamieBootstrap } = await request("/api/bootstrap");
+  assert.equal(jamieBootstrapResponse.status, 200);
+  assert.equal(jamieBootstrap.members.length, 2);
+  assert.equal(jamieBootstrap.invitations.length, 0);
+
+  const { response: jamieLogoutResponse } = await request("/api/auth/logout", {
+    method: "POST",
+  });
+  assert.equal(jamieLogoutResponse.status, 204);
 
   cookieJar = "";
   const { response: loginResponse, payload: loggedInSession } = await request("/api/auth/login", {
@@ -263,6 +389,8 @@ try {
 
   const { response: reloggedBootstrapResponse } = await request("/api/bootstrap");
   assert.equal(reloggedBootstrapResponse.status, 200);
+  const { payload: reloggedBootstrap } = await request("/api/bootstrap");
+  assert.equal(reloggedBootstrap.members.length, 2);
 
   const janeGoogleToken = createGoogleIdToken({
     sub: "google-jane-founder",
@@ -321,6 +449,20 @@ try {
   assert.equal(googleWorkspaceBootstrapResponse.status, 200);
   assert.equal(googleWorkspaceBootstrap.organization.name, "Orbit Skills");
   assert.equal(googleWorkspaceBootstrap.issuers.length, 1);
+  assert.equal(googleWorkspaceBootstrap.members.length, 1);
+
+  const { response: orbitInviteResponse, payload: orbitInvite } = await request("/api/team/invitations", {
+    method: "POST",
+    body: JSON.stringify({
+      name: "Jane Founder",
+      email: "jane@acme.example",
+      membershipRole: "Admin",
+      issuerRole: "Partner issuer",
+      issuerStatus: "Approved",
+    }),
+  });
+  assert.equal(orbitInviteResponse.status, 201);
+  assert.equal(orbitInvite.email, "jane@acme.example");
 
   const { response: thirdLogoutResponse } = await request("/api/auth/logout", {
     method: "POST",
@@ -341,6 +483,54 @@ try {
     googleOnlyPasswordPayload.error,
     "This workspace account uses Google sign-in. Continue with Google to access it."
   );
+
+  cookieJar = "";
+  const { response: secondInviteAcceptResponse, payload: secondInviteAcceptedSession } = await request(
+    "/api/auth/invitations/accept",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        invitationCode: orbitInvite.code,
+        workEmail: "jane@acme.example",
+        password: "workspace123",
+      }),
+      useCookie: false,
+    }
+  );
+  assert.equal(secondInviteAcceptResponse.status, 200);
+  assert.equal(secondInviteAcceptedSession.organization.name, "Orbit Skills");
+  assert.equal(secondInviteAcceptedSession.workspaces.length, 2);
+  assert.ok(
+    secondInviteAcceptedSession.workspaces.some((workspace) => workspace.organization.name === "Acme Credential Lab")
+  );
+  assert.ok(
+    secondInviteAcceptedSession.workspaces.some((workspace) => workspace.organization.name === "Orbit Skills")
+  );
+
+  const { response: switchWorkspaceResponse, payload: switchedWorkspaceSession } = await request(
+    "/api/auth/switch-workspace",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        organizationId: registeredSession.organization.id,
+      }),
+    }
+  );
+  assert.equal(switchWorkspaceResponse.status, 200);
+  assert.equal(switchedWorkspaceSession.organization.name, "Acme Credential Lab");
+
+  const { response: switchedBootstrapResponse, payload: switchedBootstrap } = await request("/api/bootstrap");
+  assert.equal(switchedBootstrapResponse.status, 200);
+  assert.equal(switchedBootstrap.organization.name, "Acme Credential Lab");
+
+  const { response: orbitSwitchResponse, payload: orbitSwitchedSession } = await request("/api/auth/switch-workspace", {
+    method: "POST",
+    body: JSON.stringify({
+      organizationId: googleRegisteredSession.organization.id,
+    }),
+  });
+  assert.equal(orbitSwitchResponse.status, 200);
+  assert.equal(orbitSwitchedSession.organization.name, "Orbit Skills");
 
   const { response: googleReloginResponse, payload: googleReloginSession } = await request("/api/auth/google/login", {
     method: "POST",
