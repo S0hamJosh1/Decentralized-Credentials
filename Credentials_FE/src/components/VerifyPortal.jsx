@@ -54,8 +54,8 @@ export default function VerifyPortal({
             <p className="site-brand-subtitle">Verification</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <button type="button" className="site-ghost" onClick={onBackToSite}>Back to site</button>
-            <button type="button" className="site-button" onClick={onLaunchApp}>Issuer sign in</button>
+            <button type="button" className="site-ghost" onClick={onBackToSite}>Back to workspace</button>
+            <button type="button" className="site-button" onClick={onLaunchApp}>Open workspace</button>
           </div>
         </header>
 

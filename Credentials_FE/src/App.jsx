@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import DashboardApp from "./components/DashboardApp";
 import IssuerAccessFlow from "./components/IssuerAccessFlow";
-import MarketingSite from "./components/MarketingSite";
 import VerifyPortal from "./components/VerifyPortal";
-import { initialCredentials } from "./data/productData";
 import { useIssuerSession } from "./hooks/useIssuerSession";
 import { useProductData } from "./hooks/useProductData";
 import { buildVerifyPath, parseRoute, pushRoute } from "./lib/routes";
@@ -100,7 +98,7 @@ export default function App() {
       signedInAt: new Date().toISOString(),
     });
 
-    navigateTo("/app");
+    navigateTo("/");
   };
 
   const handleOrganizationUpdate = async (payload) => {
@@ -122,45 +120,12 @@ export default function App() {
     navigateTo(buildVerifyPath(nextCode));
   };
 
-  const sampleCredential = credentials[0] || initialCredentials[0];
-
   const sharedProps = {
     organization,
     stats,
     apiMode,
     apiError,
   };
-
-  if (route.view === "app") {
-    if (!issuerSession) {
-      return (
-        <IssuerAccessFlow
-          organization={organization}
-          apiMode={apiMode}
-          onComplete={completeIssuerAccess}
-        />
-      );
-    }
-
-    return (
-      <DashboardApp
-        {...sharedProps}
-        issuerSession={issuerSession}
-        currentIssuerId={issuerSession.issuerId}
-        templates={templates}
-        issuers={issuers}
-        credentials={credentials}
-        onIssueCredential={issueCredential}
-        onRevokeCredential={revokeCredential}
-        onAddTemplate={addTemplate}
-        onAddIssuer={addIssuer}
-        onUpdateOrganization={handleOrganizationUpdate}
-        onBackToSite={() => navigateTo("/")}
-        onOpenVerifier={openVerifier}
-        onSignOut={signOutIssuer}
-      />
-    );
-  }
 
   if (route.view === "verify") {
     return (
@@ -172,17 +137,37 @@ export default function App() {
         onSelectVerificationCode={setSelectedVerificationCode}
         onVerifyCode={openVerifier}
         onBackToSite={() => navigateTo("/")}
-        onLaunchApp={() => navigateTo("/app")}
+        onLaunchApp={() => navigateTo("/")}
+      />
+    );
+  }
+
+  if (!issuerSession) {
+    return (
+      <IssuerAccessFlow
+        organization={organization}
+        apiMode={apiMode}
+        onComplete={completeIssuerAccess}
       />
     );
   }
 
   return (
-    <MarketingSite
+    <DashboardApp
       {...sharedProps}
-      sampleCredential={sampleCredential}
-      onLaunchApp={() => navigateTo("/app")}
+      issuerSession={issuerSession}
+      currentIssuerId={issuerSession.issuerId}
+      templates={templates}
+      issuers={issuers}
+      credentials={credentials}
+      onIssueCredential={issueCredential}
+      onRevokeCredential={revokeCredential}
+      onAddTemplate={addTemplate}
+      onAddIssuer={addIssuer}
+      onUpdateOrganization={handleOrganizationUpdate}
+      onBackToSite={() => navigateTo("/")}
       onOpenVerifier={openVerifier}
+      onSignOut={signOutIssuer}
     />
   );
 }

@@ -1,22 +1,21 @@
-# Credential Foundry
+# Credential Foundry Workspace
 
-A business credential platform for issuing trusted digital certificates, sharing proof links, and verifying authenticity without requiring a wallet from the verifier.
+The company workspace for issuing trusted digital certificates, managing issuer teams, and sharing public verification links.
 
 ## What is in the repo
 
-- `Credentials_FE/`: single frontend surface with routed marketing pages, public verifier, and issuer workspace
+- `Credentials_FE/`: workspace frontend for company onboarding, issuer operations, and public verification
 - `services/api/`: Express API for organization settings, issuer access, templates, credential records, revocation, and verification lookup
-- `cd_var/`: legacy Hardhat contract prototype and registry tooling
-- `docs/`: product direction notes and repurposing writeup
+- `cd_var/`: legacy Hardhat contract prototype and registry tooling slated for removal from the core product path
+- `docs/`: product direction notes and implementation plans
 
 ## Current product surfaces
 
-- `/`: marketing homepage
-- `/how-it-works`: product workflow page
-- `/use-cases`: target use cases and customer framing
-- `/trust`: trust and verification model page
+- `/`: workspace entry point for company sign-in and onboarding
+- `/app`: workspace dashboard alias
 - `/verify/:code`: public verification portal
-- `/app`: issuer dashboard
+
+The old marketing/demo experience should be split into its own repository and deployment.
 
 ## Local development
 
@@ -66,9 +65,10 @@ If `hardhat` is missing, install the contract dependencies in `cd_var/` first.
 
 ## Product notes
 
-- The API is now organization-aware and persists organization settings plus credential revocation metadata.
+- The current product direction is a workspace SaaS for companies, not a blockchain-first demo.
+- The API currently persists organization settings plus credential revocation metadata.
 - The public verifier shows issuer identity, status, and revocation details.
-- The legacy registry tools still exist in the issuer app as advanced utilities while the business workflow matures.
+- The next major milestone is replacing demo/local auth with real user accounts and organization membership.
 
 ## License
 

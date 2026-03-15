@@ -17,6 +17,8 @@
 
 # Hardhat compilation (v2) support directory
 /cache
+/.hardhat-local
+/.npm-cache
 
 # Typechain output
 /types

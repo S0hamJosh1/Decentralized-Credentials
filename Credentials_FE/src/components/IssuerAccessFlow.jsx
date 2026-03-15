@@ -22,7 +22,7 @@ const setupHighlights = [
   },
   {
     title: "Create a clean company workspace",
-    body: "First launch replaces the Northstar demo records with your company profile and a blank issuer app.",
+    body: "First launch provisions your company profile and starts with a clean issuer workspace.",
   },
   {
     title: "Move straight into operations",
@@ -63,7 +63,7 @@ export default function IssuerAccessFlow({ organization, apiMode, onComplete }) 
         <header className="site-nav">
           <div>
             <p className="site-brand">Credential Foundry</p>
-            <p className="site-brand-subtitle">Issuer access</p>
+            <p className="site-brand-subtitle">Company workspace</p>
           </div>
           <span className="neo-badge">
             <span className={`inline-block h-2 w-2 rounded-full ${apiMode === "ready" ? "bg-emerald-400" : "bg-amber-400"}`} />
@@ -79,7 +79,7 @@ export default function IssuerAccessFlow({ organization, apiMode, onComplete }) 
             </h1>
             <p className="site-lede issuer-access-lede">
               {isDemoWorkspace
-                ? "Right now the site still falls into the Northstar demo. This step creates the real issuer workspace for your company and signs in the initial admin."
+                ? "Create the real company workspace and sign in the initial admin so you can manage templates, issuers, credentials, and verification from one place."
                 : "Use your work identity to enter the issuer workspace. You can adjust company details here before heading into templates, issuers, and credentials."}
             </p>
 
@@ -172,7 +172,7 @@ export default function IssuerAccessFlow({ organization, apiMode, onComplete }) 
                 </p>
                 <p className="mb-0 mt-2 text-zinc-500">
                   {isDemoWorkspace
-                    ? "Submitting this replaces the seeded demo records with a clean issuer workspace for your company."
+                    ? "Submitting this provisions your company workspace with a clean starting state."
                     : "Your existing workspace data stays in place. We just update company details and make sure your issuer account exists."}
                 </p>
               </div>

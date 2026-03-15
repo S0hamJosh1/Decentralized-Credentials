@@ -244,7 +244,7 @@ export default function DashboardApp({
           <header className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5">
             <div className="flex items-center gap-4">
               <button type="button" onClick={onBackToSite} className="site-ghost text-sm">
-                Back
+                Home
               </button>
               <div>
                 <h1 className="text-2xl font-bold text-zinc-50">{organization.name}</h1>

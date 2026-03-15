@@ -4,13 +4,13 @@ import { buildVerifyPath, normalizePathname, parseRoute, sitePathForPage } from 
 assert.equal(normalizePathname("/trust/"), "/trust");
 assert.equal(normalizePathname(""), "/");
 
-assert.deepEqual(parseRoute("/"), { view: "site", page: "home", verificationCode: "" });
-// Old marketing pages now all route to home
-assert.deepEqual(parseRoute("/how-it-works"), { view: "site", page: "home", verificationCode: "" });
-assert.deepEqual(parseRoute("/use-cases"), { view: "site", page: "home", verificationCode: "" });
-assert.deepEqual(parseRoute("/trust"), { view: "site", page: "home", verificationCode: "" });
+assert.deepEqual(parseRoute("/"), { view: "workspace", page: null, verificationCode: "" });
+// Old marketing/demo paths now land in the workspace app
+assert.deepEqual(parseRoute("/how-it-works"), { view: "workspace", page: null, verificationCode: "" });
+assert.deepEqual(parseRoute("/use-cases"), { view: "workspace", page: null, verificationCode: "" });
+assert.deepEqual(parseRoute("/trust"), { view: "workspace", page: null, verificationCode: "" });
 
-assert.deepEqual(parseRoute("/app"), { view: "app", page: null, verificationCode: "" });
+assert.deepEqual(parseRoute("/app"), { view: "workspace", page: null, verificationCode: "" });
 assert.deepEqual(parseRoute("/verify/NST-INT-1001"), {
   view: "verify",
   page: null,
@@ -18,8 +18,8 @@ assert.deepEqual(parseRoute("/verify/NST-INT-1001"), {
 });
 assert.deepEqual(parseRoute("/verify"), { view: "verify", page: null, verificationCode: "" });
 
+assert.equal(sitePathForPage("workspace"), "/");
 assert.equal(sitePathForPage("use-cases"), "/");
-assert.equal(sitePathForPage("home"), "/");
 assert.equal(buildVerifyPath("nst-int-1001"), "/verify/NST-INT-1001");
 assert.equal(buildVerifyPath(""), "/verify");
 

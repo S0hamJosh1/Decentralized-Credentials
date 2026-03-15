@@ -1,4 +1,4 @@
-export const SITE_PAGES = ["home"];
+export const SITE_PAGES = ["workspace"];
 
 export function normalizePathname(pathname = "/") {
   const normalized = pathname.startsWith("/") ? pathname : `/${pathname}`;
@@ -9,8 +9,8 @@ export function normalizePathname(pathname = "/") {
 export function parseRoute(pathname = "/") {
   const normalized = normalizePathname(pathname);
 
-  if (normalized === "/app") {
-    return { view: "app", page: null, verificationCode: "" };
+  if (normalized === "/" || normalized === "/app") {
+    return { view: "workspace", page: null, verificationCode: "" };
   }
 
   if (normalized.startsWith("/verify/")) {
@@ -25,11 +25,11 @@ export function parseRoute(pathname = "/") {
     return { view: "verify", page: null, verificationCode: "" };
   }
 
-  // All other routes (including old /how-it-works, /use-cases, /trust) → home
-  return { view: "site", page: "home", verificationCode: "" };
+  // Old marketing/demo paths now route back into the workspace app.
+  return { view: "workspace", page: null, verificationCode: "" };
 }
 
-export function sitePathForPage(page = "home") {
+export function sitePathForPage(page = "workspace") {
   return "/";
 }
 
