@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   fetchAuthSession,
+  loginGoogleAccount,
   loginAccount,
   logoutAccount,
+  registerGoogleAccount,
   registerAccount,
 } from "../lib/api";
 
@@ -87,6 +89,44 @@ export function useAuthSession() {
     }
   };
 
+  const registerWorkspaceWithGoogle = async (payload) => {
+    try {
+      const session = await registerGoogleAccount(payload);
+      setState({
+        status: "authenticated",
+        session,
+        error: "",
+      });
+      return session;
+    } catch (error) {
+      setState((current) => ({
+        ...current,
+        status: current.session ? "authenticated" : "unauthenticated",
+        error: error.message || "Unable to create your workspace with Google.",
+      }));
+      throw error;
+    }
+  };
+
+  const signInWithGoogle = async (payload) => {
+    try {
+      const session = await loginGoogleAccount(payload);
+      setState({
+        status: "authenticated",
+        session,
+        error: "",
+      });
+      return session;
+    } catch (error) {
+      setState({
+        status: "unauthenticated",
+        session: null,
+        error: error.message || "Unable to sign in with Google.",
+      });
+      throw error;
+    }
+  };
+
   const signOutAccount = async () => {
     try {
       await logoutAccount();
@@ -101,6 +141,8 @@ export function useAuthSession() {
     authError: state.error,
     registerWorkspace,
     signInAccount,
+    registerWorkspaceWithGoogle,
+    signInWithGoogle,
     signOutAccount,
     refreshSession,
     clearAuthSession,

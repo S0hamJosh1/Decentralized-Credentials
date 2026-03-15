@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { generateKeyPairSync, sign } from "node:crypto";
 import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -8,6 +9,76 @@ let server;
 let baseUrl;
 let tempDir;
 let cookieJar = "";
+const nativeFetch = globalThis.fetch;
+const GOOGLE_CLIENT_ID = "credential-foundry-test.apps.googleusercontent.com";
+const googleKid = "test-google-key";
+const googleKeyPair = generateKeyPairSync("rsa", { modulusLength: 2048 });
+const googleJwk = {
+  ...googleKeyPair.publicKey.export({ format: "jwk" }),
+  kid: googleKid,
+  alg: "RS256",
+  use: "sig",
+};
+
+function encodeBase64Url(value) {
+  const buffer = Buffer.isBuffer(value)
+    ? value
+    : Buffer.from(typeof value === "string" ? value : JSON.stringify(value));
+
+  return buffer
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+}
+
+function createGoogleIdToken({ sub, email, name, hd }) {
+  const header = {
+    alg: "RS256",
+    kid: googleKid,
+    typ: "JWT",
+  };
+
+  const payload = {
+    iss: "https://accounts.google.com",
+    aud: GOOGLE_CLIENT_ID,
+    sub,
+    email,
+    email_verified: true,
+    name,
+    given_name: name.split(" ")[0],
+    family_name: name.split(" ").slice(1).join(" "),
+    picture: `https://profiles.example/${sub}.png`,
+    exp: Math.floor(Date.now() / 1000) + 3600,
+    iat: Math.floor(Date.now() / 1000),
+    ...(hd ? { hd } : {}),
+  };
+
+  const encodedHeader = encodeBase64Url(header);
+  const encodedPayload = encodeBase64Url(payload);
+  const signingInput = `${encodedHeader}.${encodedPayload}`;
+  const signature = sign("RSA-SHA256", Buffer.from(signingInput), googleKeyPair.privateKey);
+
+  return `${signingInput}.${encodeBase64Url(signature)}`;
+}
+
+function installGoogleFetchMock() {
+  globalThis.fetch = async (input, init) => {
+    const url = input instanceof Request ? input.url : String(input);
+
+    if (url === "https://www.googleapis.com/oauth2/v3/certs") {
+      return new Response(JSON.stringify({ keys: [googleJwk] }), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=3600",
+        },
+      });
+    }
+
+    return nativeFetch(input, init);
+  };
+}
 
 async function request(pathname, options = {}) {
   const headers = {
@@ -40,6 +111,8 @@ async function request(pathname, options = {}) {
 try {
   tempDir = await mkdtemp(path.join(os.tmpdir(), "credential-api-"));
   process.env.CREDENTIAL_API_DB_PATH = path.join(tempDir, "db.json");
+  process.env.GOOGLE_CLIENT_ID = GOOGLE_CLIENT_ID;
+  installGoogleFetchMock();
 
   const app = createApp();
   server = app.listen(0);
@@ -191,8 +264,99 @@ try {
   const { response: reloggedBootstrapResponse } = await request("/api/bootstrap");
   assert.equal(reloggedBootstrapResponse.status, 200);
 
+  const janeGoogleToken = createGoogleIdToken({
+    sub: "google-jane-founder",
+    email: "jane@acme.example",
+    name: "Jane Founder",
+    hd: "acme.example",
+  });
+
+  const { response: googleLoginResponse, payload: googleLoginSession } = await request("/api/auth/google/login", {
+    method: "POST",
+    body: JSON.stringify({
+      credential: janeGoogleToken,
+    }),
+  });
+  assert.equal(googleLoginResponse.status, 200);
+  assert.equal(googleLoginSession.user.email, "jane@acme.example");
+  assert.equal(googleLoginSession.user.authProvider, "password+google");
+  assert.ok(cookieJar);
+
+  const { response: secondLogoutResponse } = await request("/api/auth/logout", {
+    method: "POST",
+  });
+  assert.equal(secondLogoutResponse.status, 204);
+
+  cookieJar = "";
+  const oliviaGoogleToken = createGoogleIdToken({
+    sub: "google-olivia-owner",
+    email: "owner@orbit.example",
+    name: "Olivia Orbit",
+    hd: "orbit.example",
+  });
+
+  const { response: googleRegisterResponse, payload: googleRegisteredSession } = await request(
+    "/api/auth/google/register",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        credential: oliviaGoogleToken,
+        companyName: "Orbit Skills",
+        companySlug: "orbit-skills",
+        website: "https://orbit.example",
+        sector: "Compliance training",
+        verificationDomain: "http://localhost:5173",
+        role: "Program owner",
+      }),
+      useCookie: false,
+    }
+  );
+  assert.equal(googleRegisterResponse.status, 201);
+  assert.equal(googleRegisteredSession.user.email, "owner@orbit.example");
+  assert.equal(googleRegisteredSession.user.authProvider, "google");
+  assert.equal(googleRegisteredSession.organization.name, "Orbit Skills");
+  assert.ok(cookieJar);
+
+  const { response: googleWorkspaceBootstrapResponse, payload: googleWorkspaceBootstrap } = await request("/api/bootstrap");
+  assert.equal(googleWorkspaceBootstrapResponse.status, 200);
+  assert.equal(googleWorkspaceBootstrap.organization.name, "Orbit Skills");
+  assert.equal(googleWorkspaceBootstrap.issuers.length, 1);
+
+  const { response: thirdLogoutResponse } = await request("/api/auth/logout", {
+    method: "POST",
+  });
+  assert.equal(thirdLogoutResponse.status, 204);
+
+  cookieJar = "";
+  const { response: googleOnlyPasswordResponse, payload: googleOnlyPasswordPayload } = await request("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({
+      workEmail: "owner@orbit.example",
+      password: "workspace123",
+    }),
+    useCookie: false,
+  });
+  assert.equal(googleOnlyPasswordResponse.status, 400);
+  assert.equal(
+    googleOnlyPasswordPayload.error,
+    "This workspace account uses Google sign-in. Continue with Google to access it."
+  );
+
+  const { response: googleReloginResponse, payload: googleReloginSession } = await request("/api/auth/google/login", {
+    method: "POST",
+    body: JSON.stringify({
+      credential: oliviaGoogleToken,
+    }),
+    useCookie: false,
+  });
+  assert.equal(googleReloginResponse.status, 200);
+  assert.equal(googleReloginSession.organization.name, "Orbit Skills");
+  assert.ok(cookieJar);
+
   console.log("API assertions passed.");
 } finally {
+  globalThis.fetch = nativeFetch;
+
   if (server) {
     await new Promise((resolve) => server.close(resolve));
   }
@@ -202,4 +366,5 @@ try {
   }
 
   delete process.env.CREDENTIAL_API_DB_PATH;
+  delete process.env.GOOGLE_CLIENT_ID;
 }

@@ -1,5 +1,47 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
+function buildHtmlFallbackMessage(path) {
+  if (API_BASE) {
+    return `The API request to ${path} returned HTML instead of JSON. Check that VITE_API_BASE_URL points to your backend service, not the frontend app.`;
+  }
+
+  return `The API request to ${path} returned HTML instead of JSON. Run the API on port 4000 locally, or set VITE_API_BASE_URL to your deployed backend.`;
+}
+
+async function readApiPayload(response, path) {
+  if (response.status === 204) {
+    return null;
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    try {
+      return await response.json();
+    } catch {
+      const error = new Error(`The API response for ${path} was not valid JSON.`);
+      error.status = response.status;
+      throw error;
+    }
+  }
+
+  const text = await response.text();
+
+  if (/<!doctype html|<html/i.test(text)) {
+    const error = new Error(buildHtmlFallbackMessage(path));
+    error.status = response.status || 500;
+    throw error;
+  }
+
+  if (!text) {
+    return null;
+  }
+
+  const error = new Error(`The API response for ${path} used an unsupported content type: ${contentType || "unknown"}.`);
+  error.status = response.status || 500;
+  throw error;
+}
+
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
     credentials: "include",
@@ -10,18 +52,15 @@ async function request(path, options = {}) {
     ...options,
   });
 
+  const payload = await readApiPayload(response, path);
+
   if (!response.ok) {
-    const payload = await response.json().catch(() => ({}));
-    const error = new Error(payload.error || `Request failed: ${response.status}`);
+    const error = new Error(payload?.error || `Request failed: ${response.status}`);
     error.status = response.status;
     throw error;
   }
 
-  if (response.status === 204) {
-    return null;
-  }
-
-  return response.json();
+  return payload;
 }
 
 export function registerAccount(payload) {
@@ -33,6 +72,20 @@ export function registerAccount(payload) {
 
 export function loginAccount(payload) {
   return request("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function registerGoogleAccount(payload) {
+  return request("/api/auth/google/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function loginGoogleAccount(payload) {
+  return request("/api/auth/google/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });

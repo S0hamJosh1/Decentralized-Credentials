@@ -43,6 +43,10 @@ function normalizeUser(user = {}) {
     fullName: normalizeText(user.fullName),
     email: normalizeText(user.email).toLowerCase(),
     passwordHash: normalizeText(user.passwordHash),
+    authProvider: normalizeText(user.authProvider, "password") || "password",
+    googleSubject: normalizeText(user.googleSubject),
+    avatarUrl: normalizeText(user.avatarUrl),
+    emailVerifiedAt: normalizeText(user.emailVerifiedAt),
     createdAt: normalizeText(user.createdAt),
   };
 }

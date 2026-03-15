@@ -1,5 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { slugifyCompanyName } from "../lib/company";
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+let googleScriptPromise;
 
 const setupHighlights = [
   {
@@ -35,19 +38,63 @@ function buildSignInForm() {
   };
 }
 
-export default function IssuerAccessFlow({ authError, onRegister, onSignIn }) {
+function loadGoogleIdentityScript() {
+  if (typeof window === "undefined") {
+    return Promise.reject(new Error("Google sign-in is only available in the browser."));
+  }
+
+  if (window.google?.accounts?.id) {
+    return Promise.resolve(window.google);
+  }
+
+  if (googleScriptPromise) {
+    return googleScriptPromise;
+  }
+
+  googleScriptPromise = new Promise((resolve, reject) => {
+    const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+
+    if (existingScript) {
+      existingScript.addEventListener("load", () => resolve(window.google), { once: true });
+      existingScript.addEventListener("error", () => reject(new Error("Unable to load Google sign-in.")), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve(window.google);
+    script.onerror = () => reject(new Error("Unable to load Google sign-in."));
+    document.head.appendChild(script);
+  });
+
+  return googleScriptPromise;
+}
+
+export default function IssuerAccessFlow({
+  authError,
+  onRegister,
+  onSignIn,
+  onGoogleRegister,
+  onGoogleSignIn,
+}) {
   const [mode, setMode] = useState("register");
   const [registerForm, setRegisterForm] = useState(buildRegisterForm);
   const [signInForm, setSignInForm] = useState(buildSignInForm);
   const [busy, setBusy] = useState(false);
   const [localError, setLocalError] = useState("");
+  const [googleError, setGoogleError] = useState("");
+  const googleButtonRef = useRef(null);
+  const googleActionRef = useRef(null);
 
   const companySlug = useMemo(
     () => slugifyCompanyName(registerForm.companyName),
     [registerForm.companyName]
   );
 
-  const activeError = localError || authError;
+  const activeError = localError || googleError || authError;
+  const googleReady = Boolean(GOOGLE_CLIENT_ID && (onGoogleRegister || onGoogleSignIn));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,6 +118,84 @@ export default function IssuerAccessFlow({ authError, onRegister, onSignIn }) {
 
     setBusy(false);
   };
+
+  useEffect(() => {
+    googleActionRef.current = async (credential) => {
+      setBusy(true);
+      setLocalError("");
+      setGoogleError("");
+
+      try {
+        if (mode === "register") {
+          if (!registerForm.companyName || !companySlug || !registerForm.role) {
+            throw new Error("Add your company details before continuing with Google.");
+          }
+
+          await onGoogleRegister?.({
+            ...registerForm,
+            companySlug,
+            credential,
+          });
+          return;
+        }
+
+        await onGoogleSignIn?.({ credential });
+      } catch (submitError) {
+        setGoogleError(submitError.message || "Unable to continue with Google.");
+      } finally {
+        setBusy(false);
+      }
+    };
+  }, [companySlug, mode, onGoogleRegister, onGoogleSignIn, registerForm]);
+
+  useEffect(() => {
+    if (!googleReady || !googleButtonRef.current) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    setGoogleError("");
+
+    loadGoogleIdentityScript()
+      .then(() => {
+        if (cancelled || !googleButtonRef.current || !window.google?.accounts?.id) {
+          return;
+        }
+
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: (response) => {
+            if (!response?.credential) {
+              setGoogleError("Google sign-in did not return an account credential.");
+              return;
+            }
+
+            googleActionRef.current?.(response.credential);
+          },
+        });
+
+        googleButtonRef.current.innerHTML = "";
+        window.google.accounts.id.renderButton(googleButtonRef.current, {
+          theme: "outline",
+          size: "large",
+          shape: "pill",
+          width: 320,
+          text: mode === "register" ? "continue_with" : "signin_with",
+        });
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setGoogleError(error.message || "Unable to load Google sign-in.");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      if (googleButtonRef.current) {
+        googleButtonRef.current.innerHTML = "";
+      }
+    };
+  }, [googleReady, mode]);
 
   return (
     <div className="site-shell min-h-screen text-stone-100">
@@ -252,6 +377,20 @@ export default function IssuerAccessFlow({ authError, onRegister, onSignIn }) {
               {activeError ? (
                 <div className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
                   {activeError}
+                </div>
+              ) : null}
+
+              {googleReady ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-zinc-500">
+                    <span className="h-px flex-1 bg-white/10" />
+                    Continue with
+                    <span className="h-px flex-1 bg-white/10" />
+                  </div>
+
+                  <div className={busy ? "pointer-events-none opacity-60" : ""}>
+                    <div ref={googleButtonRef} />
+                  </div>
                 </div>
               ) : null}
 

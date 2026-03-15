@@ -61,6 +61,7 @@ Status: completed
 - add users and sessions
 - protect workspace routes
 - connect users to organizations and roles
+- support Google sign-in on top of the same server-backed session model
 
 Status: completed
 

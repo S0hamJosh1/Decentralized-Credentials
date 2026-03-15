@@ -2,7 +2,13 @@ import { Router } from "express";
 import { clearSessionCookie, getSessionToken, setSessionCookie } from "../lib/auth.js";
 import { asyncHandler } from "../lib/http.js";
 import { requireAuth } from "../middleware/auth-middleware.js";
-import { loginAccount, registerAccount, revokeSession } from "../services/auth-service.js";
+import {
+  loginAccount,
+  loginGoogleAccount,
+  registerAccount,
+  registerGoogleAccount,
+  revokeSession,
+} from "../services/auth-service.js";
 
 export function createAuthRouter() {
   const router = Router();
@@ -20,6 +26,24 @@ export function createAuthRouter() {
     "/api/auth/login",
     asyncHandler(async (request, response) => {
       const { sessionToken, session } = await loginAccount(request.body);
+      setSessionCookie(response, sessionToken);
+      response.json(session);
+    })
+  );
+
+  router.post(
+    "/api/auth/google/register",
+    asyncHandler(async (request, response) => {
+      const { sessionToken, session } = await registerGoogleAccount(request.body);
+      setSessionCookie(response, sessionToken);
+      response.status(201).json(session);
+    })
+  );
+
+  router.post(
+    "/api/auth/google/login",
+    asyncHandler(async (request, response) => {
+      const { sessionToken, session } = await loginGoogleAccount(request.body);
       setSessionCookie(response, sessionToken);
       response.json(session);
     })

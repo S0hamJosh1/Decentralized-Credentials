@@ -35,6 +35,15 @@ npm run dev
 
 The Vite frontend proxies `/api` and `/health` to `http://localhost:4000` during local development.
 
+Set these frontend environment variables when you deploy the workspace:
+
+- `VITE_API_BASE_URL`: absolute URL for the deployed API, such as `https://api.yourdomain.com`
+- `VITE_GOOGLE_CLIENT_ID`: Google OAuth client ID for Google sign-in
+
+Set this API environment variable when you want Google sign-in enabled:
+
+- `GOOGLE_CLIENT_ID`: the same Google OAuth client ID accepted by the backend for ID token verification
+
 ## Tests
 
 ### Frontend route helper tests
@@ -66,6 +75,7 @@ If `hardhat` is missing, install the contract dependencies in `cd_var/` first.
 - The current product direction is a workspace SaaS for companies, not a blockchain-first demo.
 - The seeded Northstar/demo workspace has been removed from the live product path.
 - The app now uses real API-backed authentication with users, memberships, and secure sessions.
+- Google sign-in can now create or access a workspace account when the Google OAuth client ID is configured on both the frontend and API.
 - The API now persists organizations, users, memberships, sessions, issuers, templates, credentials, and credential events.
 - The public verifier shows issuer identity, status, and revocation details.
 - The next major milestone is expanding the tenant-aware data model and finishing the production credential pipeline.

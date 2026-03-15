@@ -35,7 +35,9 @@ export default function App() {
     authSession,
     authError,
     registerWorkspace,
+    registerWorkspaceWithGoogle,
     signInAccount,
+    signInWithGoogle,
     signOutAccount,
     refreshSession,
     clearAuthSession,
@@ -104,6 +106,19 @@ export default function App() {
     navigateTo("/");
   };
 
+  const handleGoogleRegister = async (form) => {
+    await registerWorkspaceWithGoogle({
+      ...form,
+      verificationDomain: window.location.origin,
+    });
+    navigateTo("/");
+  };
+
+  const handleGoogleSignIn = async (form) => {
+    await signInWithGoogle(form);
+    navigateTo("/");
+  };
+
   const handleOrganizationUpdate = async (payload) => {
     const savedOrganization = await saveOrganization(payload);
     await refreshSession();
@@ -146,6 +161,8 @@ export default function App() {
         authError={authError}
         onRegister={handleRegister}
         onSignIn={handleSignIn}
+        onGoogleRegister={handleGoogleRegister}
+        onGoogleSignIn={handleGoogleSignIn}
       />
     );
   }
