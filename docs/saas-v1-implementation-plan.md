@@ -104,6 +104,16 @@ Completed in phase 5:
 
 ## Immediate Next Steps
 
-1. add focused frontend tests around auth, protected states, and settings permissions
-2. move persistence from JSON-file storage toward a production database
+1. run the first Prisma migration against Neon and verify the API boots in `database` mode
+2. connect real SMTP/email delivery for invitations and password reset
 3. add export/reporting and operational admin workflows on top of the hardened core
+
+## Phase 6: Production Persistence And Recovery
+
+- Prisma schema for the live workspace entities is added
+- the API can run in file mode locally or Postgres mode with `DATABASE_URL`
+- invitation resend/revoke management is implemented
+- password reset and auth rate limiting are implemented
+- frontend tests now cover route parsing, password reset entry, and manager-only invite controls
+
+Status: in progress

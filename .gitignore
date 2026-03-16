@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*
+!.env.example
+apps/api/data/db.json
+apps/web/.npm-cache/
+apps/api/.npm-cache/
