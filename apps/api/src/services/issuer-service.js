@@ -1,6 +1,12 @@
 import { createHttpError } from "../lib/http.js";
-import { requireWorkspaceManager } from "../lib/permissions.js";
-import { ensureUnique, requireEmailAddress, requireFields, sanitizeText } from "../lib/validation.js";
+import { isWorkspaceManager, requireWorkspaceManager } from "../lib/permissions.js";
+import {
+  ensureUnique,
+  requireEmailAddress,
+  requireEthereumAddress,
+  requireFields,
+  sanitizeText,
+} from "../lib/validation.js";
 import { readDb, writeDb } from "../store.js";
 import { recordWorkspaceEvent } from "./activity-service.js";
 
@@ -18,6 +24,7 @@ function sanitizeIssuer(payload = {}) {
     name: sanitizeText(payload.name),
     role: sanitizeText(payload.role),
     email: sanitizeText(payload.email).toLowerCase(),
+    wallet: sanitizeText(payload.wallet).toLowerCase(),
     status: sanitizeText(payload.status) || "Pending",
   };
 }
@@ -39,6 +46,7 @@ export async function createIssuer(auth, payload) {
 
   requireFields(issuerInput, ["name", "role", "email", "status"], "issuer fields");
   issuerInput.email = requireEmailAddress(issuerInput.email, "issuer email");
+  issuerInput.wallet = issuerInput.wallet ? requireEthereumAddress(issuerInput.wallet, "issuer wallet") : "";
 
   ensureUnique(
     db.issuers,
@@ -47,15 +55,24 @@ export async function createIssuer(auth, payload) {
       && issuer.email?.toLowerCase() === issuerInput.email.toLowerCase(),
     "That issuer is already registered for this organization."
   );
+  if (issuerInput.wallet) {
+    ensureUnique(
+      db.issuers,
+      (issuer) =>
+        issuer.organizationId === auth.organization.id
+        && issuer.wallet?.toLowerCase() === issuerInput.wallet.toLowerCase(),
+      "That wallet is already linked to another issuer in this organization."
+    );
+  }
 
   const issuer = {
     id: nextId("ISS-", db.issuers),
     organizationId: auth.organization.id,
     userId: "",
-    wallet: "",
     createdAt: nowIso(),
     updatedAt: nowIso(),
     approvedAt: issuerInput.status === "Approved" ? nowIso() : "",
+    walletVerifiedAt: issuerInput.wallet ? nowIso() : "",
     ...issuerInput,
   };
 
@@ -64,12 +81,13 @@ export async function createIssuer(auth, payload) {
     organizationId: auth.organization.id,
     actorUserId: auth.user.id,
     type: "issuer.created",
-    details: {
-      issuerId: issuer.id,
-      issuerName: issuer.name,
-      issuerStatus: issuer.status,
-    },
-  });
+      details: {
+        issuerId: issuer.id,
+        issuerName: issuer.name,
+        issuerStatus: issuer.status,
+        issuerWallet: issuer.wallet,
+      },
+    });
 
   await writeDb(db);
   return issuer;
@@ -95,6 +113,7 @@ export async function updateIssuer(auth, issuerId, payload) {
 
   requireFields(nextIssuer, ["name", "role", "email", "status"], "issuer fields");
   nextIssuer.email = requireEmailAddress(nextIssuer.email, "issuer email");
+  nextIssuer.wallet = nextIssuer.wallet ? requireEthereumAddress(nextIssuer.wallet, "issuer wallet") : "";
 
   ensureUnique(
     db.issuers,
@@ -104,26 +123,93 @@ export async function updateIssuer(auth, issuerId, payload) {
       && item.email?.toLowerCase() === nextIssuer.email.toLowerCase(),
     "That issuer is already registered for this organization."
   );
+  if (nextIssuer.wallet) {
+    ensureUnique(
+      db.issuers,
+      (item) =>
+        item.id !== issuer.id
+        && item.organizationId === auth.organization.id
+        && item.wallet?.toLowerCase() === nextIssuer.wallet.toLowerCase(),
+      "That wallet is already linked to another issuer in this organization."
+    );
+  }
 
   db.issuers[issuerIndex] = {
     ...issuer,
     ...nextIssuer,
-    wallet: "",
     updatedAt: nowIso(),
     approvedAt:
       nextIssuer.status === "Approved"
         ? issuer.approvedAt || nowIso()
         : "",
+    walletVerifiedAt:
+      nextIssuer.wallet === issuer.wallet
+        ? issuer.walletVerifiedAt || (nextIssuer.wallet ? nowIso() : "")
+        : nextIssuer.wallet
+          ? nowIso()
+          : "",
   };
 
   recordWorkspaceEvent(db, {
     organizationId: auth.organization.id,
     actorUserId: auth.user.id,
     type: "issuer.updated",
+      details: {
+        issuerId: issuer.id,
+        issuerName: db.issuers[issuerIndex].name,
+        issuerStatus: db.issuers[issuerIndex].status,
+        issuerWallet: db.issuers[issuerIndex].wallet,
+      },
+    });
+
+  const savedDb = await writeDb(db);
+  return savedDb.issuers[issuerIndex];
+}
+
+export async function linkIssuerWallet(auth, issuerId, payload) {
+  const db = await readDb();
+  const issuerIndex = db.issuers.findIndex(
+    (issuer) => issuer.id === issuerId && issuer.organizationId === auth.organization.id
+  );
+
+  if (issuerIndex === -1) {
+    throw createHttpError(404, "Issuer not found.");
+  }
+
+  const issuer = db.issuers[issuerIndex];
+  const canLinkOwnWallet = auth.issuer?.id === issuer.id;
+
+  if (!canLinkOwnWallet && !isWorkspaceManager(auth)) {
+    throw createHttpError(403, "You can only link a wallet to your own issuer profile.");
+  }
+
+  const wallet = requireEthereumAddress(payload?.wallet, "issuer wallet");
+
+  ensureUnique(
+    db.issuers,
+    (item) =>
+      item.id !== issuer.id
+      && item.organizationId === auth.organization.id
+      && item.wallet?.toLowerCase() === wallet,
+    "That wallet is already linked to another issuer in this organization."
+  );
+
+  db.issuers[issuerIndex] = {
+    ...issuer,
+    wallet,
+    walletVerifiedAt: nowIso(),
+    updatedAt: nowIso(),
+  };
+
+  recordWorkspaceEvent(db, {
+    organizationId: auth.organization.id,
+    actorUserId: auth.user.id,
+    type: "issuer.wallet-linked",
     details: {
       issuerId: issuer.id,
       issuerName: db.issuers[issuerIndex].name,
       issuerStatus: db.issuers[issuerIndex].status,
+      issuerWallet: wallet,
     },
   });
 

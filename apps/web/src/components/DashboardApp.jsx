@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import CredentialDetailPanel from "./CredentialDetailPanel";
 import TemplateFieldBuilder from "./TemplateFieldBuilder";
 import { useCredentialDetails } from "../hooks/useCredentialDetails";
+import { formatAnchorStatus, formatWalletAddress, normalizeWalletAddress, SEPOLIA_NETWORK_NAME } from "../lib/blockchain";
+import { isSepoliaContractConfigured } from "../lib/credential-registry";
 import { resolveVerificationUrl } from "../lib/routes";
 import { createEmptyFieldValues, formatFieldValue, prepareTemplateFields } from "../lib/template-fields";
 
@@ -65,6 +67,8 @@ function describeActivity(event) {
   switch (event.type) {
     case "credential.issued":
       return `${event.actorName} issued ${event.templateName} for ${event.recipientName}.`;
+    case "credential.anchored":
+      return `${event.actorName} anchored ${event.verificationCode || event.recipientName}'s credential on Sepolia.`;
     case "credential.revoked":
       return `${event.actorName} revoked ${event.recipientName}'s credential.`;
     case "template.created":
@@ -75,6 +79,8 @@ function describeActivity(event) {
       return `${event.actorName} added ${event.issuerName} to issuer access.`;
     case "issuer.updated":
       return `${event.actorName} updated ${event.issuerName}'s issuer access.`;
+    case "issuer.wallet-linked":
+      return `${event.actorName} linked a wallet for ${event.issuerName}.`;
     case "invitation.created":
       return `${event.actorName} invited ${event.invitedName || event.invitedEmail} to the workspace.`;
     case "invitation.accepted":
@@ -132,6 +138,10 @@ export default function DashboardApp({
   onBackToSite,
   onOpenVerifier,
   onSignOut,
+  walletState = {},
+  onConnectWallet,
+  onSwitchWalletNetwork,
+  onLinkIssuerWallet,
 }) {
   const [activeTab, setActiveTab] = useState("credentials");
   const [busyAction, setBusyAction] = useState("");
@@ -270,8 +280,26 @@ export default function DashboardApp({
   const canManageWorkspace = ["Owner", "Admin"].includes(issuerSession?.membershipRole || "");
   const canManageTeam = canManageWorkspace;
   const canIssueAsCurrentUser = Boolean(currentIssuer && currentIssuer.status === "Approved");
-  const canIssueCredentials = activeTemplates.length > 0 && canIssueAsCurrentUser;
+  const requiresSepoliaWallet = isSepoliaContractConfigured();
   const canRevokeCredentials = canIssueAsCurrentUser;
+  const connectedWallet = normalizeWalletAddress(walletState.account || "");
+  const linkedIssuerWallet = normalizeWalletAddress(currentIssuer?.wallet || issuerSession?.issuerWallet || "");
+  const walletMatchesCurrentIssuer = Boolean(connectedWallet && linkedIssuerWallet && connectedWallet === linkedIssuerWallet);
+  const isWalletConnected = Boolean(connectedWallet);
+  const hasLinkedIssuerWallet = Boolean(linkedIssuerWallet);
+  const canIssueCredentials =
+    activeTemplates.length > 0
+    && canIssueAsCurrentUser
+    && (!requiresSepoliaWallet || hasLinkedIssuerWallet);
+  const walletConnectionLabel =
+    walletState.status === "connecting"
+      ? "Connecting MetaMask..."
+      : isWalletConnected
+        ? formatWalletAddress(connectedWallet)
+        : "No wallet connected";
+  const issuerWalletLabel = hasLinkedIssuerWallet
+    ? formatWalletAddress(linkedIssuerWallet)
+    : "No wallet linked";
 
   const issueAccessTitle =
     activeTemplates.length === 0
@@ -280,6 +308,8 @@ export default function DashboardApp({
         ? "Your account is not linked to issuer access"
         : currentIssuer.status !== "Approved"
           ? "Your issuer access is pending approval"
+          : requiresSepoliaWallet && !hasLinkedIssuerWallet
+            ? "Link an issuer wallet before issuing"
           : "Complete setup before issuing";
 
   const issueAccessBody =
@@ -291,6 +321,8 @@ export default function DashboardApp({
         ? "Ask a workspace owner or admin to create issuer access for your account."
         : currentIssuer.status !== "Approved"
           ? "A workspace owner or admin needs to approve your issuer access before you can issue or revoke credentials."
+          : requiresSepoliaWallet && !hasLinkedIssuerWallet
+            ? "Sepolia anchoring is enabled for this workspace, so your issuer profile needs a linked wallet before issuing."
           : "This workspace is still missing the requirements needed to issue credentials.";
 
   const handleCredentialFilterChange = (key, value) => {
@@ -496,6 +528,62 @@ export default function DashboardApp({
     setSelectedCredentialId(credentialId);
   };
 
+  const handleConnectWallet = async () => {
+    setBusyAction("wallet:connect");
+    setActionMessage("");
+
+    try {
+      await onConnectWallet?.();
+      setActionMessage("MetaMask connected.");
+    } catch (error) {
+      setActionMessage(error.message || "Unable to connect MetaMask.");
+    } finally {
+      setBusyAction("");
+    }
+  };
+
+  const handleSwitchWalletNetwork = async () => {
+    setBusyAction("wallet:network");
+    setActionMessage("");
+
+    try {
+      await onSwitchWalletNetwork?.();
+      setActionMessage(`Switched MetaMask to ${SEPOLIA_NETWORK_NAME}.`);
+    } catch (error) {
+      setActionMessage(error.message || `Unable to switch MetaMask to ${SEPOLIA_NETWORK_NAME}.`);
+    } finally {
+      setBusyAction("");
+    }
+  };
+
+  const handleLinkCurrentIssuerWallet = async () => {
+    if (!currentIssuer) {
+      setActionMessage("Your account is not linked to an issuer profile yet.");
+      return;
+    }
+
+    setBusyAction("wallet:link");
+    setActionMessage("");
+
+    try {
+      const nextWallet =
+        walletState.account
+          ? walletState.account
+          : (await onConnectWallet?.())?.account;
+
+      if (!nextWallet) {
+        throw new Error("Connect MetaMask before linking a wallet.");
+      }
+
+      await onLinkIssuerWallet?.(currentIssuer.id, nextWallet);
+      setActionMessage(`Linked ${formatWalletAddress(nextWallet)} to ${currentIssuer.name}.`);
+    } catch (error) {
+      setActionMessage(error.message || "Unable to link wallet.");
+    } finally {
+      setBusyAction("");
+    }
+  };
+
   const handleRevoke = async (credentialId) => {
     const reason = revocationDrafts[credentialId]?.trim() || "Revoked by an authorized issuer.";
     setBusyAction(`revoke:${credentialId}`);
@@ -591,6 +679,62 @@ export default function DashboardApp({
                 <Metric label="Issuers" value={stats.issuerCount} />
               </div>
 
+              <Card
+                title="Sepolia anchor readiness"
+                subtitle="MetaMask wallet linking is wired in now. Sepolia issue and revoke transactions are the next layer to connect."
+              >
+                <div className="dashboard-form-grid">
+                  <div className="record-card">
+                    <p className="neo-label">MetaMask connection</p>
+                    <p className="mt-2 text-sm text-zinc-100">{walletConnectionLabel}</p>
+                    <p className="mt-2 text-xs text-zinc-500">
+                      {walletState.isMetaMaskAvailable
+                        ? walletState.isSupportedNetwork
+                          ? `${SEPOLIA_NETWORK_NAME} ready`
+                          : "Switch the wallet to Sepolia before on-chain anchoring"
+                        : "MetaMask is not available in this browser"}
+                    </p>
+                  </div>
+                  <div className="record-card">
+                    <p className="neo-label">Issuer wallet</p>
+                    <p className="mt-2 text-sm text-zinc-100">{issuerWalletLabel}</p>
+                    <p className="mt-2 text-xs text-zinc-500">
+                      {walletMatchesCurrentIssuer
+                        ? "Connected wallet matches the linked issuer wallet."
+                        : hasLinkedIssuerWallet
+                          ? "A wallet is linked, but the connected account does not match it."
+                          : "Link a wallet to prepare this issuer for Sepolia-backed issuance."}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="site-button text-sm"
+                    disabled={busyAction === "wallet:connect"}
+                    onClick={handleConnectWallet}
+                  >
+                    {busyAction === "wallet:connect" ? "Connecting..." : isWalletConnected ? "Reconnect MetaMask" : "Connect MetaMask"}
+                  </button>
+                  <button
+                    type="button"
+                    className="site-ghost text-sm"
+                    disabled={busyAction === "wallet:network" || !walletState.isMetaMaskAvailable}
+                    onClick={handleSwitchWalletNetwork}
+                  >
+                    {busyAction === "wallet:network" ? "Switching..." : `Switch to ${SEPOLIA_NETWORK_NAME}`}
+                  </button>
+                  <button
+                    type="button"
+                    className="site-ghost text-sm"
+                    disabled={busyAction === "wallet:link" || !currentIssuer}
+                    onClick={handleLinkCurrentIssuerWallet}
+                  >
+                    {busyAction === "wallet:link" ? "Linking..." : "Link connected wallet"}
+                  </button>
+                </div>
+              </Card>
+
               {!canIssueCredentials ? (
                 <Card title={issueAccessTitle} subtitle={issueAccessBody}>
                   <div className="flex flex-wrap gap-3">
@@ -652,6 +796,14 @@ export default function DashboardApp({
                     </label>
 
                     <div className="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-4">
+                      <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-50">
+                        <p className="m-0">Each new record now gets a canonical proof hash.</p>
+                        <p className="mt-2 text-cyan-100/80">
+                          {hasLinkedIssuerWallet
+                            ? `Issuer wallet linked: ${formatWalletAddress(linkedIssuerWallet)}. Sepolia transaction submission will attach on-chain proof next.`
+                            : "Link an issuer wallet to prepare this workspace for Sepolia-anchored issuance."}
+                        </p>
+                      </div>
                       <div>
                         <p className="neo-label">Template-specific fields</p>
                         <p className="mt-1 text-sm text-zinc-500">
@@ -833,6 +985,7 @@ export default function DashboardApp({
                                   {credential.status}
                                 </span>
                                 <span className="neo-badge">{credential.verificationCode}</span>
+                                <span className="neo-badge">{formatAnchorStatus(credential.anchorStatus)}</span>
                                 {(credential.fieldValues || []).length ? (
                                   <span className="neo-badge">{credential.fieldValues.length} fields</span>
                                 ) : null}
@@ -871,6 +1024,7 @@ export default function DashboardApp({
                             <div><dt>Date</dt><dd>{formatDate(credential.issuedAt)}</dd></div>
                             <div><dt>Email</dt><dd>{credential.recipientEmail}</dd></div>
                             <div><dt>Program / cohort</dt><dd>{credential.cohort || "-"}</dd></div>
+                            <div><dt>Proof status</dt><dd>{formatAnchorStatus(credential.anchorStatus)}</dd></div>
                             {credential.status === "Revoked" ? (
                               <>
                                 <div><dt>Revoked at</dt><dd>{credential.revokedAt ? formatDate(credential.revokedAt) : "-"}</dd></div>
@@ -1221,6 +1375,7 @@ export default function DashboardApp({
                             </div>
                             <h3 className="mt-2 text-lg font-semibold text-zinc-50">{issuer.name}</h3>
                             <p className="mt-1 break-all text-sm text-zinc-400">{issuer.email || "No email on file"}</p>
+                            <p className="mt-2 text-sm text-zinc-400">Wallet: {issuer.wallet ? formatWalletAddress(issuer.wallet) : "Not linked"}</p>
                             <div className="mt-4 flex flex-wrap gap-2">
                               <button
                                 type="button"

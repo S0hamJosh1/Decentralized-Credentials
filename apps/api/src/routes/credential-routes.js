@@ -6,6 +6,7 @@ import {
   getCredentialDetails,
   listCredentials,
   revokeCredential,
+  saveCredentialAnchor,
 } from "../services/credential-service.js";
 
 export function createCredentialRouter() {
@@ -37,10 +38,25 @@ export function createCredentialRouter() {
   );
 
   router.patch(
+    "/api/credentials/:id/anchor",
+    requireAuth,
+    asyncHandler(async (request, response) => {
+      response.json(await saveCredentialAnchor(request.auth, request.params.id, request.body));
+    })
+  );
+
+  router.patch(
     "/api/credentials/:id/revoke",
     requireAuth,
     asyncHandler(async (request, response) => {
-      response.json(await revokeCredential(request.auth, request.params.id, request.body?.reason));
+      response.json(
+        await revokeCredential(
+          request.auth,
+          request.params.id,
+          request.body?.reason,
+          request.body?.anchor || null
+        )
+      );
     })
   );
 

@@ -1,5 +1,9 @@
 node_modules/
 dist/
+.hardhat/
+.hardhat-home/
+.npm-cache/
+deployments/
 .env
 .env.local
 .env.*

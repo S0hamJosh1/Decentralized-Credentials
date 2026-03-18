@@ -202,6 +202,13 @@ export function updateIssuerRecord(id, payload) {
   });
 }
 
+export function linkIssuerWalletRecord(id, wallet) {
+  return request(`/api/issuers/${id}/wallet`, {
+    method: "PATCH",
+    body: JSON.stringify({ wallet }),
+  });
+}
+
 export function createCredential(payload) {
   return request("/api/credentials", {
     method: "POST",
@@ -213,10 +220,24 @@ export function fetchCredentialDetails(id) {
   return request(`/api/credentials/${id}`);
 }
 
+export function saveCredentialAnchorRecord(id, anchor) {
+  return request(`/api/credentials/${id}/anchor`, {
+    method: "PATCH",
+    body: JSON.stringify(anchor),
+  });
+}
+
 export function revokeCredentialRecord(id, reason) {
   return request(`/api/credentials/${id}/revoke`, {
     method: "PATCH",
     body: JSON.stringify({ reason }),
+  });
+}
+
+export function revokeCredentialWithAnchorRecord(id, reason, anchor) {
+  return request(`/api/credentials/${id}/revoke`, {
+    method: "PATCH",
+    body: JSON.stringify({ reason, anchor }),
   });
 }
 

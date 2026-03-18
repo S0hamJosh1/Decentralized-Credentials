@@ -5,9 +5,12 @@ import {
   createIssuer,
   createTemplate,
   fetchBootstrap,
+  linkIssuerWalletRecord,
   resendTeamInvitation,
+  revokeCredentialWithAnchorRecord,
   revokeCredentialRecord,
   revokeTeamInvitation,
+  saveCredentialAnchorRecord,
   updateIssuerRecord,
   updateOrganization,
   updateTemplateRecord,
@@ -164,6 +167,26 @@ export function useProductData({ authStatus, onUnauthorized }) {
     }
   };
 
+  const saveCredentialAnchor = async (credentialId, anchor) => {
+    try {
+      const nextRecord = await saveCredentialAnchorRecord(credentialId, anchor);
+      await refreshWorkspace();
+      return nextRecord;
+    } catch (error) {
+      handleProtectedError(error);
+    }
+  };
+
+  const revokeCredentialWithAnchor = async (credentialId, reason, anchor) => {
+    try {
+      const nextRecord = await revokeCredentialWithAnchorRecord(credentialId, reason, anchor);
+      await refreshWorkspace();
+      return nextRecord;
+    } catch (error) {
+      handleProtectedError(error);
+    }
+  };
+
   const addTemplate = async (payload) => {
     try {
       const nextTemplate = await createTemplate(payload);
@@ -197,6 +220,16 @@ export function useProductData({ authStatus, onUnauthorized }) {
   const updateIssuer = async (issuerId, payload) => {
     try {
       const nextIssuer = await updateIssuerRecord(issuerId, payload);
+      await refreshWorkspace();
+      return nextIssuer;
+    } catch (error) {
+      handleProtectedError(error);
+    }
+  };
+
+  const linkIssuerWallet = async (issuerId, wallet) => {
+    try {
+      const nextIssuer = await linkIssuerWalletRecord(issuerId, wallet);
       await refreshWorkspace();
       return nextIssuer;
     } catch (error) {
@@ -257,10 +290,13 @@ export function useProductData({ authStatus, onUnauthorized }) {
     stats,
     issueCredential,
     revokeCredential,
+    saveCredentialAnchor,
+    revokeCredentialWithAnchor,
     addTemplate,
     updateTemplate,
     addIssuer,
     updateIssuer,
+    linkIssuerWallet,
     saveOrganization,
     inviteTeamMember,
     resendInvitation,

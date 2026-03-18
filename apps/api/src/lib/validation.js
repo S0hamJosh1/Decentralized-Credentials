@@ -6,6 +6,8 @@ export function sanitizeText(value) {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const ETHEREUM_ADDRESS_PATTERN = /^0x[a-f0-9]{40}$/i;
+const HEX_HASH_32_PATTERN = /^0x[a-f0-9]{64}$/i;
 
 export function requireFields(payload, fields, entityName = "fields") {
   const missing = fields.filter((field) => sanitizeText(payload[field]) === "");
@@ -52,6 +54,26 @@ export function requireSlug(value, fieldName = "slug") {
 
   if (!SLUG_PATTERN.test(normalizedValue)) {
     throw createHttpError(400, `Enter a valid ${fieldName} using lowercase letters, numbers, and hyphens only.`);
+  }
+
+  return normalizedValue;
+}
+
+export function requireEthereumAddress(value, fieldName = "wallet address") {
+  const normalizedValue = sanitizeText(value).toLowerCase();
+
+  if (!ETHEREUM_ADDRESS_PATTERN.test(normalizedValue)) {
+    throw createHttpError(400, `Enter a valid ${fieldName}.`);
+  }
+
+  return normalizedValue;
+}
+
+export function requireHexHash32(value, fieldName = "hash") {
+  const normalizedValue = sanitizeText(value).toLowerCase();
+
+  if (!HEX_HASH_32_PATTERN.test(normalizedValue)) {
+    throw createHttpError(400, `Enter a valid ${fieldName}.`);
   }
 
   return normalizedValue;

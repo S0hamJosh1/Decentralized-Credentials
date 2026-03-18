@@ -1,4 +1,5 @@
 import React from "react";
+import { buildSepoliaAddressUrl, buildSepoliaTxUrl, formatAnchorStatus, formatWalletAddress } from "../lib/blockchain";
 import { formatFieldValue } from "../lib/template-fields";
 
 function formatDate(value) {
@@ -23,6 +24,8 @@ function describeTimelineEvent(event) {
   switch (event.type) {
     case "credential.issued":
       return `${event.actorName} issued the credential.`;
+    case "credential.anchored":
+      return `${event.actorName} anchored this credential on Sepolia.`;
     case "credential.revoked":
       return `${event.actorName} revoked the credential.`;
     default:
@@ -32,6 +35,10 @@ function describeTimelineEvent(event) {
 
 export default function CredentialDetailPanel({ detailState, onClose, onOpenVerifier }) {
   const { status, payload, error } = detailState;
+  const proof = payload?.proof || null;
+  const issuerWalletUrl = buildSepoliaAddressUrl(proof?.issuerWallet);
+  const issueTxUrl = buildSepoliaTxUrl(proof?.issueTxHash);
+  const revokeTxUrl = buildSepoliaTxUrl(proof?.revokeTxHash);
 
   return (
     <section className="neo-card neo-outline">
@@ -99,6 +106,36 @@ export default function CredentialDetailPanel({ detailState, onClose, onOpenVeri
               ) : (
                 <p className="mt-2 text-sm text-zinc-400">This credential was issued without custom template fields.</p>
               )}
+            </article>
+
+            <article className="record-card">
+              <h3 className="text-lg font-semibold text-zinc-50">Sepolia proof</h3>
+              <dl className="site-detail-grid mt-4">
+                <div><dt>Status</dt><dd>{formatAnchorStatus(proof?.status)}</dd></div>
+                <div><dt>Credential hash</dt><dd className="break-all">{proof?.credentialHash || "-"}</dd></div>
+                <div><dt>Issuer wallet</dt><dd>{proof?.issuerWallet ? formatWalletAddress(proof.issuerWallet) : "-"}</dd></div>
+                <div><dt>Network</dt><dd>{proof?.network || "Sepolia planned"}</dd></div>
+                <div><dt>Issue tx</dt><dd>{proof?.issueTxHash ? formatWalletAddress(proof.issueTxHash) : "-"}</dd></div>
+                <div><dt>Revoke tx</dt><dd>{proof?.revokeTxHash ? formatWalletAddress(proof.revokeTxHash) : "-"}</dd></div>
+                <div><dt>Contract</dt><dd className="break-all">{proof?.contractAddress || "-"}</dd></div>
+              </dl>
+              <div className="mt-4 flex flex-wrap gap-2 text-sm">
+                {issuerWalletUrl ? (
+                  <a href={issuerWalletUrl} target="_blank" rel="noreferrer" className="site-ghost">
+                    View issuer wallet
+                  </a>
+                ) : null}
+                {issueTxUrl ? (
+                  <a href={issueTxUrl} target="_blank" rel="noreferrer" className="site-ghost">
+                    View issue tx
+                  </a>
+                ) : null}
+                {revokeTxUrl ? (
+                  <a href={revokeTxUrl} target="_blank" rel="noreferrer" className="site-ghost">
+                    View revoke tx
+                  </a>
+                ) : null}
+              </div>
             </article>
 
             <article className="record-card">

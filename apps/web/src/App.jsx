@@ -5,7 +5,14 @@ import VerifyPortal from "./components/VerifyPortal";
 import { useAuthSession } from "./hooks/useAuthSession";
 import { useInvitationLookup } from "./hooks/useInvitationLookup";
 import { useProductData } from "./hooks/useProductData";
+import { useWalletSession } from "./hooks/useWalletSession";
+import { normalizeWalletAddress } from "./lib/blockchain";
 import { EMPTY_ORGANIZATION } from "./lib/company";
+import {
+  isSepoliaContractConfigured,
+  issueCredentialOnSepolia,
+  revokeCredentialOnSepolia,
+} from "./lib/credential-registry";
 import { buildVerifyPath, parseRoute, pushRoute } from "./lib/routes";
 
 function WorkspaceLoading({ title, body }) {
@@ -61,10 +68,13 @@ export default function App() {
     stats,
     issueCredential,
     revokeCredential,
+    saveCredentialAnchor,
+    revokeCredentialWithAnchor,
     addTemplate,
     updateTemplate,
     addIssuer,
     updateIssuer,
+    linkIssuerWallet,
     saveOrganization,
     inviteTeamMember,
     resendInvitation,
@@ -74,6 +84,7 @@ export default function App() {
     authStatus,
     onUnauthorized: clearAuthSession,
   });
+  const walletSession = useWalletSession();
   const { invitationStatus, invitationPayload, invitationError } = useInvitationLookup(
     route.view === "join" ? route.invitationCode || "" : ""
   );
@@ -108,6 +119,8 @@ export default function App() {
       organizationId: authSession.organization?.id || "",
       organizationName: authSession.organization?.name || "",
       issuerId: authSession.issuer?.id || "",
+      issuerWallet: authSession.issuer?.wallet || "",
+      issuerWalletVerifiedAt: authSession.issuer?.walletVerifiedAt || "",
       signedInAt: authSession.session?.createdAt || "",
       workspaces: authSession.workspaces || [],
     };
@@ -177,6 +190,84 @@ export default function App() {
   const handleWorkspaceSwitch = async (organizationId) => {
     await switchActiveWorkspace(organizationId);
     await refreshWorkspace();
+  };
+
+  const handleIssuerWalletLink = async (issuerId, wallet) => {
+    const nextIssuer = await linkIssuerWallet(issuerId, wallet);
+    await refreshSession();
+    return nextIssuer;
+  };
+
+  const ensureSepoliaIssuePrerequisites = () => {
+    if (!walletSession.isMetaMaskAvailable) {
+      throw new Error("MetaMask is required for Sepolia-anchored issuance.");
+    }
+
+    if (!walletSession.account) {
+      throw new Error("Connect MetaMask before issuing on Sepolia.");
+    }
+
+    if (!walletSession.isSupportedNetwork) {
+      throw new Error("Switch MetaMask to Sepolia before issuing.");
+    }
+
+    const linkedWallet = normalizeWalletAddress(authSession?.issuer?.wallet || "");
+    const connectedWallet = normalizeWalletAddress(walletSession.account || "");
+
+    if (!linkedWallet) {
+      throw new Error("Link your issuer wallet before issuing on Sepolia.");
+    }
+
+    if (linkedWallet !== connectedWallet) {
+      throw new Error("The connected MetaMask account does not match your linked issuer wallet.");
+    }
+  };
+
+  const handleIssueCredential = async (payload) => {
+    const shouldAnchorOnSepolia = isSepoliaContractConfigured();
+
+    if (shouldAnchorOnSepolia) {
+      ensureSepoliaIssuePrerequisites();
+    }
+
+    const createdRecord = await issueCredential(payload);
+
+    if (!shouldAnchorOnSepolia) {
+      return createdRecord;
+    }
+
+    try {
+      const anchor = await issueCredentialOnSepolia(createdRecord);
+      return saveCredentialAnchor(createdRecord.id, {
+        ...anchor,
+        credentialHash: createdRecord.credentialHash,
+      });
+    } catch (error) {
+      await refreshWorkspace();
+      throw new Error(
+        `${error.message || "Unable to anchor on Sepolia."} The credential record was still created in the workspace and remains ready for anchoring.`
+      );
+    }
+  };
+
+  const handleRevokeCredential = async (credentialId, reason) => {
+    const credential = credentials.find((item) => item.id === credentialId);
+
+    if (!credential) {
+      throw new Error("Credential not found in the current workspace.");
+    }
+
+    const shouldUseOnChainRevoke =
+      isSepoliaContractConfigured()
+      && ["Anchored", "RevokedOnChain"].includes(credential.anchorStatus || "");
+
+    if (!shouldUseOnChainRevoke) {
+      return revokeCredential(credentialId, reason);
+    }
+
+    ensureSepoliaIssuePrerequisites();
+    const anchor = await revokeCredentialOnSepolia(credentialId);
+    return revokeCredentialWithAnchor(credentialId, reason, anchor);
   };
 
   const openVerifier = (verificationCode) => {
@@ -261,8 +352,8 @@ export default function App() {
       activity={activity}
       members={members}
       invitations={invitations}
-      onIssueCredential={issueCredential}
-      onRevokeCredential={revokeCredential}
+      onIssueCredential={handleIssueCredential}
+      onRevokeCredential={handleRevokeCredential}
       onAddTemplate={addTemplate}
       onUpdateTemplate={updateTemplate}
       onAddIssuer={addIssuer}
@@ -275,6 +366,10 @@ export default function App() {
       onBackToSite={() => navigateTo("/")}
       onOpenVerifier={openVerifier}
       onSignOut={signOutAccount}
+      walletState={walletSession}
+      onConnectWallet={walletSession.connectWallet}
+      onSwitchWalletNetwork={walletSession.switchToSepolia}
+      onLinkIssuerWallet={handleIssuerWalletLink}
     />
   );
 }

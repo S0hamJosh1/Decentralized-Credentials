@@ -1,4 +1,10 @@
 import React, { useMemo } from "react";
+import {
+  buildSepoliaAddressUrl,
+  buildSepoliaTxUrl,
+  formatAnchorStatus,
+  formatWalletAddress,
+} from "../lib/blockchain";
 import { resolveVerificationUrl } from "../lib/routes";
 import { formatFieldValue } from "../lib/template-fields";
 import { useVerifyRecord } from "../hooks/useVerifyRecord";
@@ -33,6 +39,8 @@ function describeTimelineEvent(event) {
   switch (event.type) {
     case "credential.issued":
       return `${event.actorName} issued this credential.`;
+    case "credential.anchored":
+      return `${event.actorName} anchored this credential on Sepolia.`;
     case "credential.revoked":
       return `${event.actorName} revoked this credential.`;
     default:
@@ -108,10 +116,26 @@ export default function VerifyPortal({
 
   const template = payload?.template || null;
   const issuer = payload?.issuer || null;
+  const proof = payload?.proof || {
+    status: record?.anchorStatus || "AwaitingIssuerWallet",
+    credentialHash: record?.credentialHash || "",
+    issuerWallet: record?.issuerWallet || "",
+    network: record?.network || "",
+    contractAddress: record?.contractAddress || "",
+    issueTxHash: record?.txHash || "",
+    issueBlockNumber: record?.blockNumber || "",
+    anchoredAt: record?.anchoredAt || "",
+    revokeTxHash: record?.revokeTxHash || "",
+    revokeBlockNumber: record?.revokeBlockNumber || "",
+    revokedOnChainAt: record?.revokedOnChainAt || "",
+  };
   const timeline = payload?.timeline || [];
   const organizationWebsite = toExternalUrl(displayOrganization?.website);
   const verificationDomain = toExternalUrl(displayOrganization?.verificationDomain);
   const verificationUrl = record ? resolveVerificationUrl(record.verificationUrl) : "";
+  const issuerWalletUrl = buildSepoliaAddressUrl(proof?.issuerWallet);
+  const issueTxUrl = buildSepoliaTxUrl(proof?.issueTxHash);
+  const revokeTxUrl = buildSepoliaTxUrl(proof?.revokeTxHash);
 
   return (
     <div className="site-shell min-h-screen text-stone-100">
@@ -174,6 +198,7 @@ export default function VerifyPortal({
                     {record.status}
                   </span>
                   <span className="neo-badge">{record.verificationCode}</span>
+                  <span className="neo-badge">{formatAnchorStatus(proof?.status)}</span>
                   {displayOrganization?.status ? <span className="neo-badge">{displayOrganization.status} workspace</span> : null}
                 </div>
 
@@ -186,7 +211,9 @@ export default function VerifyPortal({
                     {record.summary ? <p className="mt-3 text-zinc-400">{record.summary}</p> : null}
                     <p className={`mt-4 text-sm ${record.status === "Valid" ? "text-emerald-100" : "text-rose-100"}`}>
                       {record.status === "Valid"
-                        ? "This credential is active and verifiable against the issuing workspace."
+                        ? proof?.status === "Anchored"
+                          ? "This credential is active and its fingerprint has been anchored on Sepolia."
+                          : "This credential is active in the workspace and is waiting for, or displaying, Sepolia proof state."
                         : "This credential has been revoked and should not be accepted as an active record."}
                     </p>
 
@@ -197,6 +224,7 @@ export default function VerifyPortal({
                       <div><dt>Template validity</dt><dd>{template?.validity || "-"}</dd></div>
                       <div><dt>Recipient email</dt><dd>{record.recipientEmail || "-"}</dd></div>
                       <div><dt>Program / cohort</dt><dd>{record.cohort || "-"}</dd></div>
+                      <div><dt>Proof hash</dt><dd className="break-all">{proof?.credentialHash || "-"}</dd></div>
                       <div><dt>Verification link</dt><dd className="break-all">{verificationUrl}</dd></div>
                       <div><dt>Verification events</dt><dd>{timeline.length || 1} recorded</dd></div>
                       {record.status === "Revoked" ? (
@@ -221,6 +249,31 @@ export default function VerifyPortal({
                         <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">Issuer</p>
                         <p className="mt-2 text-sm text-zinc-100">{issuer?.name || record.issuedBy}</p>
                         {issuer?.role ? <p className="mt-1 text-sm text-zinc-400">{issuer.role}</p> : null}
+                        <p className="mt-1 text-sm text-zinc-400">
+                          Wallet {proof?.issuerWallet ? formatWalletAddress(proof.issuerWallet) : "not linked yet"}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">Sepolia proof</p>
+                        <div className="mt-2 space-y-2 text-sm text-zinc-300">
+                          <p>{formatAnchorStatus(proof?.status)}</p>
+                          {issuerWalletUrl ? (
+                            <a href={issuerWalletUrl} target="_blank" rel="noreferrer" className="block break-all text-emerald-200 underline decoration-emerald-400/35 underline-offset-4">
+                              Issuer wallet on Etherscan
+                            </a>
+                          ) : null}
+                          {issueTxUrl ? (
+                            <a href={issueTxUrl} target="_blank" rel="noreferrer" className="block break-all text-emerald-200 underline decoration-emerald-400/35 underline-offset-4">
+                              Issue transaction on Etherscan
+                            </a>
+                          ) : null}
+                          {revokeTxUrl ? (
+                            <a href={revokeTxUrl} target="_blank" rel="noreferrer" className="block break-all text-emerald-200 underline decoration-emerald-400/35 underline-offset-4">
+                              Revoke transaction on Etherscan
+                            </a>
+                          ) : null}
+                        </div>
                       </div>
 
                       <div>

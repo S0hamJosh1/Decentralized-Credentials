@@ -112,6 +112,7 @@ try {
   process.env.NODE_ENV = "test";
   process.env.DISABLE_RATE_LIMITS = "true";
   process.env.DATABASE_URL = "";
+  process.env.SEPOLIA_CONTRACT_ADDRESS = "";
   tempDir = await mkdtemp(path.join(os.tmpdir(), "credential-api-"));
   process.env.CREDENTIAL_API_DB_PATH = path.join(tempDir, "db.json");
   process.env.GOOGLE_CLIENT_ID = GOOGLE_CLIENT_ID;
@@ -154,13 +155,32 @@ try {
   assert.equal(currentSession.user.fullName, "Jane Founder");
   assert.equal(currentSession.organization.slug, "acme-credential-group");
 
+  const ownerWallet = "0x1111111111111111111111111111111111111111";
+  const { response: walletLinkResponse, payload: walletLinkedIssuer } = await request(
+    `/api/issuers/${registeredSession.issuer.id}/wallet`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        wallet: ownerWallet,
+      }),
+    }
+  );
+  assert.equal(walletLinkResponse.status, 200);
+  assert.equal(walletLinkedIssuer.wallet, ownerWallet);
+  assert.ok(walletLinkedIssuer.walletVerifiedAt);
+
+  const { response: walletSessionResponse, payload: walletSession } = await request("/api/auth/session");
+  assert.equal(walletSessionResponse.status, 200);
+  assert.equal(walletSession.issuer.wallet, ownerWallet);
+
   const { response: bootstrapResponse, payload: bootstrap } = await request("/api/bootstrap");
   assert.equal(bootstrapResponse.status, 200);
   assert.equal(bootstrap.organization.name, "Acme Credential Group");
   assert.equal(bootstrap.templates.length, 0);
   assert.equal(bootstrap.credentials.length, 0);
   assert.equal(bootstrap.issuers.length, 1);
-  assert.equal(bootstrap.activity.length, 0);
+  assert.equal(bootstrap.activity.length, 1);
+  assert.equal(bootstrap.activity[0].type, "issuer.wallet-linked");
   assert.equal(bootstrap.members.length, 1);
   assert.equal(bootstrap.invitations.length, 0);
 
@@ -289,6 +309,9 @@ try {
   assert.equal(createdCredential.organizationId, registeredSession.organization.id);
   assert.match(createdCredential.verificationUrl, /^\/verify\//);
   assert.match(createdCredential.verificationCode, /^ACL-EMP-1001$/);
+  assert.equal(createdCredential.issuerWallet, ownerWallet);
+  assert.equal(createdCredential.anchorStatus, "ReadyForAnchoring");
+  assert.match(createdCredential.credentialHash, /^0x[0-9a-f]{64}$/);
   assert.equal(createdCredential.fieldValues.length, 3);
   assert.equal(createdCredential.fieldValues[0].label, "Program name");
 
@@ -301,6 +324,8 @@ try {
   assert.equal(credentialDetail.timeline.length, 1);
   assert.equal(credentialDetail.timeline[0].type, "credential.issued");
   assert.equal(credentialDetail.credential.fieldValues[1].value, "2026-08-15");
+  assert.equal(credentialDetail.proof.status, "ReadyForAnchoring");
+  assert.equal(credentialDetail.proof.issuerWallet, ownerWallet);
 
   const { payload: verifyPayload, response: verifyResponse } = await request(
     `/api/verify/${createdCredential.verificationCode}`,
@@ -313,20 +338,63 @@ try {
   assert.equal(verifyPayload.issuer.id, registeredSession.issuer.id);
   assert.equal(verifyPayload.credential.fieldValues[0].value, "Leadership Academy");
   assert.equal(verifyPayload.timeline.length, 1);
+  assert.equal(verifyPayload.proof.credentialHash, createdCredential.credentialHash);
+
+  const issueAnchor = {
+    txHash: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    blockNumber: "9001",
+    chainId: "11155111",
+    network: "Sepolia",
+    contractAddress: "0x2222222222222222222222222222222222222222",
+    issuerWallet: ownerWallet,
+    credentialHash: createdCredential.credentialHash,
+  };
+
+  const { response: anchorResponse, payload: anchoredCredential } = await request(
+    `/api/credentials/${createdCredential.id}/anchor`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(issueAnchor),
+    }
+  );
+  assert.equal(anchorResponse.status, 200);
+  assert.equal(anchoredCredential.anchorStatus, "Anchored");
+  assert.equal(anchoredCredential.txHash, issueAnchor.txHash);
+  assert.equal(anchoredCredential.contractAddress, issueAnchor.contractAddress);
+
+  const { response: anchoredDetailResponse, payload: anchoredDetail } = await request(
+    `/api/credentials/${createdCredential.id}`
+  );
+  assert.equal(anchoredDetailResponse.status, 200);
+  assert.equal(anchoredDetail.proof.status, "Anchored");
+  assert.equal(anchoredDetail.timeline.length, 2);
+  assert.equal(anchoredDetail.timeline[0].type, "credential.anchored");
 
   const { payload: revokedCredential } = await request(`/api/credentials/${createdCredential.id}/revoke`, {
     method: "PATCH",
-    body: JSON.stringify({ reason: "Issued to the wrong cohort." }),
+    body: JSON.stringify({
+      reason: "Issued to the wrong cohort.",
+      anchor: {
+        txHash: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        blockNumber: "9002",
+        chainId: "11155111",
+        network: "Sepolia",
+        contractAddress: "0x2222222222222222222222222222222222222222",
+        issuerWallet: ownerWallet,
+      },
+    }),
   });
   assert.equal(revokedCredential.status, "Revoked");
   assert.equal(revokedCredential.revocationReason, "Issued to the wrong cohort.");
   assert.ok(revokedCredential.revokedAt);
+  assert.equal(revokedCredential.anchorStatus, "RevokedOnChain");
+  assert.equal(revokedCredential.revokeTxHash, "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
 
   const { response: revokedDetailResponse, payload: revokedDetail } = await request(
     `/api/credentials/${createdCredential.id}`
   );
   assert.equal(revokedDetailResponse.status, 200);
-  assert.equal(revokedDetail.timeline.length, 2);
+  assert.equal(revokedDetail.timeline.length, 3);
   assert.equal(revokedDetail.timeline[0].type, "credential.revoked");
 
   const { response: revokedVerifyResponse, payload: revokedVerifyPayload } = await request(
@@ -335,8 +403,9 @@ try {
   );
   assert.equal(revokedVerifyResponse.status, 200);
   assert.equal(revokedVerifyPayload.credential.status, "Revoked");
-  assert.equal(revokedVerifyPayload.timeline.length, 2);
+  assert.equal(revokedVerifyPayload.timeline.length, 3);
   assert.equal(revokedVerifyPayload.timeline[0].reason, "Issued to the wrong cohort.");
+  assert.equal(revokedVerifyPayload.proof.status, "RevokedOnChain");
 
   const { payload: pendingIssuer, response: pendingIssuerResponse } = await request("/api/issuers", {
     method: "POST",
@@ -437,7 +506,7 @@ try {
   assert.equal(activityBootstrapResponse.status, 200);
   assert.ok(activityBootstrap.activity.length >= 7);
   assert.ok(activityBootstrap.activity.some((event) => event.type === "credential.issued"));
-  assert.ok(activityBootstrap.activity.some((event) => event.type === "organization.updated"));
+  assert.ok(activityBootstrap.activity.some((event) => event.type === "credential.anchored"));
   assert.ok(activityBootstrap.activity.some((event) => event.type === "template.updated"));
   assert.ok(activityBootstrap.activity.some((event) => event.type === "issuer.updated"));
   assert.ok(activityBootstrap.activity.some((event) => event.type === "invitation.resent"));
@@ -842,5 +911,6 @@ try {
   delete process.env.GOOGLE_CLIENT_ID;
   delete process.env.DISABLE_RATE_LIMITS;
   delete process.env.DATABASE_URL;
+  delete process.env.SEPOLIA_CONTRACT_ADDRESS;
   delete process.env.NODE_ENV;
 }

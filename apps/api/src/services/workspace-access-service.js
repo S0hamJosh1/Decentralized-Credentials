@@ -83,6 +83,8 @@ export function buildWorkspaceEntry(db, membership) {
           id: issuer.id,
           role: issuer.role,
           status: issuer.status,
+          wallet: issuer.wallet || "",
+          walletVerifiedAt: issuer.walletVerifiedAt || "",
         }
       : null,
   };
@@ -166,6 +168,8 @@ export function ensureIssuerAccessForUser(db, input) {
     existingIssuer.role = input.role || existingIssuer.role;
     existingIssuer.status = input.status || existingIssuer.status;
     existingIssuer.updatedAt = nowIso();
+    existingIssuer.wallet = existingIssuer.wallet || "";
+    existingIssuer.walletVerifiedAt = existingIssuer.walletVerifiedAt || "";
     existingIssuer.approvedAt =
       existingIssuer.status === "Approved"
         ? existingIssuer.approvedAt || nowIso()
@@ -181,6 +185,7 @@ export function ensureIssuerAccessForUser(db, input) {
     role: input.role || "Issuer",
     email: input.email,
     wallet: "",
+    walletVerifiedAt: "",
     status: input.status || "Pending",
     createdAt: nowIso(),
     updatedAt: nowIso(),

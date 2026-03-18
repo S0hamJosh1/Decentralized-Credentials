@@ -133,6 +133,7 @@ model Issuer {
   createdAt      DateTime
   updatedAt      DateTime
   approvedAt     DateTime?
+  walletVerifiedAt DateTime?
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
   credentials    Credential[]
@@ -145,12 +146,24 @@ model Credential {
   organizationId   String
   verificationCode String                 @unique
   verificationUrl  String
+  credentialHash   String
+  anchorStatus     String
+  chainId          String
+  network          String
+  contractAddress  String
+  txHash           String
+  blockNumber      String
+  anchoredAt       String
+  revokeTxHash     String
+  revokeBlockNumber String
+  revokedOnChainAt String
   recipientName    String
   recipientEmail   String
   recipientWallet  String
   templateId       String
   templateName     String
   issuerId         String
+  issuerWallet     String
   issuedBy         String
   issuedAt         String
   status           String

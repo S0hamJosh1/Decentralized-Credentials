@@ -1,13 +1,24 @@
 import { buildVerificationUrl, readDb, writeDb } from "../store.js";
+import { buildCredentialProof, createCredentialHash, getInitialAnchorStatus } from "../lib/credential-proof.js";
 import { createHttpError } from "../lib/http.js";
 import { requireApprovedIssuer } from "../lib/permissions.js";
 import { mapCredentialFieldValues, validateCredentialFieldValues } from "../lib/template-fields.js";
-import { requireEmailAddress, requireFields, sanitizeText } from "../lib/validation.js";
+import {
+  requireEmailAddress,
+  requireEthereumAddress,
+  requireFields,
+  requireHexHash32,
+  sanitizeText,
+} from "../lib/validation.js";
 import { buildCredentialTimeline, recordWorkspaceEvent } from "./activity-service.js";
 import { findIssuerForUserInOrganization } from "./workspace-access-service.js";
 
 function today() {
   return new Date().toISOString().slice(0, 10);
+}
+
+function nowIso() {
+  return new Date().toISOString();
 }
 
 function nextId(prefix, list, start = 1) {
@@ -52,6 +63,7 @@ function sanitizeCredential(payload = {}) {
     issuerId: sanitizeText(payload.issuerId),
     recipientName: sanitizeText(payload.recipientName),
     recipientEmail: sanitizeText(payload.recipientEmail).toLowerCase(),
+    recipientWallet: sanitizeText(payload.recipientWallet).toLowerCase(),
     cohort: sanitizeText(payload.cohort),
     summary: sanitizeText(payload.summary),
     fieldValues:
@@ -59,6 +71,58 @@ function sanitizeCredential(payload = {}) {
         ? payload.fieldValues
         : {},
   };
+}
+
+function sanitizeAnchorPayload(payload = {}) {
+  return {
+    txHash: sanitizeText(payload.txHash).toLowerCase(),
+    blockNumber: sanitizeText(payload.blockNumber),
+    chainId: sanitizeText(payload.chainId),
+    network: sanitizeText(payload.network) || "Sepolia",
+    contractAddress: sanitizeText(payload.contractAddress).toLowerCase(),
+    issuerWallet: sanitizeText(payload.issuerWallet).toLowerCase(),
+  };
+}
+
+function validateAnchorPayload(payload, auth) {
+  const input = sanitizeAnchorPayload(payload);
+
+  requireFields(
+    input,
+    ["txHash", "blockNumber", "chainId", "network", "contractAddress", "issuerWallet"],
+    "anchor fields"
+  );
+
+  input.txHash = requireHexHash32(input.txHash, "transaction hash");
+  input.contractAddress = requireEthereumAddress(input.contractAddress, "contract address");
+  input.issuerWallet = requireEthereumAddress(input.issuerWallet, "issuer wallet");
+
+  if (input.chainId !== "11155111") {
+    throw createHttpError(400, "Credential anchors must be written on Sepolia (chain id 11155111).");
+  }
+
+  if (input.network.toLowerCase() !== "sepolia") {
+    throw createHttpError(400, "Credential anchors must be recorded against the Sepolia network.");
+  }
+
+  const expectedContractAddress = sanitizeText(process.env.SEPOLIA_CONTRACT_ADDRESS).toLowerCase();
+
+  if (expectedContractAddress && input.contractAddress !== expectedContractAddress) {
+    throw createHttpError(400, "The submitted contract address does not match the configured Sepolia registry.");
+  }
+
+  const approvedIssuer = requireApprovedIssuer(auth);
+
+  if (!approvedIssuer.wallet) {
+    throw createHttpError(400, "Link a wallet to your issuer profile before recording Sepolia proof.");
+  }
+
+  if (approvedIssuer.wallet.toLowerCase() !== input.issuerWallet) {
+    throw createHttpError(403, "The connected wallet does not match your linked issuer wallet.");
+  }
+
+  input.network = "Sepolia";
+  return input;
 }
 
 function requireOrganization(db, organizationId) {
@@ -132,7 +196,19 @@ export async function createCredential(auth, payload) {
     organizationId: organization.id,
     verificationCode,
     verificationUrl: buildVerificationUrl(verificationCode),
+    credentialHash: "",
+    anchorStatus: getInitialAnchorStatus(issuer.wallet || ""),
+    chainId: "",
+    network: "",
+    contractAddress: "",
+    txHash: "",
+    blockNumber: "",
+    anchoredAt: "",
+    revokeTxHash: "",
+    revokeBlockNumber: "",
+    revokedOnChainAt: "",
     templateName: template.name,
+    issuerWallet: issuer.wallet || "",
     issuedBy: issuer.name,
     issuedAt: today(),
     status: "Valid",
@@ -142,6 +218,7 @@ export async function createCredential(auth, payload) {
     issuerId: issuer.id,
     fieldValues,
   };
+  credential.credentialHash = createCredentialHash(credential);
 
   db.credentials.unshift(credential);
   recordWorkspaceEvent(db, {
@@ -152,10 +229,13 @@ export async function createCredential(auth, payload) {
     details: {
       issuerId: issuer.id,
       issuerName: issuer.name,
+      issuerWallet: issuer.wallet || "",
       recipientName: credential.recipientName,
       templateId: template.id,
       templateName: template.name,
       verificationCode,
+      credentialHash: credential.credentialHash,
+      anchorStatus: credential.anchorStatus,
       fieldValues,
     },
   });
@@ -174,11 +254,67 @@ function buildCredentialDetail(db, credential) {
     template,
     issuer,
     credential,
+    proof: buildCredentialProof(credential),
     timeline: buildCredentialTimeline(db, credential.id),
   };
 }
 
-export async function revokeCredential(auth, credentialId, reason) {
+export async function saveCredentialAnchor(auth, credentialId, payload) {
+  const db = await readDb();
+  const credential = db.credentials.find(
+    (item) => item.id === credentialId && item.organizationId === auth.organization.id
+  );
+
+  if (!credential) {
+    throw createHttpError(404, "Credential not found.");
+  }
+
+  const anchor = validateAnchorPayload(payload, auth);
+
+  if (credential.issuerId !== auth.issuer?.id) {
+    throw createHttpError(403, "Only the issuing issuer can record the Sepolia anchor for this credential.");
+  }
+
+  if (credential.credentialHash && payload?.credentialHash) {
+    const nextHash = requireHexHash32(payload.credentialHash, "credential hash");
+
+    if (nextHash !== credential.credentialHash) {
+      throw createHttpError(400, "The submitted credential hash does not match this credential record.");
+    }
+  }
+
+  credential.anchorStatus = "Anchored";
+  credential.chainId = anchor.chainId;
+  credential.network = anchor.network;
+  credential.contractAddress = anchor.contractAddress;
+  credential.txHash = anchor.txHash;
+  credential.blockNumber = anchor.blockNumber;
+  credential.anchoredAt = nowIso();
+  credential.issuerWallet = anchor.issuerWallet;
+
+  recordWorkspaceEvent(db, {
+    organizationId: credential.organizationId,
+    actorUserId: auth.user.id,
+    credentialId: credential.id,
+    type: "credential.anchored",
+    details: {
+      issuerId: credential.issuerId,
+      issuerName: credential.issuedBy,
+      issuerWallet: credential.issuerWallet,
+      verificationCode: credential.verificationCode,
+      credentialHash: credential.credentialHash,
+      txHash: credential.txHash,
+      contractAddress: credential.contractAddress,
+      blockNumber: credential.blockNumber,
+      network: credential.network,
+    },
+  });
+
+  await writeDb(db);
+  return credential;
+}
+
+export async function revokeCredential(auth, credentialId, reason, anchorPayload = null) {
   requireApprovedIssuer(auth, "Your issuer access must be approved before you can revoke credentials.");
 
   const db = await readDb();
@@ -198,6 +334,19 @@ export async function revokeCredential(auth, credentialId, reason) {
   credential.revokedAt = today();
   credential.revocationReason = sanitizeText(reason) || "Revoked by an authorized issuer.";
 
+  if (anchorPayload) {
+    const anchor = validateAnchorPayload(anchorPayload, auth);
+    credential.anchorStatus = "RevokedOnChain";
+    credential.chainId = anchor.chainId;
+    credential.network = anchor.network;
+    credential.contractAddress = anchor.contractAddress;
+    credential.revokeTxHash = anchor.txHash;
+    credential.revokeBlockNumber = anchor.blockNumber;
+    credential.revokedOnChainAt = nowIso();
+  } else {
+    credential.anchorStatus = "RevokedOffChain";
+  }
+
   recordWorkspaceEvent(db, {
     organizationId: credential.organizationId,
     actorUserId: auth.user.id,
@@ -211,6 +360,9 @@ export async function revokeCredential(auth, credentialId, reason) {
       verificationCode: credential.verificationCode,
       issuerId: credential.issuerId,
       issuerName: credential.issuedBy,
+      issuerWallet: credential.issuerWallet,
+      txHash: credential.revokeTxHash,
+      anchorStatus: credential.anchorStatus,
     },
   });
 

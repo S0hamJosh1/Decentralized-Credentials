@@ -47,6 +47,7 @@ Set these frontend environment variables for `apps/web`:
 
 - `VITE_API_BASE_URL`: absolute URL for the deployed API, such as `https://api.yourdomain.com`
 - `VITE_GOOGLE_CLIENT_ID`: Google OAuth client ID for Google sign-in
+- `VITE_SEPOLIA_CONTRACT_ADDRESS`: deployed `CredentialRegistry` contract address on Sepolia for MetaMask-backed issue/revoke transactions
 
 Set these API environment variables for `apps/api`:
 
@@ -57,6 +58,9 @@ Set these API environment variables for `apps/api`:
 - `SESSION_COOKIE_SECURE`: optional `true` or `false` override for the session cookie secure flag
 - `PUBLIC_APP_URL`: optional canonical frontend URL used in password reset emails
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM`: optional email delivery config for invitation and password reset emails
+- `SEPOLIA_CONTRACT_ADDRESS`: optional expected Sepolia contract address for storing and validating anchor metadata
+
+The local API runtime now loads `apps/api/.env` automatically when you start it with `npm run dev` or `npm start`.
 
 ## Neon + Prisma
 
@@ -79,6 +83,61 @@ npm run prisma:migrate:dev -- --name init
 4. Deploy the API with that same `DATABASE_URL`.
 
 The `/health` endpoint now reports the active storage mode.
+
+## Sepolia Contract Deployment
+
+The repo now includes a minimal Hardhat workspace at the repo root for deploying the `CredentialRegistry` contract used by the MetaMask-backed issue and revoke flow.
+
+1. Copy the root env example:
+
+```bash
+copy .env.example .env
+```
+
+2. Fill in:
+
+- `SEPOLIA_RPC_URL`
+- `SEPOLIA_PRIVATE_KEY`
+- optionally `SEPOLIA_OWNER_ADDRESS` if you want a contract owner different from the deployer
+
+For the simplest v1 flow, leave `SEPOLIA_OWNER_ADDRESS` empty so the deployer wallet is also the contract owner. If you do set a different owner, later owner-only actions like `contracts:approve:issuer` must be signed with that owner's private key.
+
+3. Install root contract dependencies:
+
+```bash
+npm install
+```
+
+4. Compile the contract:
+
+```bash
+npm run contracts:compile
+```
+
+5. Deploy to Sepolia:
+
+```bash
+npm run contracts:deploy:sepolia
+```
+
+The deploy script writes a deployment file to `deployments/sepolia/credential-registry.json`.
+
+6. Put the deployed contract address into:
+
+- `apps/web/.env.local` as `VITE_SEPOLIA_CONTRACT_ADDRESS`
+- `apps/api/.env` as `SEPOLIA_CONTRACT_ADDRESS`
+
+7. Approve issuer wallets on-chain before they try to issue credentials:
+
+```bash
+npm run contracts:approve:issuer
+```
+
+Set these root env vars before running the approval script:
+
+- `SEPOLIA_CONTRACT_ADDRESS`
+- `ISSUER_WALLET_TO_APPROVE`
+- optionally `ISSUER_APPROVED=false` to remove approval instead of granting it
 
 ## Vercel deployment
 
@@ -123,7 +182,7 @@ npm test
 
 ## Product notes
 
-- The current product direction is a workspace SaaS for companies, not a blockchain-first demo.
+- The current product direction is a workspace SaaS for companies with a Sepolia-backed credential proof layer.
 - The seeded Northstar/demo workspace has been removed from the live product path.
 - The app now uses real API-backed authentication with users, memberships, and secure sessions.
 - Google sign-in can now create or access a workspace account when the Google OAuth client ID is configured on both the frontend and API.
@@ -136,7 +195,7 @@ npm test
 - Workspace permissions are now enforced in the API: managers handle settings and access, and credential issuance/revocation runs through the signed-in approved issuer identity.
 - Invitations now support resend/revoke management, and password reset is available with optional email delivery plus a local preview URL when SMTP is not configured.
 - Prisma and Neon-ready Postgres support are now wired into the API while preserving local file-mode development.
-- Legacy blockchain-first UI and repo residue has been removed from the live product path.
+- Legacy blockchain-only UI residue has been removed so the live product can focus on workspace UX plus on-chain proof.
 
 ## License
 

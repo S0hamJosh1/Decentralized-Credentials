@@ -1,0 +1,16 @@
+{
+  "name": "decentralized-credentials",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "contracts:compile": "hardhat compile",
+    "contracts:deploy:sepolia": "hardhat run scripts/deploy-credential-registry.js --network sepolia",
+    "contracts:approve:issuer": "hardhat run scripts/approve-issuer.js --network sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.1.0",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.26.3"
+  }
+}

@@ -190,6 +190,8 @@ function buildSessionPayload(db, session) {
           id: issuer.id,
           role: issuer.role,
           status: issuer.status,
+          wallet: issuer.wallet || "",
+          walletVerifiedAt: issuer.walletVerifiedAt || "",
         }
       : null,
     workspaces: buildWorkspaceEntries(db, user.id),
@@ -284,6 +286,7 @@ function createOwnerIssuer(db, organizationId, user, role, createdAt) {
     role,
     email: user.email,
     wallet: "",
+    walletVerifiedAt: "",
     status: "Approved",
     createdAt,
     updatedAt: createdAt,
