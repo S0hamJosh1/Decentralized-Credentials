@@ -1,0 +1,5 @@
+
+> @credential-foundry/api@0.0.1 start
+> node src/server.js
+
+Credential API listening on http://localhost:4000
