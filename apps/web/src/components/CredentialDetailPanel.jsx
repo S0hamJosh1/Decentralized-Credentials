@@ -33,9 +33,18 @@ function describeTimelineEvent(event) {
   }
 }
 
-export default function CredentialDetailPanel({ detailState, onClose, onOpenVerifier }) {
+export default function CredentialDetailPanel({
+  detailState,
+  anchorBusy = false,
+  onAnchorCredential,
+  onClose,
+  onOpenVerifier,
+}) {
   const { status, payload, error } = detailState;
   const proof = payload?.proof || null;
+  const canAnchorManually =
+    payload?.credential?.status === "Valid"
+    && ["ReadyForAnchoring", "AwaitingIssuerWallet"].includes(proof?.status || "");
   const issuerWalletUrl = buildSepoliaAddressUrl(proof?.issuerWallet);
   const issueTxUrl = buildSepoliaTxUrl(proof?.issueTxHash);
   const revokeTxUrl = buildSepoliaTxUrl(proof?.revokeTxHash);
@@ -71,9 +80,21 @@ export default function CredentialDetailPanel({ detailState, onClose, onOpenVeri
                   <p className="text-sm text-zinc-300">{payload.credential.templateName}</p>
                   {payload.credential.summary ? <p className="mt-2 text-sm text-zinc-400">{payload.credential.summary}</p> : null}
                 </div>
-                <button type="button" className="site-button text-sm" onClick={() => onOpenVerifier(payload.credential.verificationCode)}>
-                  Open verifier
-                </button>
+                <div className="flex flex-wrap gap-2">
+                  {canAnchorManually ? (
+                    <button
+                      type="button"
+                      className="site-button text-sm"
+                      disabled={anchorBusy}
+                      onClick={() => onAnchorCredential?.(payload.credential.id)}
+                    >
+                      {anchorBusy ? "Anchoring on Sepolia..." : "Anchor on Sepolia"}
+                    </button>
+                  ) : null}
+                  <button type="button" className="site-ghost text-sm" onClick={() => onOpenVerifier(payload.credential.verificationCode)}>
+                    Open verifier
+                  </button>
+                </div>
               </div>
 
               <dl className="site-detail-grid mt-6">

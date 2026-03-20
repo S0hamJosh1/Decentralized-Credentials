@@ -223,6 +223,30 @@ export default function App() {
     }
   };
 
+  const anchorCredentialRecordOnSepolia = async (credential) => {
+    if (!isSepoliaContractConfigured()) {
+      throw new Error(
+        "Sepolia anchoring is not configured in this frontend build. Restart the app after setting VITE_SEPOLIA_CONTRACT_ADDRESS."
+      );
+    }
+
+    ensureSepoliaIssuePrerequisites();
+
+    if (!credential?.id) {
+      throw new Error("Credential not found in the current workspace.");
+    }
+
+    if (!credential.credentialHash) {
+      throw new Error("This credential is missing its proof hash and cannot be anchored yet.");
+    }
+
+    const anchor = await issueCredentialOnSepolia(credential);
+    return saveCredentialAnchor(credential.id, {
+      ...anchor,
+      credentialHash: credential.credentialHash,
+    });
+  };
+
   const handleIssueCredential = async (payload) => {
     const shouldAnchorOnSepolia = isSepoliaContractConfigured();
 
@@ -237,16 +261,35 @@ export default function App() {
     }
 
     try {
-      const anchor = await issueCredentialOnSepolia(createdRecord);
-      return saveCredentialAnchor(createdRecord.id, {
-        ...anchor,
-        credentialHash: createdRecord.credentialHash,
-      });
+      return await anchorCredentialRecordOnSepolia(createdRecord);
     } catch (error) {
       await refreshWorkspace();
       throw new Error(
         `${error.message || "Unable to anchor on Sepolia."} The credential record was still created in the workspace and remains ready for anchoring.`
       );
+    }
+  };
+
+  const handleAnchorCredential = async (credentialId) => {
+    const credential = credentials.find((item) => item.id === credentialId);
+
+    if (!credential) {
+      throw new Error("Credential not found in the current workspace.");
+    }
+
+    if (credential.status !== "Valid") {
+      throw new Error("Only valid credentials can be anchored on Sepolia.");
+    }
+
+    if (["Anchored", "RevokedOnChain"].includes(credential.anchorStatus || "")) {
+      return credential;
+    }
+
+    try {
+      return await anchorCredentialRecordOnSepolia(credential);
+    } catch (error) {
+      await refreshWorkspace();
+      throw error;
     }
   };
 
@@ -353,6 +396,7 @@ export default function App() {
       members={members}
       invitations={invitations}
       onIssueCredential={handleIssueCredential}
+      onAnchorCredential={handleAnchorCredential}
       onRevokeCredential={handleRevokeCredential}
       onAddTemplate={addTemplate}
       onUpdateTemplate={updateTemplate}

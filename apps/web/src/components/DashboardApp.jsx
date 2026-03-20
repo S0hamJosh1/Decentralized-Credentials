@@ -125,6 +125,7 @@ export default function DashboardApp({
   issuerSession,
   currentIssuerId,
   onIssueCredential,
+  onAnchorCredential,
   onRevokeCredential,
   onAddTemplate,
   onUpdateTemplate,
@@ -300,6 +301,9 @@ export default function DashboardApp({
   const issuerWalletLabel = hasLinkedIssuerWallet
     ? formatWalletAddress(linkedIssuerWallet)
     : "No wallet linked";
+  const sepoliaReadinessSubtitle = requiresSepoliaWallet
+    ? "Sepolia issue and revoke transactions are live. If a credential stays ready for anchoring, use the manual anchor action from its record."
+    : "Set VITE_SEPOLIA_CONTRACT_ADDRESS and restart the frontend to enable Sepolia issue and revoke transactions.";
 
   const issueAccessTitle =
     activeTemplates.length === 0
@@ -603,6 +607,23 @@ export default function DashboardApp({
     }
   };
 
+  const handleAnchor = async (credentialId) => {
+    setBusyAction(`anchor:${credentialId}`);
+    setActionMessage("");
+
+    try {
+      const record = await onAnchorCredential?.(credentialId);
+      setActionMessage(`Anchored ${record.recipientName}'s credential on ${SEPOLIA_NETWORK_NAME}.`);
+      if (selectedCredentialId === credentialId) {
+        setDetailRefreshKey((current) => current + 1);
+      }
+    } catch (error) {
+      setActionMessage(error.message || "Unable to anchor on Sepolia.");
+    } finally {
+      setBusyAction("");
+    }
+  };
+
   return (
     <>
       <div className="cyber-grid-bg" />
@@ -681,7 +702,7 @@ export default function DashboardApp({
 
               <Card
                 title="Sepolia anchor readiness"
-                subtitle="MetaMask wallet linking is wired in now. Sepolia issue and revoke transactions are the next layer to connect."
+                subtitle={sepoliaReadinessSubtitle}
               >
                 <div className="dashboard-form-grid">
                   <div className="record-card">
@@ -704,6 +725,17 @@ export default function DashboardApp({
                         : hasLinkedIssuerWallet
                           ? "A wallet is linked, but the connected account does not match it."
                           : "Link a wallet to prepare this issuer for Sepolia-backed issuance."}
+                    </p>
+                  </div>
+                  <div className="record-card">
+                    <p className="neo-label">Registry contract</p>
+                    <p className="mt-2 text-sm text-zinc-100">
+                      {requiresSepoliaWallet ? "Configured in this frontend build" : "Not configured in this frontend build"}
+                    </p>
+                    <p className="mt-2 text-xs text-zinc-500">
+                      {requiresSepoliaWallet
+                        ? "Automatic issue and revoke transactions can be sent to Sepolia from this app session."
+                        : "Restart the frontend after setting VITE_SEPOLIA_CONTRACT_ADDRESS to enable live Sepolia anchoring."}
                     </p>
                   </div>
                 </div>
@@ -974,6 +1006,11 @@ export default function DashboardApp({
                     </article>
                   ) : (
                     filteredCredentials.map((credential) => {
+                      const canManuallyAnchor =
+                        requiresSepoliaWallet
+                        && credential.status === "Valid"
+                        && ["ReadyForAnchoring", "AwaitingIssuerWallet"].includes(credential.anchorStatus || "");
+                      const isAnchoring = busyAction === `anchor:${credential.id}`;
                       const isRevoking = busyAction === `revoke:${credential.id}`;
 
                       return (
@@ -1007,13 +1044,23 @@ export default function DashboardApp({
                               ) : null}
                             </div>
                             <div className="flex flex-wrap gap-2">
+                              {canManuallyAnchor ? (
+                                <button
+                                  type="button"
+                                  className="site-button text-sm"
+                                  disabled={isAnchoring}
+                                  onClick={() => handleAnchor(credential.id)}
+                                >
+                                  {isAnchoring ? `Anchoring on ${SEPOLIA_NETWORK_NAME}...` : `Anchor on ${SEPOLIA_NETWORK_NAME}`}
+                                </button>
+                              ) : null}
                               <button type="button" className="site-ghost text-sm" onClick={() => handleOpenCredentialDetail(credential.id)}>
                                 Details
                               </button>
                               <button type="button" className="site-ghost text-sm" onClick={() => onOpenVerifier(credential.verificationCode)}>
                                 Verify
                               </button>
-                              <button type="button" className="site-button text-sm" onClick={() => handleCopyLink(credential)}>
+                              <button type="button" className="site-ghost text-sm" onClick={() => handleCopyLink(credential)}>
                                 Copy link
                               </button>
                             </div>
@@ -1056,6 +1103,8 @@ export default function DashboardApp({
               {selectedCredentialId ? (
                 <CredentialDetailPanel
                   detailState={credentialDetail}
+                  anchorBusy={busyAction === `anchor:${selectedCredentialId}`}
+                  onAnchorCredential={handleAnchor}
                   onClose={() => setSelectedCredentialId("")}
                   onOpenVerifier={onOpenVerifier}
                 />
