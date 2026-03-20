@@ -119,6 +119,7 @@ export default function IssuerAccessFlow({
   const [busy, setBusy] = useState(false);
   const [localError, setLocalError] = useState("");
   const [localMessage, setLocalMessage] = useState("");
+  const [localMessageLink, setLocalMessageLink] = useState("");
   const [googleError, setGoogleError] = useState("");
   const googleButtonRef = useRef(null);
   const googleActionRef = useRef(null);
@@ -152,6 +153,7 @@ export default function IssuerAccessFlow({
     setMode(nextMode);
     setLocalError("");
     setLocalMessage("");
+    setLocalMessageLink("");
     setGoogleError("");
   };
 
@@ -160,6 +162,7 @@ export default function IssuerAccessFlow({
     setBusy(true);
     setLocalError("");
     setLocalMessage("");
+    setLocalMessageLink("");
 
     try {
       if (activeMode === "register") {
@@ -171,11 +174,8 @@ export default function IssuerAccessFlow({
         await onSignIn(signInForm);
       } else if (activeMode === "request-reset") {
         const result = await onRequestPasswordReset(requestResetForm);
-        setLocalMessage(
-          result?.previewResetUrl
-            ? `${result.message} Dev preview: ${result.previewResetUrl}`
-            : result?.message || "If an account exists for that email, a reset link has been sent."
-        );
+        setLocalMessage(result?.message || "If an account exists for that email, a reset link has been sent.");
+        setLocalMessageLink(result?.previewResetUrl || "");
       } else if (activeMode === "reset") {
         if (resetPasswordForm.password !== resetPasswordForm.confirmPassword) {
           throw new Error("Your new password confirmation does not match.");
@@ -205,6 +205,7 @@ export default function IssuerAccessFlow({
       setBusy(true);
       setLocalError("");
       setLocalMessage("");
+      setLocalMessageLink("");
       setGoogleError("");
 
       try {
@@ -640,7 +641,19 @@ export default function IssuerAccessFlow({
 
               {localMessage ? (
                 <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
-                  {localMessage}
+                  <p className="m-0">{localMessage}</p>
+                  {localMessageLink ? (
+                    <p className="mb-0 mt-2">
+                      Local dev preview:
+                      {" "}
+                      <a
+                        className="underline decoration-emerald-300/70 underline-offset-4"
+                        href={localMessageLink}
+                      >
+                        Open reset link
+                      </a>
+                    </p>
+                  ) : null}
                 </div>
               ) : null}
 

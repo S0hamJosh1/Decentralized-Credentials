@@ -43,6 +43,11 @@ describe("IssuerAccessFlow", () => {
         workEmail: "jane@company.com",
       });
     });
+
+    expect(screen.getByRole("link", { name: "Open reset link" })).toHaveAttribute(
+      "href",
+      "http://localhost:5173/reset-password/dev-token"
+    );
   });
 
   test("renders the reset-password form when a token is present", () => {
